@@ -7,7 +7,7 @@
     <!-- Font Awesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ========== 全局重置 & 基础 ========== */
+        /* ========== 全局重置 & 基础变量 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -15,20 +15,24 @@
         }
 
         :root {
-            --primary: #5B6AF0;
-            --primary-light: #7B8AFF;
-            --primary-dark: #4A56D0;
-            --secondary: #8B5CF6;
-            --gradient: linear-gradient(135deg, #5B6AF0 0%, #8B5CF6 100%);
-            --bg: #F0F4FF;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-shadow: 0 8px 32px rgba(91, 106, 240, 0.15);
-            --text-primary: #1A1A2E;
-            --text-secondary: #4A4A6A;
-            --text-light: #8A8AAA;
-            --border-radius: 16px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --success-light: #34d399;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --bg: #f0f4ff;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --card-shadow: 0 8px 32px rgba(99, 102, 241, 0.12);
+            --text-primary: #1e1b4b;
+            --text-secondary: #4338ca;
+            --text-light: #94a3b8;
+            --border-radius: 18px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Roboto, sans-serif;
         }
 
         body {
@@ -37,8 +41,10 @@
             min-height: 100vh;
             padding: 24px;
             color: var(--text-primary);
-            background-image: radial-gradient(ellipse at 10% 20%, rgba(91, 106, 240, 0.06) 0%, transparent 60%),
-                radial-gradient(ellipse at 90% 80%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+            background-image: 
+                radial-gradient(ellipse at top left, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            line-height: 1.5;
         }
 
         /* ========== 滚动条美化 ========== */
@@ -47,7 +53,7 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.04);
+            background: rgba(0, 0, 0, 0.03);
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
@@ -60,7 +66,7 @@
 
         /* ========== 布局容器 ========== */
         .app-container {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -70,44 +76,51 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 28px;
+            padding: 22px 30px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
             margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--card-border);
             transition: var(--transition);
         }
 
         .header:hover {
-            box-shadow: 0 12px 40px rgba(91, 106, 240, 0.20);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.18);
+            transform: translateY(-2px);
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .header-logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
             background: var(--gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(91, 106, 240, 0.35);
+            font-size: 22px;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
             flex-shrink: 0;
         }
 
+        .header-title-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .header-title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             background: var(--gradient);
             -webkit-background-clip: text;
@@ -117,14 +130,13 @@
         }
 
         .header-badge {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            background: rgba(91, 106, 240, 0.12);
+            background: rgba(99, 102, 241, 0.12);
             color: var(--primary);
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 20px;
-            margin-left: 6px;
-            -webkit-text-fill-color: var(--primary);
+            width: fit-content;
         }
 
         .header-right {
@@ -137,7 +149,7 @@
         .header-stats {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 20px;
             font-size: 14px;
             color: var(--text-secondary);
         }
@@ -159,6 +171,36 @@
             font-size: 16px;
         }
 
+        .refresh-btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(16, 185, 129, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .refresh-btn.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         /* ========== 工具栏 ========== */
         .toolbar {
             display: flex;
@@ -166,27 +208,28 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 20px;
-            padding: 0 4px;
+            padding: 0 2px;
         }
 
         .search-box {
             flex: 1;
-            min-width: 200px;
+            min-width: 220px;
             display: flex;
             align-items: center;
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-radius: 12px;
-            padding: 0 16px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-radius: 14px;
+            padding: 0 18px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
             transition: var(--transition);
         }
 
         .search-box:focus-within {
-            box-shadow: 0 0 0 3px rgba(91, 106, 240, 0.20), 0 4px 12px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18), 0 4px 14px rgba(0, 0, 0, 0.06);
             border-color: var(--primary-light);
+            transform: translateY(-1px);
         }
 
         .search-box i {
@@ -197,7 +240,7 @@
         .search-box input {
             border: none;
             background: transparent;
-            padding: 12px 12px 12px 10px;
+            padding: 14px 12px 14px 10px;
             font-size: 15px;
             flex: 1;
             outline: none;
@@ -216,7 +259,7 @@
         }
 
         .filter-btn {
-            padding: 8px 18px;
+            padding: 9px 18px;
             border-radius: 20px;
             border: none;
             background: var(--card-bg);
@@ -227,12 +270,12 @@
             color: var(--text-secondary);
             cursor: pointer;
             transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--card-border);
             font-family: var(--font);
         }
 
         .filter-btn:hover {
-            background: rgba(91, 106, 240, 0.08);
+            background: rgba(99, 102, 241, 0.08);
             color: var(--primary);
             transform: translateY(-1px);
         }
@@ -241,7 +284,7 @@
             background: var(--gradient);
             color: #fff;
             border-color: transparent;
-            box-shadow: 0 4px 12px rgba(91, 106, 240, 0.30);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
         }
 
         /* ========== 上传区域 ========== */
@@ -251,35 +294,34 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: var(--border-radius);
-            border: 2px dashed rgba(91, 106, 240, 0.25);
-            padding: 48px 32px;
+            border: 2px dashed rgba(99, 102, 241, 0.25);
+            padding: 44px 32px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
             margin-bottom: 28px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-            border-spacing: 0;
         }
 
         .upload-zone:hover {
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.95);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(91, 106, 240, 0.10);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 32px rgba(99, 102, 241, 0.12);
         }
 
         .upload-zone.dragover {
-            border-color: var(--primary);
-            background: rgba(91, 106, 240, 0.06);
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
             transform: scale(1.01);
-            box-shadow: 0 8px 40px rgba(91, 106, 240, 0.15);
+            box-shadow: 0 8px 40px rgba(16, 185, 129, 0.15);
         }
 
         .upload-zone .icon-wrapper {
             width: 72px;
             height: 72px;
             border-radius: 50%;
-            background: rgba(91, 106, 240, 0.08);
+            background: rgba(99, 102, 241, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -290,8 +332,8 @@
         }
 
         .upload-zone:hover .icon-wrapper {
-            background: rgba(91, 106, 240, 0.15);
-            transform: scale(1.05);
+            background: rgba(99, 102, 241, 0.15);
+            transform: scale(1.08);
         }
 
         .upload-zone h3 {
@@ -303,15 +345,15 @@
 
         .upload-zone p {
             font-size: 14px;
-            color: var(--text-light);
+            color: var(--text-secondary);
             margin-bottom: 4px;
         }
 
         .upload-zone .hint {
             font-size: 12px;
             color: var(--text-light);
-            margin-top: 8px;
-            opacity: 0.7;
+            margin-top: 10px;
+            opacity: 0.8;
         }
 
         .upload-zone input[type="file"] {
@@ -337,10 +379,10 @@
             background: var(--card-bg);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            padding: 10px 16px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 12px 18px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--card-border);
             animation: slideUp 0.3s ease;
         }
 
@@ -377,6 +419,7 @@
         .upload-progress-item .info .size {
             font-size: 12px;
             color: var(--text-light);
+            margin-top: 2px;
         }
 
         .upload-progress-item .progress-track {
@@ -401,7 +444,7 @@
             font-weight: 500;
             color: var(--text-secondary);
             flex-shrink: 0;
-            min-width: 48px;
+            min-width: 50px;
             text-align: right;
         }
 
@@ -411,29 +454,30 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
-            padding: 0 4px;
+            padding: 0 2px;
         }
 
         .section-header h2 {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
+            color: var(--text-primary);
         }
 
         .section-header h2 span {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
             color: var(--text-light);
         }
 
         .clear-btn {
-            padding: 6px 16px;
+            padding: 7px 16px;
             border-radius: 10px;
             border: none;
             background: rgba(239, 68, 68, 0.08);
-            color: #EF4444;
+            color: #ef4444;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -451,8 +495,8 @@
 
         .file-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 16px;
             margin-bottom: 24px;
         }
 
@@ -463,7 +507,7 @@
             -webkit-backdrop-filter: blur(12px);
             border-radius: var(--border-radius);
             padding: 20px 18px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--card-border);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
             transition: var(--transition);
             display: flex;
@@ -475,7 +519,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.94) translateY(10px);
+                transform: scale(0.95) translateY(8px);
             }
             to {
                 opacity: 1;
@@ -485,18 +529,32 @@
 
         .file-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(91, 106, 240, 0.14);
-            border-color: rgba(91, 106, 240, 0.20);
+            box-shadow: 0 14px 36px rgba(99, 102, 241, 0.16);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        /* 云端文件样式 */
+        .file-card.cloud {
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.04);
+        }
+        .file-card.cloud:hover {
+            box-shadow: 0 14px 36px rgba(16, 185, 129, 0.18);
+            border-color: rgba(16, 185, 129, 0.35);
         }
 
         .file-card .file-icon-big {
-            font-size: 42px;
+            font-size: 44px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 56px;
+            height: 60px;
             color: var(--primary);
+        }
+
+        .file-card.cloud .file-icon-big {
+            color: var(--success);
         }
 
         .file-card .file-name {
@@ -505,7 +563,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .file-card .file-meta {
@@ -513,23 +571,23 @@
             color: var(--text-light);
             display: flex;
             justify-content: space-between;
-            margin-top: 2px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            gap: 8px;
         }
 
         .file-card .file-actions {
             display: flex;
             gap: 8px;
             margin-top: auto;
-            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
             padding-top: 12px;
         }
 
         .file-card .file-actions button {
             flex: 1;
-            padding: 7px 0;
+            padding: 8px 0;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -542,21 +600,28 @@
         }
 
         .file-card .file-actions .download-btn {
-            background: rgba(91, 106, 240, 0.08);
+            background: rgba(99, 102, 241, 0.08);
             color: var(--primary);
+        }
+        .file-card.cloud .file-actions .download-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
         }
 
         .file-card .file-actions .download-btn:hover {
-            background: rgba(91, 106, 240, 0.16);
+            background: rgba(99, 102, 241, 0.18);
+        }
+        .file-card.cloud .file-actions .download-btn:hover {
+            background: rgba(16, 185, 129, 0.2);
         }
 
         .file-card .file-actions .delete-btn {
             background: rgba(239, 68, 68, 0.06);
-            color: #EF4444;
+            color: #ef4444;
         }
 
         .file-card .file-actions .delete-btn:hover {
-            background: rgba(239, 68, 68, 0.14);
+            background: rgba(239, 68, 68, 0.15);
         }
 
         .file-card .file-type-tag {
@@ -564,36 +629,46 @@
             top: 12px;
             right: 12px;
             font-size: 10px;
-            font-weight: 600;
-            padding: 2px 10px;
+            font-weight: 700;
+            padding: 3px 10px;
             border-radius: 12px;
-            background: rgba(91, 106, 240, 0.08);
+            background: rgba(99, 102, 241, 0.1);
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
-        .file-card.cloud-tag {
-            background: rgba(42, 168, 84, 0.07);
-        }
-        .cloud-tag .file-type-tag {
-            background: rgba(34, 197, 94, 0.12);
-            color:#16a34a;
+
+        .file-card.cloud .file-type-tag {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
         }
 
-        /* ========== 空状态 ========== */
-        .empty-state {
+        /* ========== 加载状态 & 空状态 ========== */
+        .loading-state, .empty-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 60px 20px;
+            padding: 70px 20px;
             background: var(--card-bg);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--card-border);
+        }
+
+        .loading-state .loading-icon {
+            font-size: 48px;
+            color: var(--primary-light);
+            margin-bottom: 16px;
+            animation: spin 1.2s linear infinite;
+        }
+
+        .loading-state p {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
 
         .empty-state .empty-icon {
-            font-size: 64px;
+            font-size: 60px;
             color: var(--text-light);
             opacity: 0.3;
             margin-bottom: 16px;
@@ -603,6 +678,7 @@
             font-size: 18px;
             font-weight: 600;
             color: var(--text-secondary);
+            margin-bottom: 4px;
         }
 
         .empty-state p {
@@ -615,19 +691,33 @@
         .footer {
             text-align: center;
             padding: 20px 0 8px;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-light);
             border-top: 1px solid rgba(0, 0, 0, 0.04);
             margin-top: 12px;
+            line-height: 1.8;
         }
 
-        .footer a {
+        .footer .tag-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .footer .tag {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer .tag.cloud {
+            color: var(--success);
+        }
+
+        .footer .tag.local {
             color: var(--primary);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
         }
 
         /* ========== 通知 Toast ========== */
@@ -650,7 +740,7 @@
             padding: 14px 20px;
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--card-border);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -671,10 +761,10 @@
         }
 
         .toast.success {
-            border-left: 4px solid #22C55E;
+            border-left: 4px solid var(--success);
         }
         .toast.error {
-            border-left: 4px solid #EF4444;
+            border-left: 4px solid #ef4444;
         }
         .toast.info {
             border-left: 4px solid var(--primary);
@@ -684,154 +774,13 @@
             font-size: 20px;
         }
         .toast.success .toast-icon {
-            color: #22C55E;
+            color: var(--success);
         }
         .toast.error .toast-icon {
-            color: #EF4444;
+            color: #ef4444;
         }
         .toast.info .toast-icon {
             color: var(--primary);
-        }
-
-        /* ========== 响应式 ========== */
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-
-            .header {
-                padding: 16px 18px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-
-            .header-left {
-                gap: 10px;
-            }
-
-            .header-logo {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .header-title {
-                font-size: 20px;
-            }
-
-            .header-badge {
-                font-size: 11px;
-                padding: 2px 10px;
-            }
-
-            .header-right {
-                justify-content: space-between;
-            }
-
-            .header-stats {
-                font-size: 12px;
-                gap: 12px;
-            }
-
-            .header-stats .num {
-                font-size: 14px;
-            }
-
-            .upload-zone {
-                padding: 32px 20px;
-            }
-
-            .upload-zone .icon-wrapper {
-                width: 56px;
-                height: 56px;
-                font-size: 26px;
-            }
-
-            .upload-zone h3 {
-                font-size: 17px;
-            }
-
-            .file-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 12px;
-            }
-
-            .toolbar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .filter-group {
-                justify-content: center;
-            }
-
-            .filter-btn {
-                padding: 6px 14px;
-                font-size: 12px;
-            }
-
-            .upload-progress-item .progress-track {
-                width: 80px;
-            }
-
-            .toast-container {
-                left: 12px;
-                right: 12px;
-                max-width: none;
-                bottom: 12px;
-            }
-
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .clear-btn {
-                align-self: flex-start;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .file-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .file-card {
-                padding: 14px 12px 12px;
-            }
-
-            .file-card .file-icon-big {
-                font-size: 32px;
-                height: 44px;
-            }
-
-            .file-card .file-name {
-                font-size: 13px;
-            }
-
-            .header-title {
-                font-size: 17px;
-            }
-            .header-stats {
-                font-size: 11px;
-                gap: 8px;
-            }
-            .header-stats .num {
-                font-size: 12px;
-            }
-        }
-
-        /* ========== 工具类 ========== */
-        .hidden {
-            display: none !important;
-        }
-        .text-ellipsis {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         /* ========== 删除确认弹窗 ========== */
@@ -853,12 +802,8 @@
         }
 
         @keyframes fadeInOverlay {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-box {
@@ -867,7 +812,7 @@
             padding: 32px 28px 24px;
             max-width: 400px;
             width: 90%;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
             text-align: center;
             animation: scaleIn 0.3s ease;
         }
@@ -885,7 +830,7 @@
 
         .modal-box .modal-icon {
             font-size: 48px;
-            color: #EF4444;
+            color: #ef4444;
             margin-bottom: 12px;
         }
 
@@ -919,22 +864,158 @@
         }
 
         .modal-box .modal-actions .cancel-btn {
-            background: #F1F3F5;
+            background: #f1f5f9;
             color: var(--text-secondary);
         }
 
         .modal-box .modal-actions .cancel-btn:hover {
-            background: #E5E7EB;
+            background: #e2e8f0;
         }
 
         .modal-box .modal-actions .confirm-btn {
-            background: #EF4444;
+            background: #ef4444;
             color: #fff;
         }
 
         .modal-box .modal-actions .confirm-btn:hover {
-            background: #DC2626;
+            background: #dc2626;
             transform: scale(1.02);
+        }
+
+        /* ========== 响应式适配 ========== */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 18px 20px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 14px;
+            }
+
+            .header-left {
+                gap: 12px;
+            }
+
+            .header-logo {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .header-right {
+                justify-content: space-between;
+            }
+
+            .header-stats {
+                font-size: 12px;
+                gap: 14px;
+            }
+
+            .header-stats .num {
+                font-size: 14px;
+            }
+
+            .upload-zone {
+                padding: 32px 20px;
+            }
+
+            .upload-zone .icon-wrapper {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+            }
+
+            .upload-zone h3 {
+                font-size: 17px;
+            }
+
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 12px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                justify-content: center;
+            }
+
+            .filter-btn {
+                padding: 7px 14px;
+                font-size: 12px;
+            }
+
+            .upload-progress-item .progress-track {
+                width: 80px;
+            }
+
+            .toast-container {
+                left: 12px;
+                right: 12px;
+                max-width: none;
+                bottom: 12px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .clear-btn {
+                align-self: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .file-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .file-card {
+                padding: 14px 12px 12px;
+            }
+
+            .file-card .file-icon-big {
+                font-size: 34px;
+                height: 48px;
+            }
+
+            .file-card .file-name {
+                font-size: 13px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+            .header-stats {
+                font-size: 11px;
+                gap: 8px;
+            }
+            .header-stats .num {
+                font-size: 12px;
+            }
+        }
+
+        /* ========== 工具类 ========== */
+        .hidden {
+            display: none !important;
+        }
+        .text-ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>
@@ -946,9 +1027,9 @@
         <header class="header">
             <div class="header-left">
                 <div class="header-logo">25</div>
-                <div>
+                <div class="header-title-wrap">
                     <span class="header-title">2510班资源站</span>
-                    <span class="header-badge">📚 班级共享</span>
+                    <span class="header-badge">📚 班级共享平台</span>
                 </div>
             </div>
             <div class="header-right">
@@ -956,6 +1037,9 @@
                     <span><i class="fas fa-file"></i> 文件 <span class="num" id="fileCount">0</span></span>
                     <span><i class="fas fa-hdd"></i> 总大小 <span class="num" id="totalSize">0 KB</span></span>
                 </div>
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新云端
+                </button>
             </div>
         </header>
 
@@ -963,7 +1047,7 @@
         <div class="toolbar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="搜索文件名称..." />
+                <input type="text" id="searchInput" placeholder="搜索文件名、格式..." />
             </div>
             <div class="filter-group">
                 <button class="filter-btn active" data-filter="all">全部</button>
@@ -976,12 +1060,12 @@
             </div>
         </div>
 
-        <!-- ====== 上传区域（仅保存到浏览器本地IndexedDB） ====== -->
+        <!-- ====== 上传区域（仅本地存储） ====== -->
         <div class="upload-zone" id="uploadZone">
             <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
-            <h3>拖拽文件到此处，或点击上传（仅本地存储）</h3>
-            <p>支持所有文件类型 · 单个文件最大 100MB</p>
-            <div class="hint">⚠️ 此处上传仅保存在本机浏览器，不会自动上传到GitHub仓库</div>
+            <h3>拖拽文件到此处，或点击上传</h3>
+            <p>支持所有文件类型 · 单个文件最大 100MB · 仅保存在当前浏览器</p>
+            <div class="hint">💡 想要全班都看到的文件，请上传到GitHub仓库，会自动同步到这里</div>
             <input type="file" id="fileInput" multiple />
         </div>
 
@@ -991,21 +1075,28 @@
         <!-- ====== 资源列表 ====== -->
         <div class="section-header">
             <h2>
-                📂 资源列表
+                📂 全部资源
                 <span id="resultCount">(0 个)</span>
             </h2>
             <button class="clear-btn" id="clearAllBtn">
-                <i class="fas fa-trash-alt"></i> 清空全部本地文件
+                <i class="fas fa-trash-alt"></i> 清空本地文件
             </button>
         </div>
 
         <div class="file-grid" id="fileGrid">
-            <!-- 由 JS 动态渲染 -->
+            <div class="loading-state">
+                <div class="loading-icon"><i class="fas fa-spinner"></i></div>
+                <p>正在加载云端资源...</p>
+            </div>
         </div>
 
-        <!-- ====== 底部 ====== -->
+        <!-- ====== 底部说明 ====== -->
         <div class="footer">
-            © 2026 2510班资源站 · <span style="color:#16a34a">绿色卡片=GitHub云端文件(只读)</span> · <span style="color:var(--primary)">蓝色卡片=本机本地文件</span>
+            <div class="tag-group">
+                <span class="tag cloud"><i class="fas fa-cloud"></i> 绿色卡片 = GitHub云端文件（全班可见）</span>
+                <span class="tag local"><i class="fas fa-laptop"></i> 蓝色卡片 = 本地文件（仅你可见）</span>
+            </div>
+            © 2026 2510班资源站 · 云端文件由GitHub仓库同步
         </div>
 
     </div>
@@ -1027,15 +1118,15 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ====================== 【GitHub仓库配置，修改这里！】 ======================
+        // ====================== GitHub仓库配置（已预置你的信息） ======================
         const GH_USER = "TerryGao-FireFly";
         const GH_REPO = "-2510-";
         const GH_BRANCH = "main";
-        const GH_SITE_DOMAIN = `https://${GH_USER.toLowerCase()}.github.io/${GH_REPO}/`;
+        const GH_SITE_URL = `https://${GH_USER.toLowerCase()}.github.io/${GH_REPO}/`;
         // =======================================================================
 
         // =====================================================
-        //  1. IndexedDB 操作封装（本地文件）
+        //  1. IndexedDB 本地存储封装
         // =====================================================
         const DB_NAME = 'ClassResourceDB';
         const STORE_NAME = 'files';
@@ -1050,8 +1141,10 @@
                         d.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
                     }
                 };
-                request.onsuccess = (e) => { db = e.target.result;
-                    resolve(db); };
+                request.onsuccess = (e) => {
+                    db = e.target.result;
+                    resolve(db);
+                };
                 request.onerror = (e) => reject(e.target.error);
             });
         }
@@ -1097,36 +1190,37 @@
         }
 
         // =====================================================
-        //  2. GitHub API 获取云端仓库文件
+        //  2. GitHub API 获取云端文件
         // =====================================================
         async function fetchGithubFiles() {
             try {
                 const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/?ref=${GH_BRANCH}`);
-                if(!res.ok) throw new Error("接口限流/仓库无法访问");
+                if (!res.ok) throw new Error("接口请求失败");
                 const rawList = await res.json();
-                // 过滤文件夹、html、md等站点文件，只保留资源
-                const skipExt = ["html","md","yml","json","gitignore"];
+
+                // 过滤站点文件，只保留资源
+                const skipExt = ["html", "md", "yml", "yaml", "json", "gitignore", "css", "js"];
                 const cloudFiles = rawList
-                    .filter(item=>{
+                    .filter(item => {
                         const ext = item.name.split('.').pop()?.toLowerCase() || "";
                         return item.type === "file" && !skipExt.includes(ext);
                     })
-                    .map(item=>{
+                    .map(item => {
                         const ext = item.name.split('.').pop() || "";
                         return {
-                            source:"cloud", // 标记云端文件
+                            source: "cloud",
                             id: "cloud_" + item.sha,
                             name: item.name,
                             extension: ext,
                             size: item.size,
                             uploadTime: new Date().toISOString(),
-                            downloadUrl: GH_SITE_DOMAIN + encodeURIComponent(item.name)
-                        }
-                    })
+                            downloadUrl: GH_SITE_URL + encodeURIComponent(item.name)
+                        };
+                    });
                 return cloudFiles;
-            }catch(err){
-                console.error("GitHub文件加载失败：",err);
-                showToast("云端文件加载失败（API限流，请稍后刷新）", "error",4000);
+            } catch (err) {
+                console.error("云端文件加载失败：", err);
+                showToast("云端文件加载失败（API限流，请稍后点刷新）", "error", 4000);
                 return [];
             }
         }
@@ -1148,35 +1242,10 @@
             if (['pdf'].includes(ext)) return 'pdf';
             if (['doc', 'docx', 'txt', 'md', 'rtf'].includes(ext)) return 'doc';
             if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'ico'].includes(ext)) return 'image';
+            if (['mp3', 'wav', 'flac', 'aac'].includes(ext)) return 'audio';
             if (['mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm'].includes(ext)) return 'video';
             if (['zip', 'rar', '7z', 'tar', 'gz', 'bz2'].includes(ext)) return 'zip';
             return 'other';
-        }
-
-        function getFileIcon(extension) {
-            const type = getFileType(extension);
-            const map = {
-                pdf: 'fa-file-pdf',
-                doc: 'fa-file-alt',
-                image: 'fa-file-image',
-                video: 'fa-file-video',
-                zip: 'fa-file-archive',
-                other: 'fa-file'
-            };
-            return map[type] || 'fa-file';
-        }
-
-        function getFileColor(extension) {
-            const type = getFileType(extension);
-            const map = {
-                pdf: '#EF4444',
-                doc: '#3B82F6',
-                image: '#8B5CF6',
-                video: '#EC4899',
-                zip: '#F59E0B',
-                other: '#6B7280'
-            };
-            return map[type] || '#6B7280';
         }
 
         function getFileEmoji(extension) {
@@ -1185,6 +1254,7 @@
                 pdf: '📄',
                 doc: '📝',
                 image: '🖼️',
+                audio: '🎵',
                 video: '🎬',
                 zip: '📦',
                 other: '📁'
@@ -1192,13 +1262,18 @@
             return map[type] || '📁';
         }
 
-        function formatTime(iso) {
-            const d = new Date(iso);
-            return d.toLocaleString('zh-CN', { hour12: false });
-        }
-
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        function getFileColor(extension) {
+            const type = getFileType(extension);
+            const map = {
+                pdf: '#ef4444',
+                doc: '#3b82f6',
+                image: '#8b5cf6',
+                audio: '#10b981',
+                video: '#ec4899',
+                zip: '#f59e0b',
+                other: '#6b7280'
+            };
+            return map[type] || '#6b7280';
         }
 
         // =====================================================
@@ -1226,7 +1301,7 @@
         }
 
         // =====================================================
-        //  5. 渲染文件列表【重点：合并云端+本地文件】
+        //  5. 渲染文件列表（云端+本地合并）
         // =====================================================
         let allFiles = [];
         let currentFilter = 'all';
@@ -1238,7 +1313,7 @@
             const fileCountEl = document.getElementById('fileCount');
             const totalSizeEl = document.getElementById('totalSize');
 
-            // 过滤
+            // 筛选
             let filtered = [...fileList];
             if (currentFilter !== 'all') {
                 filtered = filtered.filter(f => getFileType(f.extension) === currentFilter);
@@ -1251,7 +1326,7 @@
             countEl.textContent = `(${filtered.length} 个)`;
             fileCountEl.textContent = fileList.length;
 
-            // 总大小
+            // 计算总大小
             const totalBytes = fileList.reduce((sum, f) => sum + (f.size || 0), 0);
             totalSizeEl.textContent = formatSize(totalBytes);
 
@@ -1260,285 +1335,74 @@
                     <div class="empty-state">
                         <div class="empty-icon"><i class="fas fa-inbox"></i></div>
                         <h3>${fileList.length === 0 ? '还没有任何资源' : '没有匹配的文件'}</h3>
-                        <p>${fileList.length === 0 ? '等待加载云端文件，或上传本地文件' : '试试其他关键词或筛选条件'}</p>
+                        <p>${fileList.length === 0 ? '上传本地文件，或等待云端资源同步' : '试试其他关键词或分类'}</p>
                     </div>
                 `;
                 return;
             }
 
             grid.innerHTML = filtered.map(file => {
-                const icon = getFileIcon(file.extension);
-                const color = getFileColor(file.extension);
                 const emoji = getFileEmoji(file.extension);
+                const color = getFileColor(file.extension);
                 const typeLabel = getFileType(file.extension).toUpperCase();
                 const isCloud = file.source === "cloud";
 
-                // 云端卡片：隐藏删除按钮
-                let actionHtml = "";
-                if(isCloud){
-                    actionHtml = `
+                // 操作按钮：云端只有下载，本地有下载+删除
+                let actionsHtml = '';
+                if (isCloud) {
+                    actionsHtml = `
                         <div class="file-actions">
-                            <button class="download-btn" data-id="${file.id}" data-cloud="true"><i class="fas fa-download"></i> 下载</button>
+                            <button class="download-btn" data-id="${file.id}" data-cloud="1">
+                                <i class="fas fa-download"></i> 下载
+                            </button>
                         </div>
-                    `
-                }else{
-                    actionHtml = `
+                    `;
+                } else {
+                    actionsHtml = `
                         <div class="file-actions">
-                            <button class="download-btn" data-id="${file.id}"><i class="fas fa-download"></i> 下载</button>
-                            <button class="delete-btn" data-id="${file.id}"><i class="fas fa-trash"></i> 删除</button>
+                            <button class="download-btn" data-id="${file.id}">
+                                <i class="fas fa-download"></i> 下载
+                            </button>
+                            <button class="delete-btn" data-id="${file.id}">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
                         </div>
-                    `
+                    `;
                 }
 
                 return `
-                    <div class="file-card ${isCloud?'cloud-tag':''}" data-id="${file.id}">
-                        <span class="file-type-tag" style="background:${color}22; color:${color};">${isCloud?"☁ "+typeLabel:typeLabel}</span>
+                    <div class="file-card ${isCloud ? 'cloud' : ''}" data-id="${file.id}">
+                        <span class="file-type-tag" style="color:${color};">
+                            ${isCloud ? '☁ ' : ''}${typeLabel}
+                        </span>
                         <div class="file-icon-big" style="color:${color};">${emoji}</div>
                         <div class="file-name text-ellipsis" title="${file.name}">${file.name}</div>
                         <div class="file-meta">
                             <span>${formatSize(file.size)}</span>
-                            <span>${isCloud?"云端文件":"本地文件"}</span>
+                            <span>${isCloud ? '云端共享' : '仅本地'}</span>
                         </div>
-                        ${actionHtml}
+                        ${actionsHtml}
                     </div>
                 `;
             }).join('');
 
-            // 绑定卡片内按钮事件
+            // 绑定下载事件
             grid.querySelectorAll('.download-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const id = btn.dataset.id;
-                    const isCloud = !!btn.dataset.cloud;
-                    if(isCloud){
-                        // 云端文件，新开链接下载
-                        const file = allFiles.find(f=>f.id === id);
-                        window.open(file.downloadUrl,"_blank");
-                        showToast(`正在打开：${file.name}`,"info",1500);
-                    }else{
-                        // 本地IndexedDB文件下载
+                    const isCloud = btn.dataset.cloud === "1";
+                    if (isCloud) {
+                        const file = allFiles.find(f => f.id === id);
+                        window.open(file.downloadUrl, '_blank');
+                        showToast(`正在打开：${file.name}`, 'info', 1500);
+                    } else {
                         handleDownload(id);
                     }
                 });
             });
+
+            // 绑定删除事件
             grid.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const id = Number(btn.dataset.id);
-                    const file = allFiles.find(f => f.id === id);
-                    if (file) showDeleteModal(id, file.name);
-                });
-            });
-        }
-
-        // =====================================================
-        //  6. 核心操作：上传、下载、删除（仅本地文件支持）
-        // =====================================================
-        async function handleUploadFiles(fileList) {
-            const progressContainer = document.getElementById('progressContainer');
-            progressContainer.classList.add('active');
-
-            const files = Array.from(fileList);
-            let successCount = 0;
-
-            for (const file of files) {
-                // 检查大小 (100MB)
-                if (file.size > 100 * 1024 * 1024) {
-                    showToast(`❌ ${file.name} 超过 100MB 限制`, 'error');
-                    continue;
-                }
-
-                // 创建进度条项
-                const item = document.createElement('div');
-                item.className = 'upload-progress-item';
-                const ext = file.name.split('.').pop() || '';
-                const emoji = getFileEmoji(ext);
-                item.innerHTML = `
-                    <span class="file-icon">${emoji}</span>
-                    <div class="info">
-                        <div class="name text-ellipsis">${file.name}</div>
-                        <div class="size">${formatSize(file.size)}</div>
-                    </div>
-                    <div class="progress-track"><div class="fill" style="width:0%;"></div></div>
-                    <span class="status">0%</span>
-                `;
-                progressContainer.appendChild(item);
-
-                try {
-                    const arrayBuffer = await file.arrayBuffer();
-                    const fileData = {
-                        source:"local",
-                        id: generateId(),
-                        name: file.name,
-                        size: file.size,
-                        type: file.type || 'application/octet-stream',
-                        extension: ext,
-                        data: arrayBuffer,
-                        uploadTime: new Date().toISOString()
-                    };
-
-                    // 模拟进度
-                    let progress = 0;
-                    const interval = setInterval(() => {
-                        progress += Math.random() * 15 + 5;
-                        if (progress >= 90) {
-                            clearInterval(interval);
-                            progress = 90;
-                        }
-                        const fill = item.querySelector('.fill');
-                        const status = item.querySelector('.status');
-                        fill.style.width = Math.min(progress, 90) + '%';
-                        status.textContent = Math.min(progress, 90) + '%';
-                    }, 100);
-
-                    await addLocalFile(fileData);
-                    clearInterval(interval);
-
-                    // 完成
-                    const fill = item.querySelector('.fill');
-                    const status = item.querySelector('.status');
-                    fill.style.width = '100%';
-                    status.textContent = '✅ 完成';
-                    status.style.color = '#22C55E';
-
-                    successCount++;
-                    showToast(`✅ ${file.name} 上传成功（本地）`, 'success', 2000);
-
-                } catch (err) {
-                    console.error(err);
-                    const status = item.querySelector('.status');
-                    status.textContent = '❌ 失败';
-                    status.style.color = '#EF4444';
-                    showToast(`❌ ${file.name} 上传失败`, 'error', 2500);
-                }
-            }
-
-            // 延迟刷新列表
-            setTimeout(async () => {
-                await refreshList();
-                // 清除进度条
-                setTimeout(() => {
-                    progressContainer.innerHTML = '';
-                    progressContainer.classList.remove('active');
-                }, 400);
-            }, 400);
-        }
-
-        async function handleDownload(id) {
-            try {
-                const allLocal = await getAllLocalFiles();
-                const file = allLocal.find(f => f.id === id);
-                if (!file) {
-                    showToast('文件不存在', 'error');
-                    return;
-                }
-
-                const blob = new Blob([file.data], { type: file.type || 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = file.name;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                setTimeout(() => URL.revokeObjectURL(url), 60000);
-                showToast(`📥 正在下载 ${file.name}`, 'info', 1500);
-            } catch (err) {
-                console.error(err);
-                showToast('下载失败，请重试', 'error');
-            }
-        }
-
-        let deleteTargetId = null;
-
-        function showDeleteModal(id, name) {
-            deleteTargetId = id;
-            document.getElementById('deleteModalMsg').textContent = `确定要删除本地文件 "${name}" 吗？云端文件无法在此页面删除。`;
-            document.getElementById('deleteModal').classList.add('active');
-        }
-
-        function hideDeleteModal() {
-            document.getElementById('deleteModal').classList.remove('active');
-            deleteTargetId = null;
-        }
-
-        async function confirmDelete() {
-            if (deleteTargetId === null) return;
-            try {
-                await deleteLocalFile(deleteTargetId);
-                showToast('🗑️ 本地文件已删除', 'success', 1500);
-                await refreshList();
-            } catch (err) {
-                console.error(err);
-                showToast('删除失败，请重试', 'error');
-            }
-            hideDeleteModal();
-        }
-
-        async function handleClearAll() {
-            const localFiles = await getAllLocalFiles();
-            if (localFiles.length === 0) {
-                showToast('没有本地文件可清空', 'info');
-                return;
-            }
-            if (confirm(`确定要删除全部 ${localFiles.length} 个【本地文件】吗？云端文件不受影响！此操作不可撤销！`)) {
-                await clearAllLocalFiles();
-                showToast('🗑️ 已清空全部本地文件', 'success', 1500);
-                await refreshList();
-            }
-        }
-
-        // =====================================================
-        //  7. 刷新列表【合并云端+本地】
-        // =====================================================
-        async function refreshList() {
-            try {
-                const local = await getAllLocalFiles();
-                const cloud = await fetchGithubFiles();
-                // 合并数组，云端在前，本地在后；你可以调换顺序
-                allFiles = [...cloud, ...local];
-                // 按文件名排序
-                allFiles.sort((a,b)=>a.name.localeCompare(b.name,"zh-CN"));
-                renderFiles(allFiles);
-            } catch (err) {
-                console.error(err);
-                showToast('加载数据失败', 'error');
-            }
-        }
-
-        // =====================================================
-        //  8. 初始化 & 事件绑定
-        // =====================================================
-        document.addEventListener('DOMContentLoaded', async () => {
-            // 打开数据库
-            try {
-                await openDB();
-            } catch (err) {
-                console.error('数据库打开失败:', err);
-                showToast('⚠️ 本地存储初始化失败，请检查浏览器设置', 'error', 5000);
-                return;
-            }
-
-            // 初次加载
-            await refreshList();
-
-            // ---- 上传区域 ----
-            const uploadZone = document.getElementById('uploadZone');
-            const fileInput = document.getElementById('fileInput');
-
-            uploadZone.addEventListener('click', () => fileInput.click());
-
-            uploadZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadZone.classList.add('dragover');
-            });
-
-            uploadZone.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                uploadZone.classList.remove('dragover');
-            });
-
-            uploadZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadZone.classList.remove('dragover');
-                if
