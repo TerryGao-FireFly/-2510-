@@ -159,6 +159,29 @@
             font-size: 16px;
         }
 
+        /* ========== 🆕 北京时间显示 ========== */
+        .header-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding-left: 18px;
+            border-left: 1px solid rgba(0, 0, 0, 0.08);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .header-time i {
+            color: var(--primary);
+            font-size: 15px;
+        }
+
+        .header-time #timeDisplay {
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
         /* ========== 🆕 介绍横幅 ========== */
         .intro-banner {
             background: var(--card-bg);
@@ -804,6 +827,109 @@
             color: var(--primary);
         }
 
+        /* ========== 删除确认弹窗 ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeInOverlay {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: var(--border-radius);
+            padding: 32px 28px 24px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-box .modal-icon {
+            font-size: 48px;
+            color: #EF4444;
+            margin-bottom: 12px;
+        }
+
+        .modal-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .modal-box p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-box .modal-actions button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .modal-box .modal-actions .cancel-btn {
+            background: #F1F3F5;
+            color: var(--text-secondary);
+        }
+
+        .modal-box .modal-actions .cancel-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .modal-box .modal-actions .confirm-btn {
+            background: #EF4444;
+            color: #fff;
+        }
+
+        .modal-box .modal-actions .confirm-btn:hover {
+            background: #DC2626;
+            transform: scale(1.02);
+        }
+
         /* ========== 响应式 ========== */
         @media (max-width: 768px) {
             body {
@@ -838,18 +964,30 @@
 
             .header-right {
                 justify-content: space-between;
+                gap: 12px;
             }
 
             .header-stats {
                 font-size: 12px;
                 gap: 12px;
+                flex-wrap: wrap;
             }
 
             .header-stats .num {
                 font-size: 14px;
             }
 
-            /* 介绍横幅响应式 */
+            /* 🆕 移动端时间显示调整 */
+            .header-time {
+                padding-left: 0;
+                border-left: none;
+                font-size: 13px;
+                width: 100%;
+                justify-content: flex-start;
+                padding-top: 6px;
+                border-top: 1px solid rgba(0, 0, 0, 0.06);
+            }
+
             .intro-banner {
                 padding: 20px;
                 flex-direction: column;
@@ -965,6 +1103,12 @@
                 flex-direction: column;
                 gap: 6px;
             }
+
+            /* 🆕 小屏手机时间更紧凑 */
+            .header-time {
+                font-size: 12px;
+                padding-top: 4px;
+            }
         }
 
         /* ========== 工具类 ========== */
@@ -975,109 +1119,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        /* ========== 删除确认弹窗 ========== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 9998;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeInOverlay 0.25s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeInOverlay {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-box {
-            background: #fff;
-            border-radius: var(--border-radius);
-            padding: 32px 28px 24px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
-            text-align: center;
-            animation: scaleIn 0.3s ease;
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.92);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-box .modal-icon {
-            font-size: 48px;
-            color: #EF4444;
-            margin-bottom: 12px;
-        }
-
-        .modal-box h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .modal-box p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .modal-box .modal-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .modal-box .modal-actions button {
-            padding: 10px 28px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-        }
-
-        .modal-box .modal-actions .cancel-btn {
-            background: #F1F3F5;
-            color: var(--text-secondary);
-        }
-
-        .modal-box .modal-actions .cancel-btn:hover {
-            background: #E5E7EB;
-        }
-
-        .modal-box .modal-actions .confirm-btn {
-            background: #EF4444;
-            color: #fff;
-        }
-
-        .modal-box .modal-actions .confirm-btn:hover {
-            background: #DC2626;
-            transform: scale(1.02);
         }
     </style>
 </head>
@@ -1098,6 +1139,11 @@
                 <div class="header-stats">
                     <span><i class="fas fa-file"></i> 文件 <span class="num" id="fileCount">0</span></span>
                     <span><i class="fas fa-hdd"></i> 总大小 <span class="num" id="totalSize">0 KB</span></span>
+                </div>
+                <!-- 🆕 北京时间显示 -->
+                <div class="header-time">
+                    <i class="fas fa-clock"></i>
+                    <span id="timeDisplay">加载中...</span>
                 </div>
             </div>
         </header>
@@ -1397,7 +1443,29 @@
         }
 
         // =====================================================
-        //  5. 渲染文件列表【重点：合并云端+本地文件】
+        //  5. 🆕 实时北京时间更新
+        // =====================================================
+        function updateBeijingTime() {
+            const now = new Date();
+            const formatter = new Intl.DateTimeFormat('zh-CN', {
+                timeZone: 'Asia/Shanghai',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                weekday: 'short',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const displayEl = document.getElementById('timeDisplay');
+            if (displayEl) {
+                displayEl.textContent = formatter.format(now);
+            }
+        }
+
+        // =====================================================
+        //  6. 渲染文件列表【合并云端+本地文件】
         // =====================================================
         let allFiles = [];
         let currentFilter = 'all';
@@ -1503,7 +1571,7 @@
         }
 
         // =====================================================
-        //  6. 核心操作：上传、下载、删除（仅本地文件支持）
+        //  7. 核心操作：上传、下载、删除（仅本地文件支持）
         // =====================================================
         async function handleUploadFiles(fileList) {
             const progressContainer = document.getElementById('progressContainer');
@@ -1659,7 +1727,7 @@
         }
 
         // =====================================================
-        //  7. 刷新列表【合并云端+本地】
+        //  8. 刷新列表【合并云端+本地】
         // =====================================================
         async function refreshList() {
             try {
@@ -1676,7 +1744,7 @@
         }
 
         // =====================================================
-        //  8. 初始化 & 事件绑定
+        //  9. 初始化 & 事件绑定
         // =====================================================
         document.addEventListener('DOMContentLoaded', async () => {
             // 打开数据库
@@ -1687,6 +1755,10 @@
                 showToast('⚠️ 本地存储初始化失败，请检查浏览器设置', 'error', 5000);
                 return;
             }
+
+            // 🆕 启动北京时间实时更新（每秒一次）
+            updateBeijingTime();
+            setInterval(updateBeijingTime, 1000);
 
             // 初次加载
             await refreshList();
@@ -1707,7 +1779,6 @@
                 uploadZone.classList.remove('dragover');
             });
 
-            // ★ 补全 drop 事件
             uploadZone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 uploadZone.classList.remove('dragover');
@@ -1717,11 +1788,10 @@
                 }
             });
 
-            // 文件输入 change 事件
             fileInput.addEventListener('change', (e) => {
                 if (e.target.files.length > 0) {
                     handleUploadFiles(e.target.files);
-                    e.target.value = ''; // 重置以便重复选择同一文件
+                    e.target.value = '';
                 }
             });
 
@@ -1751,7 +1821,6 @@
                 if (e.target === e.currentTarget) hideDeleteModal();
             });
 
-            // 键盘 ESC 关闭模态框
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') hideDeleteModal();
             });
@@ -1759,6 +1828,7 @@
             console.log('✅ 2510班资源站已启动！');
             console.log(`📁 云端仓库: ${GH_USER}/${GH_REPO}`);
             console.log(`🌐 站点域名: ${GH_SITE_DOMAIN}`);
+            console.log('🕐 北京时间实时更新已开启');
         });
     </script>
 
