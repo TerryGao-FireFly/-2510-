@@ -159,6 +159,116 @@
             font-size: 16px;
         }
 
+        /* ========== 🆕 介绍横幅 ========== */
+        .intro-banner {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .intro-banner:hover {
+            box-shadow: 0 12px 40px rgba(91, 106, 240, 0.18);
+        }
+
+        .intro-banner .intro-avatar {
+            flex-shrink: 0;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(91, 106, 240, 0.30);
+        }
+
+        .intro-banner .intro-content {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .intro-banner .intro-content .intro-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .intro-banner .intro-content .intro-title .tag {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 12px;
+            background: rgba(91, 106, 240, 0.10);
+            color: var(--primary);
+        }
+
+        .intro-banner .intro-content .intro-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
+        .intro-banner .intro-content .intro-desc i {
+            color: var(--primary);
+            margin-right: 2px;
+        }
+
+        .intro-banner .intro-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 28px;
+            flex-shrink: 0;
+        }
+
+        .intro-banner .intro-features .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .intro-banner .intro-features .feature-item i {
+            font-size: 16px;
+            color: var(--primary);
+        }
+
+        .intro-banner .intro-features .feature-item .badge-cloud {
+            background: rgba(34, 197, 94, 0.12);
+            color: #16a34a;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .intro-banner .intro-features .feature-item .badge-local {
+            background: rgba(91, 106, 240, 0.10);
+            color: var(--primary);
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
         /* ========== 工具栏 ========== */
         .toolbar {
             display: flex;
@@ -258,7 +368,6 @@
             transition: var(--transition);
             margin-bottom: 28px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-            border-spacing: 0;
         }
 
         .upload-zone:hover {
@@ -412,6 +521,8 @@
             align-items: center;
             margin-bottom: 16px;
             padding: 0 4px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .section-header h2 {
@@ -738,6 +849,33 @@
                 font-size: 14px;
             }
 
+            /* 介绍横幅响应式 */
+            .intro-banner {
+                padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .intro-banner .intro-avatar {
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+
+            .intro-banner .intro-content .intro-title {
+                font-size: 17px;
+            }
+
+            .intro-banner .intro-features {
+                width: 100%;
+                gap: 10px 20px;
+            }
+
+            .intro-banner .intro-features .feature-item {
+                font-size: 12px;
+                white-space: normal;
+            }
+
             .upload-zone {
                 padding: 32px 20px;
             }
@@ -821,6 +959,11 @@
             }
             .header-stats .num {
                 font-size: 12px;
+            }
+
+            .intro-banner .intro-features {
+                flex-direction: column;
+                gap: 6px;
             }
         }
 
@@ -959,6 +1102,34 @@
             </div>
         </header>
 
+        <!-- ====== 🆕 介绍横幅 ====== -->
+        <div class="intro-banner">
+            <div class="intro-avatar">📖</div>
+            <div class="intro-content">
+                <div class="intro-title">
+                    2510 班 · 学习资源共享站
+                    <span class="tag">📢 班级内部</span>
+                </div>
+                <div class="intro-desc">
+                    <i class="fas fa-arrow-right"></i> 这里是 2510 班的专属资源中心，汇集了 GitHub 云端共享文件 和 本地上传文件。
+                    支持 <strong>按类型筛选</strong>、<strong>关键词搜索</strong>，方便大家快速找到学习资料。
+                </div>
+            </div>
+            <div class="intro-features">
+                <span class="feature-item">
+                    <i class="fas fa-cloud-upload-alt"></i> 云端文件
+                    <span class="badge-cloud">🟢 只读</span>
+                </span>
+                <span class="feature-item">
+                    <i class="fas fa-laptop"></i> 本地文件
+                    <span class="badge-local">🔵 可删</span>
+                </span>
+                <span class="feature-item">
+                    <i class="fas fa-database"></i> 浏览器存储
+                </span>
+            </div>
+        </div>
+
         <!-- ====== 工具栏 ====== -->
         <div class="toolbar">
             <div class="search-box">
@@ -976,12 +1147,12 @@
             </div>
         </div>
 
-        <!-- ====== 上传区域（仅保存到浏览器本地IndexedDB） ====== -->
+        <!-- ====== 上传区域 ====== -->
         <div class="upload-zone" id="uploadZone">
             <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
-            <h3>拖拽文件到此处，或点击上传（仅本地存储）</h3>
+            <h3>拖拽文件到此处，或点击上传</h3>
             <p>支持所有文件类型 · 单个文件最大 100MB</p>
-            <div class="hint">⚠️ 此处上传仅保存在本机浏览器，不会自动上传到GitHub仓库</div>
+            <div class="hint">⚠️ 仅保存在本机浏览器（IndexedDB），不会上传到 GitHub</div>
             <input type="file" id="fileInput" multiple />
         </div>
 
@@ -1574,22 +1745,22 @@
             document.getElementById('clearAllBtn').addEventListener('click', handleClearAll);
 
             // ---- 模态框 ----
-            document.getElementById('modalCancelBtn').addEventListener('click', hideDeleteModal);
-            document.getElementById('modalConfirmBtn').addEventListener('click', confirmDelete);
-            document.getElementById('deleteModal').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) hideDeleteModal();
+            document.getElementById('modalCancelBtn').addEventListener('click', hideDeleteModal);            文档.getElementById('modalCancelBtn').addEventListener('click', hideDeleteModal);
+            document文档.getElementById('modalConfirmBtn').addEventListener('click', confirmDelete);
+            document.getElementById('deleteModal').addEventListener('click', (e) => {            文档.getElementById('deleteModal').添加事件监听器('click', (e) => {
+                if (e.target === e.currentTarget) hideDeleteModal();                如果 (e.target === e.currentTarget) 隐藏删除模态框();                如果 (e.target === e.currentTarget) 隐藏删除模态框();                如果 (e.target === e.currentTarget) 隐藏删除模态框();
             });
 
-            // 键盘 ESC 关闭模态框
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') hideDeleteModal();
+            // 键盘 ESC 关闭模态框            // 按下键盘上的 ESC 键关闭模态框            // 按下键盘上的 ESC 键关闭模态框
+            document.addEventListener('keydown', (e) => {            文档.addEventListener('keydown', (e) => {            文档.addEventListener('keydown', (e) => {            文档.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') hideDeleteModal();                如果 (e.键 === 'Escape') 隐藏删除模态框();                如果 (e.key === 'Escape')隐藏删除模态框;
             });
 
-            console.log('✅ 2510班资源站已启动！');
-            console.log(`📁 云端仓库: ${GH_USER}/${GH_REPO}`);
-            console.log(`🌐 站点域名: ${GH_SITE_DOMAIN}`);
+            console.log('✅ 2510班资源站已启动！');            控制台.日志('✅ 2510班资源站已启动！');            控制台.日志('✅ 2510班资源站已启动！');            控制台.日志('✅ 2510班资源站已启动！');
+            console.log(`📁 云端仓库: ${GH_USER}/${GH_REPO}`);            控制台.日志(` 云端仓库: ${GH_USER}/${GH_REPO}`);            控制台.日志(` 云端仓库: ${GH_USER}/${GH_REPO}`);            控制台.日志(` 云端仓库: ${GH_USER}/${GH_REPO}`);
+            console.log(`🌐 站点域名: ${GH_SITE_DOMAIN}`);            控制台.日志(` 站点域名: ${GH_SITE_DOMAIN}`);            控制台.日志(` 站点域名: ${GH_SITE_DOMAIN}`);            控制台.日志(` 站点域名: ${GH_SITE_DOMAIN}`);
         });
-    </script>
+    </script脚本>
 
 </body>
-</html>
+                                                                    </html>
