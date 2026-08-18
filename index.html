@@ -64,100 +64,22 @@
             margin: 0 auto;
         }
 
-        /* ========== 头部 ========== */
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 28px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: var(--transition);
-        }
-
-        .header:hover {
-            box-shadow: 0 12px 40px rgba(91, 106, 240, 0.20);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .header-logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(91, 106, 240, 0.35);
-            flex-shrink: 0;
-        }
-
-        .header-title {
-            font-size: 26px;
-            font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 0.5px;
-        }
-
-        .header-badge {
-            font-size: 13px;
-            font-weight: 600;
-            background: rgba(91, 106, 240, 0.12);
-            color: var(--primary);
-            padding: 4px 14px;
-            border-radius: 20px;
-            margin-left: 6px;
-            -webkit-text-fill-color: var(--primary);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .header-stats {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .header-stats span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .header-stats i {
-            color: var(--primary);
-            font-size: 15px;
-        }
-
-        .header-stats .num {
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 16px;
-        }
+       <!-- ====== 头部 ====== -->
+<header class="header">
+    <div class="header-left">
+        <div class="header-logo">📚</div>  <!-- 原来是 "25" -->
+        <div>
+            <span class="header-title">2510班资源站</span>
+            <span class="header-badge">📚 班级共享</span>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="header-stats">
+            <span><i class="fas fa-file"></i> 文件 <span class="num" id="fileCount">0</span></span>
+            <span><i class="fas fa-hdd"></i> 总大小 <span class="num" id="totalSize">0 KB</span></span>
+        </div>
+    </div>
+</header>
 
         /* ========== 🆕 介绍横幅 ========== */
         .intro-banner {
