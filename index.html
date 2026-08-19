@@ -310,7 +310,7 @@
             font-size: 16px;
         }
 
-        /* ========== 存储用量显示 ========== */
+        /* ========== 存储用量 ========== */
         .storage-bar {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -446,10 +446,6 @@
             color: var(--owner-color);
         }
 
-        .announcement-item .announcement-meta .author-name.banned {
-            color: var(--banned-color);
-        }
-
         .announcement-item .announcement-meta .tag {
             font-size: 10px;
             font-weight: 700;
@@ -464,11 +460,6 @@
 
         .announcement-item .announcement-meta .tag.owner-tag {
             background: var(--owner-color);
-            color: #fff;
-        }
-
-        .announcement-item .announcement-meta .tag.banned-tag {
-            background: var(--banned-color);
             color: #fff;
         }
 
@@ -505,11 +496,6 @@
 
         .announcement-item .announcement-actions .delete-announce-btn:hover {
             background: rgba(239, 68, 68, 0.16);
-        }
-
-        .announcement-item .announcement-actions .delete-announce-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
         }
 
         .announcement-item.announcement-hidden {
@@ -1162,27 +1148,6 @@
             color: var(--text-light);
         }
 
-        .clear-btn {
-            padding: 6px 16px;
-            border-radius: 10px;
-            border: none;
-            background: rgba(239, 68, 68, 0.08);
-            color: #EF4444;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .clear-btn:hover {
-            background: rgba(239, 68, 68, 0.15);
-            transform: scale(1.02);
-        }
-
         .file-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1204,30 +1169,6 @@
             flex-direction: column;
             animation: fadeIn 0.4s ease;
             position: relative;
-        }
-
-        .file-card .locked-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            border-radius: var(--border-radius);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 2;
-        }
-
-        .file-card .locked-overlay i {
-            font-size: 32px;
-            color: var(--primary);
-            opacity: 0.6;
         }
 
         @keyframes fadeIn {
@@ -1401,16 +1342,6 @@
         .file-card .file-actions .delete-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
-        }
-
-        .file-card .file-actions .review-btn {
-            background: rgba(91, 106, 240, 0.06);
-            color: var(--primary);
-            font-size: 12px;
-        }
-
-        .file-card .file-actions .review-btn:hover {
-            background: rgba(91, 106, 240, 0.14);
         }
 
         .file-card .file-actions .report-btn {
@@ -2131,10 +2062,6 @@
                 gap: 8px;
             }
 
-            .clear-btn {
-                align-self: flex-start;
-            }
-
             .auth-modal {
                 padding: 28px 20px 24px;
             }
@@ -2355,9 +2282,36 @@
             </div>
         </div>
 
-        <!-- ====== 文件列表 ====== -->
+        <!-- ====== 上传区域 ====== -->
+        <div class="upload-zone" id="uploadZone">
+            <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
+            <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
+            <p id="uploadDesc">支持所有文件类型 · 单个文件最大 50MB</p>
+            <div class="hint" id="uploadHint">⚠️ 请先登录后再上传文件</div>
+            <input type="file" id="fileInput" multiple />
+        </div>
+
+        <!-- ====== 上传进度 ====== -->
+        <div class="upload-progress-container" id="progressContainer"></div>
+
+        <!-- ====== 资源列表 ====== -->
+        <div class="section-header">
+            <h2>
+                📂 资源列表
+                <span id="resultCount">(0 个)</span>
+            </h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="refresh-btn" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+            </div>
+        </div>
+
+        <!-- ====== 文件网格容器 ====== -->
         <div id="fileContent">
-            <!-- 由 JS 动态渲染 -->
+            <div class="file-grid" id="fileGrid">
+                <!-- 由 JS 动态渲染 -->
+            </div>
         </div>
 
         <!-- ====== 底部 ====== -->
@@ -2529,50 +2483,75 @@
         }
 
         // ========================================================================
-        //  1. Supabase 客户端
+        //  1. Supabase 客户端（修复版 - 确保 API Key 正确传递）
         // ========================================================================
         async function supabaseRequest(path, options = {}) {
-            const url = `${SUPABASE_URL}/rest/v1${path}`;
+            // 确保 path 以 / 开头
+            const cleanPath = path.startsWith('/') ? path : '/' + path;
+            const url = `${SUPABASE_URL}/rest/v1${cleanPath}`;
+
+            // 构建 headers - 确保 API Key 正确传递
             const headers = {
-                'Content-Type': 'application/json',
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
                 ...options.headers
             };
 
+            // POST/PATCH 请求添加 Prefer 头
             if (options.method === 'POST' || options.method === 'PATCH') {
                 headers['Prefer'] = 'return=representation';
             }
 
-            const response = await fetch(url, { ...options, headers });
+            const fetchOptions = {
+                method: options.method || 'GET',
+                headers: headers,
+            };
 
-            if (response.status === 204) {
-                return { success: true };
+            // 如果有 body，添加到请求中
+            if (options.body) {
+                fetchOptions.body = options.body;
             }
 
-            const contentLength = response.headers.get('content-length');
-            if (contentLength === '0') {
-                return { success: true };
-            }
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                try {
-                    const error = JSON.parse(errorText);
-                    throw new Error(error.message || '请求失败');
-                } catch {
-                    throw new Error(`请求失败 (${response.status}): ${errorText || '未知错误'}`);
-                }
-            }
-
-            const text = await response.text();
-            if (!text || text.trim() === '') {
-                return { success: true };
-            }
             try {
-                return JSON.parse(text);
-            } catch {
-                return { success: true, raw: text };
+                const response = await fetch(url, fetchOptions);
+
+                // 204 No Content 表示成功但无返回数据
+                if (response.status === 204) {
+                    return { success: true };
+                }
+
+                // 检查是否有内容返回
+                const contentLength = response.headers.get('content-length');
+                if (contentLength === '0') {
+                    return { success: true };
+                }
+
+                // 检查响应是否成功
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    try {
+                        const error = JSON.parse(errorText);
+                        throw new Error(error.message || `请求失败 (${response.status})`);
+                    } catch {
+                        throw new Error(`请求失败 (${response.status}): ${errorText || '未知错误'}`);
+                    }
+                }
+
+                // 解析响应
+                const text = await response.text();
+                if (!text || text.trim() === '') {
+                    return { success: true };
+                }
+
+                try {
+                    return JSON.parse(text);
+                } catch {
+                    return { success: true, raw: text };
+                }
+            } catch (err) {
+                console.error('Supabase 请求失败:', err);
+                throw err;
             }
         }
 
@@ -3097,13 +3076,17 @@
             const currentUser = getCurrentUser();
             const role = currentUser ? getRole(currentUser) : 'user';
 
+            if (!container) return;
+
             countEl.textContent = `(${announcements.length} 条)`;
 
             const form = document.getElementById('announcementForm');
-            if (role === 'admin' || role === 'owner') {
-                form.classList.add('active');
-            } else {
-                form.classList.remove('active');
+            if (form) {
+                if (role === 'admin' || role === 'owner') {
+                    form.classList.add('active');
+                } else {
+                    form.classList.remove('active');
+                }
             }
 
             if (announcements.length === 0) {
@@ -3124,7 +3107,6 @@
                 const isHidden = index >= visibleCount;
                 const isAuthorAdmin = isAdmin(item.author);
                 const isAuthorOwner = isOwner(item.author);
-                const isAuthorBanned = false; // 公告作者不会因为被封禁而改变显示
 
                 const canDelete = (currentUser && (
                     isOwner(currentUser) ||
@@ -3211,30 +3193,39 @@
         let currentUserBanned = false;
 
         function renderFiles(fileList) {
-            const container = document.getElementById('fileContent');
-            const grid = document.createElement('div');
-            grid.className = 'file-grid';
-            grid.id = 'fileGrid';
-
-            // 先清空
-            const existingGrid = document.getElementById('fileGrid');
-            if (existingGrid) {
-                existingGrid.remove();
+            // 确保文件网格存在
+            let grid = document.getElementById('fileGrid');
+            if (!grid) {
+                const container = document.getElementById('fileContent');
+                if (!container) return;
+                grid = document.createElement('div');
+                grid.className = 'file-grid';
+                grid.id = 'fileGrid';
+                container.appendChild(grid);
             }
 
             const countEl = document.getElementById('resultCount');
             const fileCountEl = document.getElementById('fileCount');
             const totalSizeEl = document.getElementById('totalSize');
 
+            // 安全检查
+            if (!countEl || !fileCountEl || !totalSizeEl) {
+                console.warn('统计元素缺失');
+                return;
+            }
+
             // 检查用户是否被封禁
             if (currentUserBanned) {
-                container.innerHTML = `
-                    <div class="banned-overlay">
-                        <i class="fas fa-ban"></i>
-                        <h3>⚠️ 您已被封禁</h3>
-                        <p>您无法查看和上传任何文件。如有疑问，请联系管理员。</p>
-                    </div>
-                `;
+                const container = document.getElementById('fileContent');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="banned-overlay">
+                            <i class="fas fa-ban"></i>
+                            <h3>⚠️ 您已被封禁</h3>
+                            <p>您无法查看和上传任何文件。如有疑问，请联系管理员。</p>
+                        </div>
+                    `;
+                }
                 countEl.textContent = '(0 个)';
                 fileCountEl.textContent = '0';
                 totalSizeEl.textContent = '0 B';
@@ -3246,17 +3237,17 @@
             filtered = filtered.filter(f => f.status === 'approved');
 
             if (currentFilter !== 'all') {
-                filtered = filtered.filter(f => getFileType(f.extension) === currentFilter);
+                filtered = filtered.filter(f => getFileType(f.file_type || f.extension) === currentFilter);
             }
             if (searchQuery.trim()) {
                 const q = searchQuery.trim().toLowerCase();
-                filtered = filtered.filter(f => f.name.toLowerCase().includes(q));
+                filtered = filtered.filter(f => f.file_name.toLowerCase().includes(q));
             }
 
             countEl.textContent = `(${filtered.length} 个)`;
             fileCountEl.textContent = fileList.length;
 
-            const totalBytes = fileList.reduce((sum, f) => sum + (f.size || 0), 0);
+            const totalBytes = fileList.reduce((sum, f) => sum + (f.file_size || 0), 0);
             totalSizeEl.textContent = formatSize(totalBytes);
 
             if (filtered.length === 0) {
@@ -3267,7 +3258,6 @@
                         <p>${fileList.length === 0 ? '等待管理员上传文件' : '试试其他关键词或筛选条件'}</p>
                     </div>
                 `;
-                container.appendChild(grid);
                 return;
             }
 
@@ -3275,9 +3265,10 @@
             const currentUser = getCurrentUser();
 
             grid.innerHTML = filtered.map(file => {
-                const color = getFileColor(file.extension);
-                const emoji = getFileEmoji(file.extension);
-                const typeLabel = getFileType(file.extension).toUpperCase();
+                const fileType = file.file_type || 'other';
+                const color = getFileColor(fileType);
+                const emoji = getFileEmoji(fileType);
+                const typeLabel = getFileType(fileType).toUpperCase();
 
                 const uploaderName = file.uploaded_by || '未知用户';
                 const isUploaderOwner = isOwner(uploaderName);
@@ -3336,11 +3327,16 @@
                     `;
                 }
 
+                const statusBadge = file.status === 'pending' ? '⏳ 审核中' :
+                    file.status === 'approved' ? '✅ 已通过' :
+                    file.status === 'rejected' ? '❌ 已拒绝' : '';
+
                 return `
                     <div class="file-card" data-id="${file.id}">
                         <span class="file-type-tag" style="background:${color}22; color:${color};">${typeLabel}</span>
                         <div class="file-icon-big" style="color:${color};">${emoji}</div>
                         <div class="file-name text-ellipsis" title="${file.file_name}">${file.file_name}</div>
+                        ${statusBadge ? `<span class="file-status-badge ${file.status}">${statusBadge}</span>` : ''}
                         <div class="file-meta">
                             <span>${formatSize(file.file_size)}</span>
                             <span>${formatTime(file.created_at)}</span>
@@ -3350,8 +3346,6 @@
                     </div>
                 `;
             }).join('');
-
-            container.appendChild(grid);
 
             // 绑定按钮事件
             if (loggedIn) {
@@ -3413,7 +3407,7 @@
 
         function showReportFileModal(fileId) {
             const reason = prompt('请输入举报原因（至少5个字）：');
-            if (reason === null) return; // 取消
+            if (reason === null) return;
             if (reason.trim().length < 5) {
                 showToast('❌ 举报原因至少5个字', 'error');
                 return;
@@ -3717,6 +3711,8 @@
             const modal = document.getElementById('banModal');
             const list = document.getElementById('banList');
 
+            if (!modal || !list) return;
+
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
 
@@ -3860,33 +3856,37 @@
 
             // 插入到登出按钮前面
             const logoutBtn = document.getElementById('logoutBtn');
-            userInfo.insertBefore(menu, logoutBtn);
+            if (logoutBtn && userInfo) {
+                userInfo.insertBefore(menu, logoutBtn);
+            }
 
             // 下拉菜单控制
             const menuBtn = document.getElementById('adminMenuBtn');
             const dropdown = document.getElementById('adminDropdown');
 
-            menuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-            });
-
-            document.addEventListener('click', () => {
-                dropdown.style.display = 'none';
-            });
-
-            // 菜单项事件
-            document.querySelectorAll('.admin-dropdown-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    dropdown.style.display = 'none';
-                    const action = item.dataset.action;
-                    if (action === 'review') {
-                        openReviewModal();
-                    } else if (action === 'ban') {
-                        showBanUserSelector();
-                    }
+            if (menuBtn && dropdown) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
                 });
-            });
+
+                document.addEventListener('click', () => {
+                    dropdown.style.display = 'none';
+                });
+
+                // 菜单项事件
+                document.querySelectorAll('.admin-dropdown-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        dropdown.style.display = 'none';
+                        const action = item.dataset.action;
+                        if (action === 'review') {
+                            openReviewModal();
+                        } else if (action === 'ban') {
+                            showBanUserSelector();
+                        }
+                    });
+                });
+            }
         }
 
         // ========================================================================
@@ -4003,7 +4003,7 @@
 
             } catch (err) {
                 console.error('刷新数据失败:', err);
-                showToast('刷新数据失败', 'error');
+                showToast('刷新数据失败: ' + err.message, 'error');
             }
         }
 
@@ -4013,6 +4013,8 @@
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
             const text = document.getElementById('storageText');
+
+            if (!fill || !text) return;
 
             const usedMB = usage.used / (1024 * 1024);
             const totalMB = usage.total / (1024 * 1024);
@@ -4047,49 +4049,51 @@
             const loginStatusText = document.getElementById('loginStatusText');
 
             if (loggedIn && username) {
-                guestButtons.classList.add('hidden');
-                userInfo.classList.remove('hidden');
+                if (guestButtons) guestButtons.classList.add('hidden');
+                if (userInfo) userInfo.classList.remove('hidden');
 
-                currentUserIdEl.textContent = `ID: ${userId || '--'}`;
+                if (currentUserIdEl) currentUserIdEl.textContent = `ID: ${userId || '--'}`;
 
                 // 检查是否被封禁
                 const role = getRole(username);
                 const isBanned = currentUserBanned;
 
-                if (isBanned) {
-                    usernameDisplay.innerHTML = `
-                        <i class="fas fa-ban" style="color:var(--banned-color);"></i>
-                        <span class="banned-name">${username}</span>
-                        <span class="banned-tag">封禁用户</span>
-                        <span class="user-id">ID: ${userId || '--'}</span>
-                    `;
-                } else if (role === 'owner') {
-                    usernameDisplay.innerHTML = `
-                        <i class="fas fa-crown" style="color:var(--owner-color);"></i>
-                        <span class="owner-name">${username}</span>
-                        <span class="owner-tag">站长</span>
-                        <span class="user-id">ID: ${userId || '--'}</span>
-                    `;
-                } else if (role === 'admin') {
-                    usernameDisplay.innerHTML = `
-                        <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
-                        <span class="admin-name">${username}</span>
-                        <span class="admin-tag">管理员</span>
-                        <span class="user-id">ID: ${userId || '--'}</span>
-                    `;
-                } else {
-                    usernameDisplay.innerHTML = `
-                        <i class="fas fa-user-circle"></i>
-                        <span>${username}</span>
-                        <span class="user-id">ID: ${userId || '--'}</span>
-                    `;
+                if (usernameDisplay) {
+                    if (isBanned) {
+                        usernameDisplay.innerHTML = `
+                            <i class="fas fa-ban" style="color:var(--banned-color);"></i>
+                            <span class="banned-name">${username}</span>
+                            <span class="banned-tag">封禁用户</span>
+                            <span class="user-id">ID: ${userId || '--'}</span>
+                        `;
+                    } else if (role === 'owner') {
+                        usernameDisplay.innerHTML = `
+                            <i class="fas fa-crown" style="color:var(--owner-color);"></i>
+                            <span class="owner-name">${username}</span>
+                            <span class="owner-tag">站长</span>
+                            <span class="user-id">ID: ${userId || '--'}</span>
+                        `;
+                    } else if (role === 'admin') {
+                        usernameDisplay.innerHTML = `
+                            <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
+                            <span class="admin-name">${username}</span>
+                            <span class="admin-tag">管理员</span>
+                            <span class="user-id">ID: ${userId || '--'}</span>
+                        `;
+                    } else {
+                        usernameDisplay.innerHTML = `
+                            <i class="fas fa-user-circle"></i>
+                            <span>${username}</span>
+                            <span class="user-id">ID: ${userId || '--'}</span>
+                        `;
+                    }
                 }
 
-                loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
+                if (loginStatusText) loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
             } else {
-                guestButtons.classList.remove('hidden');
-                userInfo.classList.add('hidden');
-                loginStatusText.textContent = '🔒 未登录';
+                if (guestButtons) guestButtons.classList.remove('hidden');
+                if (userInfo) userInfo.classList.add('hidden');
+                if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
             }
 
             renderFiles(allFiles);
@@ -4106,13 +4110,15 @@
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
 
+            if (!modal) return;
+
             if (mode === 'login') {
-                loginForm.classList.remove('hidden');
-                registerForm.classList.add('hidden');
+                if (loginForm) loginForm.classList.remove('hidden');
+                if (registerForm) registerForm.classList.add('hidden');
                 document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
             } else {
-                loginForm.classList.add('hidden');
-                registerForm.classList.remove('hidden');
+                if (loginForm) loginForm.classList.add('hidden');
+                if (registerForm) registerForm.classList.remove('hidden');
                 document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
             }
 
@@ -4121,7 +4127,8 @@
         }
 
         function closeAuthModal() {
-            document.getElementById('authModal').classList.remove('active');
+            const modal = document.getElementById('authModal');
+            if (modal) modal.classList.remove('active');
             document.body.style.overflow = '';
             document.querySelectorAll('#authModal input').forEach(el => el.value = '');
             document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
@@ -4143,6 +4150,8 @@
 
             const currentUser = getCurrentUser();
             const container = document.getElementById('progressContainer');
+            if (!container) return;
+
             container.classList.add('active');
 
             for (const file of Array.from(fileList)) {
@@ -4195,7 +4204,7 @@
                         file_type: ext || 'unknown',
                         file_path: uploadResult.filePath,
                         uploaded_by: currentUser,
-                        status: 'pending', // 待审核
+                        status: 'pending',
                         is_admin: isAdmin(currentUser)
                     };
 
@@ -4212,7 +4221,6 @@
 
                     // 如果是管理员，自动通过
                     if (isAdmin(currentUser)) {
-                        // 获取刚上传的文件ID
                         const files = await fetchFiles();
                         const newFile = files.find(f => f.file_name === fileName && f.uploaded_by === currentUser);
                         if (newFile) {
@@ -4246,255 +4254,338 @@
             // 初始化 Storage
             await initStorage();
 
-            await refreshAll();
+            // 添加错误捕获，防止页面崩溃
+            try {
+                await refreshAll();
+            } catch (err) {
+                console.error('初始化加载失败:', err);
+                showToast('加载失败: ' + err.message, 'error', 5000);
+            }
 
             // ---- 顶栏按钮 ----
-            document.getElementById('showLoginBtn').addEventListener('click', () => openAuthModal('login'));
-            document.getElementById('showRegisterBtn').addEventListener('click', () => openAuthModal('register'));
+            const showLoginBtn = document.getElementById('showLoginBtn');
+            const showRegisterBtn = document.getElementById('showRegisterBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
 
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                clearSession();
-                currentUserBanned = false;
-                showToast('👋 已登出', 'info', 1500);
-                refreshAll();
-            });
+            if (showLoginBtn) showLoginBtn.addEventListener('click', () => openAuthModal('login'));
+            if (showRegisterBtn) showRegisterBtn.addEventListener('click', () => openAuthModal('register'));
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    clearSession();
+                    currentUserBanned = false;
+                    showToast('👋 已登出', 'info', 1500);
+                    refreshAll();
+                });
+            }
 
             // ---- 模态框切换 ----
-            document.getElementById('switchToRegister').addEventListener('click', (e) => {
-                e.preventDefault();
-                openAuthModal('register');
-            });
-            document.getElementById('switchToLogin').addEventListener('click', (e) => {
-                e.preventDefault();
-                openAuthModal('login');
-            });
-            document.getElementById('authModalClose').addEventListener('click', closeAuthModal);
-            document.getElementById('authModal').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) closeAuthModal();
-            });
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+            const authModalClose = document.getElementById('authModalClose');
+
+            if (switchToRegister) {
+                switchToRegister.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openAuthModal('register');
+                });
+            }
+            if (switchToLogin) {
+                switchToLogin.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openAuthModal('login');
+                });
+            }
+            if (authModalClose) authModalClose.addEventListener('click', closeAuthModal);
+
+            const authModal = document.getElementById('authModal');
+            if (authModal) {
+                authModal.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) closeAuthModal();
+                });
+            }
+
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeAuthModal();
             });
 
             // ---- 登录 ----
-            document.getElementById('loginSubmitBtn').addEventListener('click', async () => {
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
+            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+            const loginUsername = document.getElementById('loginUsername');
+            const loginPassword = document.getElementById('loginPassword');
 
-                const usernameError = document.getElementById('loginUsernameError');
-                const passwordError = document.getElementById('loginPasswordError');
-                usernameError.classList.remove('show');
-                passwordError.classList.remove('show');
+            if (loginSubmitBtn) {
+                loginSubmitBtn.addEventListener('click', async () => {
+                    const username = loginUsername ? loginUsername.value.trim() : '';
+                    const password = loginPassword ? loginPassword.value : '';
 
-                if (!username) {
-                    usernameError.textContent = '请输入用户名';
-                    usernameError.classList.add('show');
-                    return;
-                }
-                if (!password) {
-                    passwordError.textContent = '请输入密码';
-                    passwordError.classList.add('show');
-                    return;
-                }
+                    const usernameError = document.getElementById('loginUsernameError');
+                    const passwordError = document.getElementById('loginPasswordError');
 
-                const btn = document.getElementById('loginSubmitBtn');
-                btn.disabled = true;
-                btn.textContent = '登录中...';
+                    if (usernameError) usernameError.classList.remove('show');
+                    if (passwordError) passwordError.classList.remove('show');
 
-                try {
-                    const result = await login(username, password);
-                    closeAuthModal();
-                    const role = getRole(username);
-                    const roleText = role === 'owner' ? '👑 站长' : role === 'admin' ? '🔑 管理员' : '👤 用户';
-                    showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
-                    await refreshAll();
-                } catch (err) {
-                    showToast(`❌ ${err.message}`, 'error', 3000);
-                    if (err.message.includes('被封禁')) {
-                        passwordError.textContent = err.message;
-                        passwordError.classList.add('show');
-                    } else if (err.message.includes('用户名或密码')) {
-                        passwordError.textContent = err.message;
-                        passwordError.classList.add('show');
+                    if (!username) {
+                        if (usernameError) {
+                            usernameError.textContent = '请输入用户名';
+                            usernameError.classList.add('show');
+                        }
+                        return;
                     }
-                } finally {
-                    btn.disabled = false;
-                    btn.textContent = '登 录';
-                }
-            });
+                    if (!password) {
+                        if (passwordError) {
+                            passwordError.textContent = '请输入密码';
+                            passwordError.classList.add('show');
+                        }
+                        return;
+                    }
 
-            document.getElementById('loginPassword').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click();
-            });
-            document.getElementById('loginUsername').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click();
-            });
+                    const btn = loginSubmitBtn;
+                    btn.disabled = true;
+                    btn.textContent = '登录中...';
+
+                    try {
+                        const result = await login(username, password);
+                        closeAuthModal();
+                        const role = getRole(username);
+                        const roleText = role === 'owner' ? '👑 站长' : role === 'admin' ? '🔑 管理员' : '👤 用户';
+                        showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
+                        await refreshAll();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error', 3000);
+                        if (err.message.includes('被封禁')) {
+                            if (passwordError) {
+                                passwordError.textContent = err.message;
+                                passwordError.classList.add('show');
+                            }
+                        } else if (err.message.includes('用户名或密码')) {
+                            if (passwordError) {
+                                passwordError.textContent = err.message;
+                                passwordError.classList.add('show');
+                            }
+                        }
+                    } finally {
+                        btn.disabled = false;
+                        btn.textContent = '登 录';
+                    }
+                });
+            }
+
+            if (loginPassword) {
+                loginPassword.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && loginSubmitBtn) loginSubmitBtn.click();
+                });
+            }
+            if (loginUsername) {
+                loginUsername.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && loginSubmitBtn) loginSubmitBtn.click();
+                });
+            }
 
             // ---- 注册 ----
-            document.getElementById('registerSubmitBtn').addEventListener('click', async () => {
-                const username = document.getElementById('registerUsername').value.trim();
-                const password = document.getElementById('registerPassword').value;
-                const confirm = document.getElementById('registerPasswordConfirm').value;
+            const registerSubmitBtn = document.getElementById('registerSubmitBtn');
+            const registerUsername = document.getElementById('registerUsername');
+            const registerPassword = document.getElementById('registerPassword');
+            const registerPasswordConfirm = document.getElementById('registerPasswordConfirm');
 
-                const usernameError = document.getElementById('registerUsernameError');
-                const passwordError = document.getElementById('registerPasswordError');
-                const confirmError = document.getElementById('registerPasswordConfirmError');
+            if (registerSubmitBtn) {
+                registerSubmitBtn.addEventListener('click', async () => {
+                    const username = registerUsername ? registerUsername.value.trim() : '';
+                    const password = registerPassword ? registerPassword.value : '';
+                    const confirm = registerPasswordConfirm ? registerPasswordConfirm.value : '';
 
-                usernameError.classList.remove('show');
-                passwordError.classList.remove('show');
-                confirmError.classList.remove('show');
+                    const usernameError = document.getElementById('registerUsernameError');
+                    const passwordError = document.getElementById('registerPasswordError');
+                    const confirmError = document.getElementById('registerPasswordConfirmError');
 
-                if (!username || username.length < 3) {
-                    usernameError.textContent = '用户名至少 3 个字符';
-                    usernameError.classList.add('show');
-                    return;
-                }
-                if (!password || password.length < 6) {
-                    passwordError.textContent = '密码至少 6 位';
-                    passwordError.classList.add('show');
-                    return;
-                }
-                if (password !== confirm) {
-                    confirmError.textContent = '两次输入密码不一致';
-                    confirmError.classList.add('show');
-                    return;
-                }
+                    if (usernameError) usernameError.classList.remove('show');
+                    if (passwordError) passwordError.classList.remove('show');
+                    if (confirmError) confirmError.classList.remove('show');
 
-                const btn = document.getElementById('registerSubmitBtn');
-                btn.disabled = true;
-                btn.textContent = '注册中...';
-
-                try {
-                    await register(username, password, confirm);
-                    closeAuthModal();
-                    showToast(`🎉 注册成功！请登录`, 'success', 2000);
-                    openAuthModal('login');
-                    document.getElementById('loginUsername').value = username;
-                } catch (err) {
-                    showToast(`❌ ${err.message}`, 'error', 3000);
-                    if (err.message.includes('用户名')) {
-                        usernameError.textContent = err.message;
-                        usernameError.classList.add('show');
+                    if (!username || username.length < 3) {
+                        if (usernameError) {
+                            usernameError.textContent = '用户名至少 3 个字符';
+                            usernameError.classList.add('show');
+                        }
+                        return;
                     }
-                } finally {
-                    btn.disabled = false;
-                    btn.textContent = '注 册';
-                }
-            });
+                    if (!password || password.length < 6) {
+                        if (passwordError) {
+                            passwordError.textContent = '密码至少 6 位';
+                            passwordError.classList.add('show');
+                        }
+                        return;
+                    }
+                    if (password !== confirm) {
+                        if (confirmError) {
+                            confirmError.textContent = '两次输入密码不一致';
+                            confirmError.classList.add('show');
+                        }
+                        return;
+                    }
 
-            document.getElementById('registerPasswordConfirm').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') document.getElementById('registerSubmitBtn').click();
-            });
+                    const btn = registerSubmitBtn;
+                    btn.disabled = true;
+                    btn.textContent = '注册中...';
+
+                    try {
+                        await register(username, password, confirm);
+                        closeAuthModal();
+                        showToast(`🎉 注册成功！请登录`, 'success', 2000);
+                        openAuthModal('login');
+                        if (loginUsername) loginUsername.value = username;
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error', 3000);
+                        if (err.message.includes('用户名')) {
+                            if (usernameError) {
+                                usernameError.textContent = err.message;
+                                usernameError.classList.add('show');
+                            }
+                        }
+                    } finally {
+                        btn.disabled = false;
+                        btn.textContent = '注 册';
+                    }
+                });
+            }
+
+            if (registerPasswordConfirm) {
+                registerPasswordConfirm.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && registerSubmitBtn) registerSubmitBtn.click();
+                });
+            }
 
             // ---- 公告发布 ----
-            document.getElementById('publishAnnouncementBtn').addEventListener('click', async () => {
-                const title = document.getElementById('announcementTitle').value.trim();
-                const content = document.getElementById('announcementContent').value.trim();
-                const currentUser = getCurrentUser();
+            const publishBtn = document.getElementById('publishAnnouncementBtn');
+            const cancelBtn = document.getElementById('cancelAnnouncementBtn');
 
-                if (!currentUser) {
-                    showToast('⚠️ 请先登录', 'error');
-                    return;
-                }
+            if (publishBtn) {
+                publishBtn.addEventListener('click', async () => {
+                    const titleInput = document.getElementById('announcementTitle');
+                    const contentInput = document.getElementById('announcementContent');
+                    const title = titleInput ? titleInput.value.trim() : '';
+                    const content = contentInput ? contentInput.value.trim() : '';
+                    const currentUser = getCurrentUser();
 
-                if (currentUserBanned) {
-                    showToast('⚠️ 您已被封禁，无法发布公告', 'error');
-                    return;
-                }
+                    if (!currentUser) {
+                        showToast('⚠️ 请先登录', 'error');
+                        return;
+                    }
 
-                const role = getRole(currentUser);
-                if (role !== 'admin' && role !== 'owner') {
-                    showToast('⚠️ 只有管理员可以发布公告', 'error');
-                    return;
-                }
+                    if (currentUserBanned) {
+                        showToast('⚠️ 您已被封禁，无法发布公告', 'error');
+                        return;
+                    }
 
-                if (!title || !content) {
-                    showToast('⚠️ 标题和内容不能为空', 'error');
-                    return;
-                }
+                    const role = getRole(currentUser);
+                    if (role !== 'admin' && role !== 'owner') {
+                        showToast('⚠️ 只有管理员可以发布公告', 'error');
+                        return;
+                    }
 
-                const btn = document.getElementById('publishAnnouncementBtn');
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+                    if (!title || !content) {
+                        showToast('⚠️ 标题和内容不能为空', 'error');
+                        return;
+                    }
 
-                try {
-                    await publishAnnouncement(title, content, currentUser);
-                    showToast('✅ 公告发布成功！', 'success', 2000);
-                    document.getElementById('announcementTitle').value = '';
-                    document.getElementById('announcementContent').value = '';
-                    await loadAnnouncements();
-                } catch (err) {
-                    showToast(`❌ ${err.message}`, 'error');
-                } finally {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布公告';
-                }
-            });
+                    const btn = publishBtn;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
 
-            document.getElementById('cancelAnnouncementBtn').addEventListener('click', () => {
-                document.getElementById('announcementTitle').value = '';
-                document.getElementById('announcementContent').value = '';
-            });
+                    try {
+                        await publishAnnouncement(title, content, currentUser);
+                        showToast('✅ 公告发布成功！', 'success', 2000);
+                        if (titleInput) titleInput.value = '';
+                        if (contentInput) contentInput.value = '';
+                        await loadAnnouncements();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布公告';
+                    }
+                });
+            }
+
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => {
+                    const titleInput = document.getElementById('announcementTitle');
+                    const contentInput = document.getElementById('announcementContent');
+                    if (titleInput) titleInput.value = '';
+                    if (contentInput) contentInput.value = '';
+                });
+            }
 
             // ---- 刷新公告 ----
-            document.getElementById('refreshAnnouncementsBtn').addEventListener('click', async () => {
-                const btn = document.getElementById('refreshAnnouncementsBtn');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                btn.disabled = true;
-                await loadAnnouncements();
-                btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
-                btn.disabled = false;
-                showToast('✅ 公告已刷新', 'success', 1000);
-            });
+            const refreshAnnounceBtn = document.getElementById('refreshAnnouncementsBtn');
+            if (refreshAnnounceBtn) {
+                refreshAnnounceBtn.addEventListener('click', async () => {
+                    const btn = refreshAnnounceBtn;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    btn.disabled = true;
+                    await loadAnnouncements();
+                    btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
+                    btn.disabled = false;
+                    showToast('✅ 公告已刷新', 'success', 1000);
+                });
+            }
 
             // ---- 上传 ----
             const uploadZone = document.getElementById('uploadZone');
             const fileInput = document.getElementById('fileInput');
 
-            uploadZone.addEventListener('click', () => {
-                if (!isLoggedIn()) {
-                    showToast('⚠️ 请先登录再上传文件', 'error', 3000);
-                    return;
-                }
-                if (currentUserBanned) {
-                    showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
-                    return;
-                }
-                fileInput.click();
-            });
+            if (uploadZone) {
+                uploadZone.addEventListener('click', () => {
+                    if (!isLoggedIn()) {
+                        showToast('⚠️ 请先登录再上传文件', 'error', 3000);
+                        return;
+                    }
+                    if (currentUserBanned) {
+                        showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
+                        return;
+                    }
+                    if (fileInput) fileInput.click();
+                });
 
-            uploadZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                if (isLoggedIn() && !currentUserBanned) uploadZone.classList.add('dragover');
-            });
-            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-            uploadZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadZone.classList.remove('dragover');
-                if (!isLoggedIn()) {
-                    showToast('⚠️ 请先登录再上传文件', 'error', 3000);
-                    return;
-                }
-                if (currentUserBanned) {
-                    showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
-                    return;
-                }
-                if (e.dataTransfer.files.length > 0) {
-                    handleUploadFiles(e.dataTransfer.files);
-                }
-            });
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    handleUploadFiles(e.target.files);
-                    e.target.value = '';
-                }
-            });
+                uploadZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    if (isLoggedIn() && !currentUserBanned) uploadZone.classList.add('dragover');
+                });
+                uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+                uploadZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    uploadZone.classList.remove('dragover');
+                    if (!isLoggedIn()) {
+                        showToast('⚠️ 请先登录再上传文件', 'error', 3000);
+                        return;
+                    }
+                    if (currentUserBanned) {
+                        showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
+                        return;
+                    }
+                    if (e.dataTransfer.files.length > 0 && fileInput) {
+                        handleUploadFiles(e.dataTransfer.files);
+                    }
+                });
+            }
+
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        handleUploadFiles(e.target.files);
+                        e.target.value = '';
+                    }
+                });
+            }
 
             // ---- 搜索 ----
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                searchQuery = e.target.value;
-                renderFiles(allFiles);
-            });
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    searchQuery = e.target.value;
+                    renderFiles(allFiles);
+                });
+            }
 
             // ---- 筛选 ----
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -4507,50 +4598,74 @@
             });
 
             // ---- 刷新 ----
-            document.getElementById('refreshBtn').addEventListener('click', async () => {
-                const btn = document.getElementById('refreshBtn');
-                btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> 刷新中...';
-                btn.disabled = true;
-                await refreshAll();
-                btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
-                btn.disabled = false;
-                showToast('✅ 已刷新', 'success', 1000);
-            });
-
-            // ---- 清空本地（已废弃，保留兼容） ----
-            document.getElementById('clearAllBtn').addEventListener('click', () => {
-                showToast('📢 文件已存储在云端，无需清空本地', 'info', 3000);
-            });
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', async () => {
+                    const btn = refreshBtn;
+                    btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> 刷新中...';
+                    btn.disabled = true;
+                    await refreshAll();
+                    btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
+                    btn.disabled = false;
+                    showToast('✅ 已刷新', 'success', 1000);
+                });
+            }
 
             // ---- 文件删除模态框 ----
-            document.getElementById('modalCancelBtn').addEventListener('click', hideDeleteFileModal);
-            document.getElementById('modalConfirmBtn').addEventListener('click', confirmDeleteFile);
-            document.getElementById('deleteModal').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) hideDeleteFileModal();
-            });
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+            const deleteModal = document.getElementById('deleteModal');
+
+            if (modalCancelBtn) modalCancelBtn.addEventListener('click', hideDeleteFileModal);
+            if (modalConfirmBtn) modalConfirmBtn.addEventListener('click', confirmDeleteFile);
+            if (deleteModal) {
+                deleteModal.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) hideDeleteFileModal();
+                });
+            }
 
             // ---- 公告删除模态框 ----
-            document.getElementById('deleteAnnouncementCancelBtn').addEventListener('click', hideDeleteAnnouncementModal);
-            document.getElementById('deleteAnnouncementConfirmBtn').addEventListener('click', confirmDeleteAnnouncement);
-            document.getElementById('deleteAnnouncementModal').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) hideDeleteAnnouncementModal();
-            });
+            const deleteAnnouncementCancelBtn = document.getElementById('deleteAnnouncementCancelBtn');
+            const deleteAnnouncementConfirmBtn = document.getElementById('deleteAnnouncementConfirmBtn');
+            const deleteAnnouncementModal = document.getElementById('deleteAnnouncementModal');
+
+            if (deleteAnnouncementCancelBtn) deleteAnnouncementCancelBtn.addEventListener('click', hideDeleteAnnouncementModal);
+            if (deleteAnnouncementConfirmBtn) deleteAnnouncementConfirmBtn.addEventListener('click', confirmDeleteAnnouncement);
+            if (deleteAnnouncementModal) {
+                deleteAnnouncementModal.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) hideDeleteAnnouncementModal();
+                });
+            }
 
             // ---- 封禁记录弹窗 ----
-            document.getElementById('showBanRecordsBtn').addEventListener('click', showBanRecords);
-            document.getElementById('banModalClose').addEventListener('click', hideBanRecords);
-            document.getElementById('banModalCloseBtn').addEventListener('click', hideBanRecords);
-            document.getElementById('banModal').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) hideBanRecords();
-            });
+            const showBanRecordsBtn = document.getElementById('showBanRecordsBtn');
+            const banModalClose = document.getElementById('banModalClose');
+            const banModalCloseBtn = document.getElementById('banModalCloseBtn');
+            const banModal = document.getElementById('banModal');
+
+            if (showBanRecordsBtn) showBanRecordsBtn.addEventListener('click', showBanRecords);
+            if (banModalClose) banModalClose.addEventListener('click', hideBanRecords);
+            if (banModalCloseBtn) banModalCloseBtn.addEventListener('click', hideBanRecords);
+            if (banModal) {
+                banModal.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) hideBanRecords();
+                });
+            }
 
             // ---- 封禁用户模态框 ----
-            document.getElementById('banUserModalClose').addEventListener('click', hideBanUserModal);
-            document.getElementById('banUserCancelBtn').addEventListener('click', hideBanUserModal);
-            document.getElementById('banUserConfirmBtn').addEventListener('click', confirmBanUser);
-            document.getElementById('banUserModal').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) hideBanUserModal();
-            });
+            const banUserModalClose = document.getElementById('banUserModalClose');
+            const banUserCancelBtn = document.getElementById('banUserCancelBtn');
+            const banUserConfirmBtn = document.getElementById('banUserConfirmBtn');
+            const banUserModal = document.getElementById('banUserModal');
+
+            if (banUserModalClose) banUserModalClose.addEventListener('click', hideBanUserModal);
+            if (banUserCancelBtn) banUserCancelBtn.addEventListener('click', hideBanUserModal);
+            if (banUserConfirmBtn) banUserConfirmBtn.addEventListener('click', confirmBanUser);
+            if (banUserModal) {
+                banUserModal.addEventListener('click', (e) => {
+                    if (e.target === e.currentTarget) hideBanUserModal();
+                });
+            }
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
@@ -4562,7 +4677,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整版）');
+            console.log('✅ 2510班资源站已启动！（完整修复版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER).join(', ')}`);
