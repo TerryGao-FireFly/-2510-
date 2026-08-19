@@ -104,6 +104,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
         }
 
         .topbar .user-section .username-display {
@@ -132,6 +133,15 @@
         .topbar .user-section .username-display .admin-name {
             color: var(--admin-color);
             font-weight: 700;
+        }
+
+        .topbar .user-section .username-display .user-id {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 400;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 1px 10px;
+            border-radius: 10px;
         }
 
         .topbar .user-section .btn {
@@ -1409,6 +1419,7 @@
                     <span class="username-display" id="usernameDisplay">
                         <i class="fas fa-user-circle"></i>
                         <span id="currentUsername">用户</span>
+                        <span class="user-id" id="currentUserId">ID: --</span>
                     </span>
                     <button class="btn btn-logout" id="logoutBtn">
                         <i class="fas fa-sign-out-alt"></i> 登出
@@ -1585,23 +1596,30 @@
 
     <script>
         // ========================================================================
-        //  【Supabase 配置】— 已填入你的配置
+        //  【Supabase 配置】
         // ========================================================================
         const SUPABASE_URL = "https://wcavdwtanompuugraewr.supabase.co";
         const SUPABASE_ANON_KEY =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjYXZkd3Rhbm9tcHV1Z3JhZXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTA2ODQsImV4cCI6MjEwMjYyNjY4NH0.I8__ydLirwnfEG-ijHEaa-JMaoTY2EBBlwN2TCkETSk";
 
         // ========================================================================
-        //  【超级用户配置】
+        //  【超级用户配置】- 管理员名单
         // ========================================================================
-        const ADMIN_USERS = ["U_BOTE", "TerryGao-FireFly"];
+        const ADMIN_USERS = [
+            "U_BOTE",
+            "TerryGao-FireFly",
+            "王彦锦",
+            "2510班班主任",
+            "陈韵如",
+            "高正懿"
+        ];
 
         function isAdmin(username) {
             return ADMIN_USERS.includes(username);
         }
 
         // ========================================================================
-        //  1. Supabase 客户端
+        //  1. Supabase 客户端（修复空响应 bug）
         // ========================================================================
         async function supabaseRequest(path, options = {}) {
             const url = `${SUPABASE_URL}/rest/v1${path}`;
@@ -1611,12 +1629,45 @@
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 ...options.headers
             };
-            const response = await fetch(url, { ...options, headers });
-            if (!response.ok) {
-                const error = await response.json().catch(() => ({}));
-                throw new Error(error.message || '请求失败');
+
+            // 对于 POST/PATCH 请求，添加 Prefer 头处理空响应
+            if (options.method === 'POST' || options.method === 'PATCH') {
+                headers['Prefer'] = 'return=representation';
             }
-            return response.json();
+
+            const response = await fetch(url, { ...options, headers });
+
+            // 204 No Content 或空响应，直接返回成功
+            if (response.status === 204) {
+                return { success: true };
+            }
+
+            // 检查内容长度
+            const contentLength = response.headers.get('content-length');
+            if (contentLength === '0') {
+                return { success: true };
+            }
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                try {
+                    const error = JSON.parse(errorText);
+                    throw new Error(error.message || '请求失败');
+                } catch {
+                    throw new Error(`请求失败 (${response.status}): ${errorText || '未知错误'}`);
+                }
+            }
+
+            // 尝试解析 JSON
+            const text = await response.text();
+            if (!text || text.trim() === '') {
+                return { success: true };
+            }
+            try {
+                return JSON.parse(text);
+            } catch {
+                return { success: true, raw: text };
+            }
         }
 
         // ========================================================================
@@ -1644,8 +1695,12 @@
             }
         }
 
-        function setSession(username) {
-            localStorage.setItem(SESSION_KEY, JSON.stringify({ username, loginTime: Date.now() }));
+        function setSession(username, userId) {
+            localStorage.setItem(SESSION_KEY, JSON.stringify({
+                username,
+                userId,
+                loginTime: Date.now()
+            }));
         }
 
         function clearSession() {
@@ -1661,8 +1716,13 @@
             return session ? session.username : null;
         }
 
+        function getCurrentUserId() {
+            const session = getSession();
+            return session ? session.userId : null;
+        }
+
         // ========================================================================
-        //  4. 注册
+        //  4. 注册（修复空响应 bug）
         // ========================================================================
         async function register(username, password, passwordConfirm) {
             if (!username || username.length < 3 || username.length > 20) {
@@ -1680,24 +1740,54 @@
 
             const passwordHash = await hashPassword(password);
 
+            // 检查用户名是否已存在
             const existing = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
-            if (existing && existing.length > 0) {
+            if (existing && existing.length > 0 && existing.success !== true) {
                 throw new Error('用户名已被占用');
             }
 
-            await supabaseRequest('/users', {
+            // 创建用户 - 使用 Prefer: return=representation 确保返回数据
+            const result = await supabaseRequest('/users', {
                 method: 'POST',
+                headers: {
+                    'Prefer': 'return=representation'
+                },
                 body: JSON.stringify({
                     username: username,
                     password_hash: passwordHash
                 })
             });
 
+            // 如果返回了数组且包含 id，说明创建成功
+            if (Array.isArray(result) && result.length > 0) {
+                return { success: true, user: result[0] };
+            }
+
+            // 如果返回了单个对象且包含 id
+            if (result && result.id) {
+                return { success: true, user: result };
+            }
+
+            // 如果返回的是 { success: true }，说明创建成功但没返回数据
+            if (result && result.success === true) {
+                // 再次查询获取用户信息
+                const newUser = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
+                if (newUser && newUser.length > 0) {
+                    return { success: true, user: newUser[0] };
+                }
+                return { success: true };
+            }
+
+            // 如果 result 是数字（id），说明创建成功
+            if (typeof result === 'number') {
+                return { success: true };
+            }
+
             return { success: true };
         }
 
         // ========================================================================
-        //  5. 登录
+        //  5. 登录（返回用户信息包含 id）
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) {
@@ -1716,8 +1806,9 @@
                 throw new Error('用户名或密码错误');
             }
 
-            setSession(username);
-            return { success: true, username };
+            // 保存 session，包含用户 ID
+            setSession(username, user.id);
+            return { success: true, username, userId: user.id };
         }
 
         // ========================================================================
@@ -1902,8 +1993,8 @@
         let allFiles = [];
         let currentFilter = 'all';
         let searchQuery = '';
-        const loggedIn = isLoggedIn();
-        const currentUser = getCurrentUser();
+        let currentLoggedIn = isLoggedIn();
+        let currentUser = getCurrentUser();
 
         function renderFiles(fileList) {
             const grid = document.getElementById('fileGrid');
@@ -1937,6 +2028,9 @@
                 return;
             }
 
+            const loggedIn = isLoggedIn();
+            const currentUser = getCurrentUser();
+
             grid.innerHTML = filtered.map(file => {
                 const color = getFileColor(file.extension);
                 const emoji = getFileEmoji(file.extension);
@@ -1950,7 +2044,6 @@
                 let canDelete = false;
                 if (loggedIn && currentUser) {
                     if (file.source === 'local') {
-                        // 超级用户可以删除所有人的文件
                         if (isAdmin(currentUser)) {
                             canDelete = true;
                         } else if (file.uploadedBy === currentUser) {
@@ -2234,7 +2327,6 @@
                 const local = await getAllLocalFiles();
                 const cloud = await fetchGithubFiles();
 
-                // 确保本地文件有 uploadedBy 字段
                 const localWithUploader = local.map(f => {
                     if (!f.uploadedBy) {
                         f.uploadedBy = '未知用户';
@@ -2255,15 +2347,17 @@
         }
 
         // ========================================================================
-        //  15. UI 更新
+        //  15. UI 更新（包含用户 ID 显示）
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
             const username = getCurrentUser();
+            const userId = getCurrentUserId();
 
             const guestButtons = document.getElementById('guestButtons');
             const userInfo = document.getElementById('userInfo');
             const currentUsername = document.getElementById('currentUsername');
+            const currentUserIdEl = document.getElementById('currentUserId');
             const usernameDisplay = document.getElementById('usernameDisplay');
             const loginStatusText = document.getElementById('loginStatusText');
             const uploadTitle = document.getElementById('uploadTitle');
@@ -2274,21 +2368,26 @@
                 guestButtons.classList.add('hidden');
                 userInfo.classList.remove('hidden');
 
+                // 显示用户 ID
+                currentUserIdEl.textContent = `ID: ${userId || '--'}`;
+
                 // 判断是否为管理员
                 if (isAdmin(username)) {
                     usernameDisplay.innerHTML = `
                         <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
                         <span style="color:var(--admin-color);font-weight:700;">${username}</span>
                         <span class="admin-tag">管理员</span>
+                        <span class="user-id">ID: ${userId || '--'}</span>
                     `;
                 } else {
                     usernameDisplay.innerHTML = `
                         <i class="fas fa-user-circle"></i>
                         <span>${username}</span>
+                        <span class="user-id">ID: ${userId || '--'}</span>
                     `;
                 }
 
-                loginStatusText.textContent = `✅ 已登录: ${username}`;
+                loginStatusText.textContent = `✅ 已登录: ${username} (ID: ${userId || '--'})`;
                 uploadTitle.textContent = '📤 拖拽文件到此处，或点击上传';
                 uploadDesc.textContent = '支持所有文件类型 · 单个文件最大 100MB';
                 uploadHint.textContent = '✅ 已登录，可以上传文件';
@@ -2406,9 +2505,9 @@
                 btn.textContent = '登录中...';
 
                 try {
-                    await login(username, password);
+                    const result = await login(username, password);
                     closeAuthModal();
-                    showToast(`✅ 欢迎回来，${username}！`, 'success', 2000);
+                    showToast(`✅ 欢迎回来，${username}！(ID: ${result.userId})`, 'success', 2000);
                     await refreshList();
                     updateUI();
                 } catch (err) {
@@ -2430,7 +2529,7 @@
                 if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click();
             });
 
-            // ---- 注册 ----
+            // ---- 注册（修复版） ----
             document.getElementById('registerSubmitBtn').addEventListener('click', async () => {
                 const username = document.getElementById('registerUsername').value.trim();
                 const password = document.getElementById('registerPassword').value;
@@ -2465,7 +2564,7 @@
                 btn.textContent = '注册中...';
 
                 try {
-                    await register(username, password, confirm);
+                    const result = await register(username, password, confirm);
                     closeAuthModal();
                     showToast(`🎉 注册成功！请登录`, 'success', 2000);
                     openAuthModal('login');
@@ -2562,8 +2661,8 @@
             });
 
             console.log('✅ 2510班资源站已启动！');
-            console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
-            console.log(`👑 超级用户: ${ADMIN_USERS.join(', ')}`);
+            console.log(`👤 当前用户: ${getCurrentUser() || '未登录'} (ID: ${getCurrentUserId() || '--'})`);
+            console.log(`👑 管理员: ${ADMIN_USERS.join(', ')}`);
         });
     </script>
 
