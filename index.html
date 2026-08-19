@@ -2483,14 +2483,12 @@
         }
 
         // ========================================================================
-        //  1. Supabase 客户端（修复版 - 确保 API Key 正确传递）
+        //  1. Supabase 客户端
         // ========================================================================
         async function supabaseRequest(path, options = {}) {
-            // 确保 path 以 / 开头
             const cleanPath = path.startsWith('/') ? path : '/' + path;
             const url = `${SUPABASE_URL}/rest/v1${cleanPath}`;
 
-            // 构建 headers - 确保 API Key 正确传递
             const headers = {
                 'apikey': SUPABASE_ANON_KEY,
                 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
@@ -2498,7 +2496,6 @@
                 ...options.headers
             };
 
-            // POST/PATCH 请求添加 Prefer 头
             if (options.method === 'POST' || options.method === 'PATCH') {
                 headers['Prefer'] = 'return=representation';
             }
@@ -2508,7 +2505,6 @@
                 headers: headers,
             };
 
-            // 如果有 body，添加到请求中
             if (options.body) {
                 fetchOptions.body = options.body;
             }
@@ -2516,18 +2512,15 @@
             try {
                 const response = await fetch(url, fetchOptions);
 
-                // 204 No Content 表示成功但无返回数据
                 if (response.status === 204) {
                     return { success: true };
                 }
 
-                // 检查是否有内容返回
                 const contentLength = response.headers.get('content-length');
                 if (contentLength === '0') {
                     return { success: true };
                 }
 
-                // 检查响应是否成功
                 if (!response.ok) {
                     const errorText = await response.text();
                     try {
@@ -2538,7 +2531,6 @@
                     }
                 }
 
-                // 解析响应
                 const text = await response.text();
                 if (!text || text.trim() === '') {
                     return { success: true };
@@ -2677,7 +2669,6 @@
                 throw new Error('用户名或密码错误');
             }
 
-            // 检查是否被封禁
             const bans = await supabaseRequest(`/bans?banned_user=eq.${encodeURIComponent(username)}`);
             if (bans && bans.length > 0) {
                 throw new Error(`您已被封禁！原因: ${bans[0].reason || '未说明'}`);
@@ -2773,20 +2764,18 @@
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
-        // 初始化 Storage Bucket
         async function initStorage() {
             try {
-                // 检查 bucket 是否存在
-                const res = await fetch(`${SUPABASE_URL}/storage/v1/bucket/${STORAGE_BUCKET}`, {
+                const url = `${SUPABASE_URL}/storage/v1/bucket/${STORAGE_BUCKET}`;
+                const response = await fetch(url, {
                     headers: {
                         'apikey': SUPABASE_ANON_KEY,
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     }
                 });
 
-                if (res.status === 404) {
-                    // 创建 bucket
-                    await fetch(`${SUPABASE_URL}/storage/v1/bucket`, {
+                if (response.status === 404) {
+                    const createRes = await fetch(`${SUPABASE_URL}/storage/v1/bucket`, {
                         method: 'POST',
                         headers: {
                             'apikey': SUPABASE_ANON_KEY,
@@ -2799,14 +2788,23 @@
                             public: true
                         })
                     });
-                    console.log('✅ Storage bucket 已创建');
+
+                    if (createRes.ok) {
+                        console.log('✅ Storage bucket 已创建');
+                    } else {
+                        const error = await createRes.text();
+                        console.error('创建 bucket 失败:', error);
+                    }
+                } else if (response.ok) {
+                    console.log('✅ Storage bucket 已存在');
+                } else {
+                    console.warn('检查 bucket 状态:', response.status);
                 }
             } catch (err) {
                 console.error('初始化 Storage 失败:', err);
             }
         }
 
-        // 上传文件到 Storage
         async function uploadFileToStorage(file, fileName) {
             const filePath = `uploads/${Date.now()}_${fileName}`;
             const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
@@ -2826,12 +2824,10 @@
                 throw new Error(`上传失败: ${error}`);
             }
 
-            // 获取公开 URL
             const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filePath}`;
             return { filePath, publicUrl };
         }
 
-        // 删除 Storage 文件
         async function deleteFileFromStorage(filePath) {
             const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
             const response = await fetch(url, {
@@ -2848,7 +2844,45 @@
         }
 
         // ========================================================================
-        //  9. 文件数据库操作
+        //  9. 获取存储用量
+        // ========================================================================
+        async function getStorageUsage() {
+            try {
+                const url = `${SUPABASE_URL}/storage/v1/bucket/${STORAGE_BUCKET}/objects`;
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                if (response.status === 404) {
+                    return { used: 0, total: 1024 * 1024 * 1024 };
+                }
+
+                if (!response.ok) {
+                    console.warn('获取存储用量失败:', await response.text());
+                    return { used: 0, total: 1024 * 1024 * 1024 };
+                }
+
+                const objects = await response.json();
+                let totalSize = 0;
+                if (Array.isArray(objects)) {
+                    totalSize = objects.reduce((sum, obj) => sum + (obj.metadata?.size || 0), 0);
+                }
+
+                return {
+                    used: totalSize,
+                    total: 1024 * 1024 * 1024
+                };
+            } catch (err) {
+                console.error('获取存储用量失败:', err);
+                return { used: 0, total: 1024 * 1024 * 1024 };
+            }
+        }
+
+        // ========================================================================
+        //  10. 文件数据库操作
         // ========================================================================
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
@@ -2911,43 +2945,9 @@
         }
 
         // ========================================================================
-        //  10. 获取存储用量
-        // ========================================================================
-        async function getStorageUsage() {
-            try {
-                const url = `${SUPABASE_URL}/storage/v1/bucket/${STORAGE_BUCKET}/objects`;
-                const response = await fetch(url, {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
-
-                if (!response.ok) {
-                    return { used: 0, total: 1024 * 1024 * 1024 };
-                }
-
-                const objects = await response.json();
-                let totalSize = 0;
-                if (Array.isArray(objects)) {
-                    totalSize = objects.reduce((sum, obj) => sum + (obj.metadata?.size || 0), 0);
-                }
-
-                return {
-                    used: totalSize,
-                    total: 1024 * 1024 * 1024 // 1GB
-                };
-            } catch (err) {
-                console.error('获取存储用量失败:', err);
-                return { used: 0, total: 1024 * 1024 * 1024 };
-            }
-        }
-
-        // ========================================================================
         //  11. 封禁管理
         // ========================================================================
         async function banUser(bannedUser, bannedBy, reason) {
-            // 检查是否已被封禁
             const existing = await supabaseRequest(`/bans?banned_user=eq.${encodeURIComponent(bannedUser)}`);
             if (existing && existing.length > 0) {
                 throw new Error('该用户已被封禁');
@@ -2979,7 +2979,265 @@
         }
 
         // ========================================================================
-        //  12. 工具函数
+        //  12. 举报功能
+        // ========================================================================
+        async function reportFile(fileId, reportedBy, reason) {
+            if (!reason || reason.trim().length < 5) {
+                throw new Error('请详细描述举报原因（至少5个字）');
+            }
+
+            await supabaseRequest('/reports', {
+                method: 'POST',
+                body: JSON.stringify({
+                    file_id: fileId,
+                    reported_by: reportedBy,
+                    reason: reason.trim(),
+                    status: 'pending'
+                })
+            });
+
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  13. 举报审核
+        // ========================================================================
+        async function fetchReports(status = null) {
+            try {
+                let url = '/reports?order=created_at.desc';
+                if (status) {
+                    url += `&status=eq.${status}`;
+                }
+                const result = await supabaseRequest(url);
+                if (result && result.success !== true) {
+                    return Array.isArray(result) ? result : [];
+                }
+                return [];
+            } catch (err) {
+                console.error('获取举报列表失败:', err);
+                return [];
+            }
+        }
+
+        async function updateReportStatus(reportId, status) {
+            await supabaseRequest(`/reports?id=eq.${reportId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: status })
+            });
+            return { success: true };
+        }
+
+        async function openReportsReview() {
+            const overlay = document.createElement('div');
+            overlay.id = 'reportsReviewModal';
+            overlay.style.cssText = `
+                position: fixed; inset: 0; background: rgba(0,0,0,0.40);
+                backdrop-filter: blur(8px); z-index: 99999;
+                display: flex; align-items: center; justify-content: center;
+                animation: fadeInOverlay 0.25s ease;
+            `;
+
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                background: #fff; border-radius: 16px; padding: 28px 24px 24px;
+                max-width: 750px; width: 92%; max-height: 85vh;
+                box-shadow: 0 24px 64px rgba(0,0,0,0.20);
+                display: flex; flex-direction: column;
+                animation: scaleIn 0.3s ease;
+                position: relative;
+            `;
+
+            modal.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <h3 style="font-size:20px;font-weight:700;">
+                        <i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核中心
+                        <span id="reportsCount" style="font-size:14px;font-weight:400;color:var(--text-light);"></span>
+                    </h3>
+                    <button id="closeReportsBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
+                </div>
+                <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+                    <button class="reports-filter-btn active" data-filter="all" style="padding:4px 14px;border:none;border-radius:8px;background:var(--primary);color:#fff;font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">全部</button>
+                    <button class="reports-filter-btn" data-filter="pending" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">待处理</button>
+                    <button class="reports-filter-btn" data-filter="resolved" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已处理</button>
+                    <button class="reports-filter-btn" data-filter="dismissed" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已驳回</button>
+                </div>
+                <div id="reportsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;">
+                    <div style="text-align:center;padding:30px 0;color:var(--text-light);">
+                        <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...
+                    </div>
+                </div>
+            `;
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            document.getElementById('closeReportsBtn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) overlay.remove();
+            });
+
+            document.querySelectorAll('.reports-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.reports-filter-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = '#f1f3f5';
+                        b.style.color = 'var(--text-secondary)';
+                    });
+                    btn.classList.add('active');
+                    btn.style.background = 'var(--primary)';
+                    btn.style.color = '#fff';
+                    loadReports(btn.dataset.filter);
+                });
+            });
+
+            await loadReports('all');
+        }
+
+        async function loadReports(filter) {
+            const list = document.getElementById('reportsList');
+            const countEl = document.getElementById('reportsCount');
+
+            try {
+                const reports = await fetchReports(filter === 'all' ? null : filter);
+                countEl.textContent = `(${reports.length} 条)`;
+
+                if (reports.length === 0) {
+                    list.innerHTML = `
+                        <div style="text-align:center;padding:30px 0;color:var(--text-light);">
+                            <i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>
+                            暂无举报记录
+                        </div>
+                    `;
+                    return;
+                }
+
+                const fileIds = reports.map(r => r.file_id).filter(id => id);
+                let filesMap = {};
+                if (fileIds.length > 0) {
+                    try {
+                        const files = await supabaseRequest(`/files?id=in.(${fileIds.join(',')})`);
+                        if (files && files.length > 0) {
+                            files.forEach(f => { filesMap[f.id] = f; });
+                        }
+                    } catch (e) {
+                        console.warn('获取文件信息失败:', e);
+                    }
+                }
+
+                list.innerHTML = reports.map(report => {
+                    const file = filesMap[report.file_id];
+                    const statusMap = {
+                        pending: { label: '⏳ 待处理', color: '#D97706', bg: '#FEF3C7' },
+                        resolved: { label: '✅ 已处理', color: '#059669', bg: '#D1FAE5' },
+                        dismissed: { label: '❌ 已驳回', color: '#DC2626', bg: '#FEE2E2' }
+                    };
+                    const statusInfo = statusMap[report.status] || statusMap.pending;
+
+                    return `
+                        <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+                                <div style="flex:1;min-width:150px;">
+                                    <div style="font-weight:600;font-size:14px;">
+                                        📁 ${file ? file.file_name : '文件已删除 (ID: ' + report.file_id + ')'}
+                                    </div>
+                                    <div style="font-size:13px;color:var(--text-secondary);">
+                                        📝 ${report.reason || '未说明原因'}
+                                    </div>
+                                    <div style="font-size:12px;color:var(--text-light);margin-top:4px;">
+                                        🚨 举报人: ${report.reported_by} · ${formatTime(report.created_at)}
+                                        ${file ? ` · 上传者: ${file.uploaded_by}` : ''}
+                                    </div>
+                                </div>
+                                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                                    <span style="font-size:12px;font-weight:600;padding:2px 12px;border-radius:10px;background:${statusInfo.bg};color:${statusInfo.color};">
+                                        ${statusInfo.label}
+                                    </span>
+                                    ${report.status === 'pending' ? `
+                                        <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
+                                            <button class="report-resolve-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
+                                                ✅ 处理
+                                            </button>
+                                            <button class="report-dismiss-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#6B7280;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
+                                                ❌ 驳回
+                                            </button>
+                                            ${file ? `<button class="report-delete-file-btn" data-id="${report.id}" data-file-id="${file.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
+                                                🗑️ 删除文件
+                                            </button>` : ''}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                list.querySelectorAll('.report-resolve-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('确认已处理此举报？')) {
+                            try {
+                                await updateReportStatus(id, 'resolved');
+                                showToast('✅ 举报已标记为已处理', 'success');
+                                await loadReports(document.querySelector('.reports-filter-btn.active')
+                                    ?.dataset.filter || 'all');
+                            } catch (err) {
+                                showToast(`❌ ${err.message}`, 'error');
+                            }
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.report-dismiss-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('确认驳回此举报？')) {
+                            try {
+                                await updateReportStatus(id, 'dismissed');
+                                showToast('✅ 举报已驳回', 'success');
+                                await loadReports(document.querySelector('.reports-filter-btn.active')
+                                    ?.dataset.filter || 'all');
+                            } catch (err) {
+                                showToast(`❌ ${err.message}`, 'error');
+                            }
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.report-delete-file-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const reportId = parseInt(btn.dataset.id);
+                        const fileId = parseInt(btn.dataset.fileId);
+                        if (confirm('⚠️ 确定要删除此文件并处理举报吗？')) {
+                            try {
+                                const file = allFiles.find(f => f.id === fileId);
+                                if (file && file.file_path) {
+                                    await deleteFileFromStorage(file.file_path);
+                                }
+                                await deleteFileRecord(fileId);
+                                await updateReportStatus(reportId, 'resolved');
+                                showToast('🗑️ 文件已删除，举报已处理', 'success');
+                                await refreshAll();
+                                await loadReports(document.querySelector('.reports-filter-btn.active')
+                                    ?.dataset.filter || 'all');
+                            } catch (err) {
+                                showToast(`❌ ${err.message}`, 'error');
+                            }
+                        }
+                    });
+                });
+
+            } catch (err) {
+                list.innerHTML = `
+                    <div style="text-align:center;padding:30px 0;color:#EF4444;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>
+                        加载失败: ${err.message}
+                    </div>
+                `;
+            }
+        }
+
+        // ========================================================================
+        //  14. 工具函数
         // ========================================================================
         function formatSize(bytes) {
             if (bytes === 0) return '0 B';
@@ -3040,7 +3298,7 @@
         }
 
         // ========================================================================
-        //  13. Toast 通知
+        //  15. Toast 通知
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
@@ -3064,7 +3322,7 @@
         }
 
         // ========================================================================
-        //  14. 渲染公告（带折叠功能）
+        //  16. 渲染公告
         // ========================================================================
         let announcements = [];
         let announcementsExpanded = false;
@@ -3151,7 +3409,6 @@
                 `;
             });
 
-            // 如果有多余5条，添加展开/折叠按钮
             if (announcements.length > MAX_VISIBLE_ANNOUNCEMENTS) {
                 const toggleText = announcementsExpanded ? '收起 ↑' : `展开查看更多 (${announcements.length - MAX_VISIBLE_ANNOUNCEMENTS} 条) ↓`;
                 html += `
@@ -3163,7 +3420,6 @@
 
             container.innerHTML = html;
 
-            // 绑定删除事件
             container.querySelectorAll('.delete-announce-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = parseInt(btn.dataset.id);
@@ -3174,7 +3430,6 @@
                 });
             });
 
-            // 绑定折叠按钮事件
             const toggleBtn = document.getElementById('announcementToggleBtn');
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', () => {
@@ -3185,7 +3440,7 @@
         }
 
         // ========================================================================
-        //  15. 渲染文件列表
+        //  17. 渲染文件列表
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
@@ -3193,7 +3448,6 @@
         let currentUserBanned = false;
 
         function renderFiles(fileList) {
-            // 确保文件网格存在
             let grid = document.getElementById('fileGrid');
             if (!grid) {
                 const container = document.getElementById('fileContent');
@@ -3208,13 +3462,11 @@
             const fileCountEl = document.getElementById('fileCount');
             const totalSizeEl = document.getElementById('totalSize');
 
-            // 安全检查
             if (!countEl || !fileCountEl || !totalSizeEl) {
                 console.warn('统计元素缺失');
                 return;
             }
 
-            // 检查用户是否被封禁
             if (currentUserBanned) {
                 const container = document.getElementById('fileContent');
                 if (container) {
@@ -3233,7 +3485,6 @@
             }
 
             let filtered = [...fileList];
-            // 只显示已通过审核的文件
             filtered = filtered.filter(f => f.status === 'approved');
 
             if (currentFilter !== 'all') {
@@ -3347,7 +3598,6 @@
                 `;
             }).join('');
 
-            // 绑定按钮事件
             if (loggedIn) {
                 grid.querySelectorAll('.download-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -3385,26 +3635,8 @@
         }
 
         // ========================================================================
-        //  16. 举报功能
+        //  18. 举报弹窗
         // ========================================================================
-        async function reportFile(fileId, reportedBy, reason) {
-            if (!reason || reason.trim().length < 5) {
-                throw new Error('请详细描述举报原因（至少5个字）');
-            }
-
-            await supabaseRequest('/reports', {
-                method: 'POST',
-                body: JSON.stringify({
-                    file_id: fileId,
-                    reported_by: reportedBy,
-                    reason: reason.trim(),
-                    status: 'pending'
-                })
-            });
-
-            return { success: true };
-        }
-
         function showReportFileModal(fileId) {
             const reason = prompt('请输入举报原因（至少5个字）：');
             if (reason === null) return;
@@ -3429,7 +3661,7 @@
         }
 
         // ========================================================================
-        //  17. 管理员审核面板
+        //  19. 管理员审核面板
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -3439,7 +3671,6 @@
                 const pendingFiles = await fetchFiles('pending');
                 if (pendingFiles.length === 0) return;
 
-                // 在公告下方显示审核提示
                 const announcementSection = document.querySelector('.announcement-section');
                 const existingPanel = document.getElementById('adminReviewPanel');
                 if (existingPanel) existingPanel.remove();
@@ -3479,7 +3710,6 @@
         }
 
         function openReviewModal() {
-            // 创建一个简单审核模态框
             const overlay = document.createElement('div');
             overlay.id = 'reviewModal';
             overlay.style.cssText = `
@@ -3514,7 +3744,6 @@
             overlay.appendChild(modal);
             document.body.appendChild(overlay);
 
-            // 关闭按钮
             document.getElementById('closeReviewBtn').addEventListener('click', () => {
                 overlay.remove();
             });
@@ -3522,7 +3751,6 @@
                 if (e.target === overlay) overlay.remove();
             });
 
-            // 加载待审核文件
             loadPendingReviews();
         }
 
@@ -3563,7 +3791,6 @@
                     </div>
                 `).join('');
 
-                // 绑定审核按钮
                 list.querySelectorAll('.review-approve-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -3587,7 +3814,6 @@
                         if (reason === null) return;
                         try {
                             await updateFileStatus(id, 'rejected', getCurrentUser(), reason || '未说明原因');
-                            // 删除文件
                             const file = allFiles.find(f => f.id === id);
                             if (file && file.file_path) {
                                 await deleteFileFromStorage(file.file_path);
@@ -3613,7 +3839,7 @@
         }
 
         // ========================================================================
-        //  18. 删除文件相关
+        //  20. 删除文件相关
         // ========================================================================
         let deleteFileTargetId = null;
 
@@ -3655,7 +3881,7 @@
         }
 
         // ========================================================================
-        //  19. 删除公告相关
+        //  21. 删除公告相关
         // ========================================================================
         let deleteAnnouncementTargetId = null;
 
@@ -3692,7 +3918,7 @@
         }
 
         // ========================================================================
-        //  20. 加载公告
+        //  22. 加载公告
         // ========================================================================
         async function loadAnnouncements() {
             try {
@@ -3705,7 +3931,7 @@
         }
 
         // ========================================================================
-        //  21. 封禁记录弹窗
+        //  23. 封禁记录弹窗
         // ========================================================================
         async function showBanRecords() {
             const modal = document.getElementById('banModal');
@@ -3761,7 +3987,7 @@
         }
 
         // ========================================================================
-        //  22. 封禁用户
+        //  24. 封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -3810,7 +4036,7 @@
         }
 
         // ========================================================================
-        //  23. 用户列表（管理员用）
+        //  25. 用户列表（管理员用）
         // ========================================================================
         async function getUserList() {
             try {
@@ -3825,14 +4051,12 @@
             }
         }
 
-        // 在顶栏添加管理员操作菜单
         function addAdminMenu() {
             const userInfo = document.getElementById('userInfo');
             const currentUser = getCurrentUser();
 
             if (!currentUser || !isAdmin(currentUser)) return;
 
-            // 检查是否已存在
             if (document.getElementById('adminMenu')) return;
 
             const menu = document.createElement('span');
@@ -3851,16 +4075,17 @@
                     <button class="admin-dropdown-item" data-action="ban" style="display:flex;align-items:center;gap:10px;padding:10px 18px;border:none;background:none;width:100%;text-align:left;font-size:14px;cursor:pointer;font-family:var(--font);transition:var(--transition);color:var(--text-primary);">
                         <i class="fas fa-gavel" style="color:#EF4444;"></i> 封禁用户
                     </button>
+                    <button class="admin-dropdown-item" data-action="reports" style="display:flex;align-items:center;gap:10px;padding:10px 18px;border:none;background:none;width:100%;text-align:left;font-size:14px;cursor:pointer;font-family:var(--font);transition:var(--transition);color:var(--text-primary);">
+                        <i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核
+                    </button>
                 </div>
             `;
 
-            // 插入到登出按钮前面
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn && userInfo) {
                 userInfo.insertBefore(menu, logoutBtn);
             }
 
-            // 下拉菜单控制
             const menuBtn = document.getElementById('adminMenuBtn');
             const dropdown = document.getElementById('adminDropdown');
 
@@ -3874,7 +4099,6 @@
                     dropdown.style.display = 'none';
                 });
 
-                // 菜单项事件
                 document.querySelectorAll('.admin-dropdown-item').forEach(item => {
                     item.addEventListener('click', () => {
                         dropdown.style.display = 'none';
@@ -3883,6 +4107,8 @@
                             openReviewModal();
                         } else if (action === 'ban') {
                             showBanUserSelector();
+                        } else if (action === 'reports') {
+                            openReportsReview();
                         }
                     });
                 });
@@ -3890,14 +4116,13 @@
         }
 
         // ========================================================================
-        //  24. 封禁用户选择器
+        //  26. 封禁用户选择器
         // ========================================================================
         async function showBanUserSelector() {
             try {
                 const users = await getUserList();
                 const currentUser = getCurrentUser();
 
-                // 过滤掉管理员和站长自己
                 const availableUsers = users.filter(u =>
                     u.username !== currentUser &&
                     !isAdmin(u.username)
@@ -3908,7 +4133,6 @@
                     return;
                 }
 
-                // 创建选择对话框
                 const overlay = document.createElement('div');
                 overlay.style.cssText = `
                     position: fixed; inset: 0; background: rgba(0,0,0,0.40);
@@ -3944,7 +4168,6 @@
                 overlay.appendChild(modal);
                 document.body.appendChild(overlay);
 
-                // 绑定事件
                 modal.querySelectorAll('.ban-user-select-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const username = btn.dataset.username;
@@ -3967,12 +4190,11 @@
         }
 
         // ========================================================================
-        //  25. 刷新所有数据
+        //  27. 刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
                 const currentUser = getCurrentUser();
-                // 检查当前用户是否被封禁
                 if (currentUser) {
                     const banInfo = await isUserBanned(currentUser);
                     currentUserBanned = !!banInfo;
@@ -3980,22 +4202,17 @@
                     currentUserBanned = false;
                 }
 
-                // 加载文件
                 const files = await fetchFiles();
                 allFiles = Array.isArray(files) ? files : [];
                 renderFiles(allFiles);
 
-                // 加载公告
                 await loadAnnouncements();
 
-                // 更新存储用量
                 const usage = await getStorageUsage();
                 updateStorageUI(usage);
 
-                // 更新UI
                 updateUI();
 
-                // 管理员菜单
                 if (currentUser && isAdmin(currentUser)) {
                     addAdminMenu();
                     await loadAdminPanel();
@@ -4008,7 +4225,7 @@
         }
 
         // ========================================================================
-        //  26. 更新存储用量 UI
+        //  28. 更新存储用量 UI
         // ========================================================================
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
@@ -4034,7 +4251,7 @@
         }
 
         // ========================================================================
-        //  27. UI 更新
+        //  29. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -4054,7 +4271,6 @@
 
                 if (currentUserIdEl) currentUserIdEl.textContent = `ID: ${userId || '--'}`;
 
-                // 检查是否被封禁
                 const role = getRole(username);
                 const isBanned = currentUserBanned;
 
@@ -4100,7 +4316,7 @@
         }
 
         // ========================================================================
-        //  28. 认证模态框控制
+        //  30. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -4135,7 +4351,7 @@
         }
 
         // ========================================================================
-        //  29. 文件上传
+        //  31. 文件上传
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) {
@@ -4155,7 +4371,6 @@
             container.classList.add('active');
 
             for (const file of Array.from(fileList)) {
-                // 文件大小限制 50MB
                 if (file.size > 50 * 1024 * 1024) {
                     showToast(`❌ ${file.name} 超过 50MB 限制`, 'error');
                     continue;
@@ -4177,7 +4392,6 @@
                 container.appendChild(item);
 
                 try {
-                    // 模拟进度
                     let progress = 0;
                     const interval = setInterval(() => {
                         progress += Math.random() * 10 + 5;
@@ -4191,13 +4405,11 @@
                         status.textContent = Math.min(progress, 90) + '%';
                     }, 200);
 
-                    // 上传到 Storage
                     const fileName = file.name;
                     const uploadResult = await uploadFileToStorage(file, fileName);
 
                     clearInterval(interval);
 
-                    // 创建数据库记录
                     const fileData = {
                         file_name: fileName,
                         file_size: file.size,
@@ -4210,7 +4422,6 @@
 
                     await createFileRecord(fileData);
 
-                    // 完成
                     const fill = item.querySelector('.fill');
                     const status = item.querySelector('.status');
                     fill.style.width = '100%';
@@ -4219,7 +4430,6 @@
 
                     showToast(`✅ ${fileName} 上传成功，等待管理员审核`, 'success', 3000);
 
-                    // 如果是管理员，自动通过
                     if (isAdmin(currentUser)) {
                         const files = await fetchFiles();
                         const newFile = files.find(f => f.file_name === fileName && f.uploaded_by === currentUser);
@@ -4248,13 +4458,11 @@
         }
 
         // ========================================================================
-        //  30. 初始化 & 事件绑定
+        //  32. 初始化 & 事件绑定
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
-            // 初始化 Storage
             await initStorage();
 
-            // 添加错误捕获，防止页面崩溃
             try {
                 await refreshAll();
             } catch (err) {
@@ -4677,7 +4885,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整修复版）');
+            console.log('✅ 2510班资源站已启动！（完整修复版 + 举报审核）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER).join(', ')}`);
