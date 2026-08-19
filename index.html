@@ -29,6 +29,7 @@
             --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             --admin-color: #7C3AED;
+            --owner-color: #DC2626;
         }
 
         body {
@@ -130,8 +131,23 @@
             margin-left: 4px;
         }
 
+        .topbar .user-section .username-display .owner-tag {
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--owner-color);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 4px;
+        }
+
         .topbar .user-section .username-display .admin-name {
             color: var(--admin-color);
+            font-weight: 700;
+        }
+
+        .topbar .user-section .username-display .owner-name {
+            color: var(--owner-color);
             font-weight: 700;
         }
 
@@ -276,6 +292,252 @@
             font-weight: 700;
             color: var(--text-primary);
             font-size: 16px;
+        }
+
+        /* ========== 公告区域 ========== */
+        .announcement-section {
+            margin-bottom: 24px;
+        }
+
+        .announcement-section .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .announcement-section .section-title i {
+            color: var(--primary);
+        }
+
+        .announcement-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .announcement-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .announcement-item:hover {
+            box-shadow: 0 8px 24px rgba(91, 106, 240, 0.10);
+            transform: translateY(-1px);
+        }
+
+        .announcement-item .announcement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .announcement-item .announcement-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .announcement-item .announcement-title .pin-icon {
+            color: #F59E0B;
+            font-size: 14px;
+        }
+
+        .announcement-item .announcement-meta {
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .announcement-item .announcement-meta .author-name {
+            font-weight: 600;
+        }
+
+        .announcement-item .announcement-meta .author-name.admin {
+            color: var(--admin-color);
+        }
+
+        .announcement-item .announcement-meta .author-name.owner {
+            color: var(--owner-color);
+        }
+
+        .announcement-item .announcement-meta .tag {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 10px;
+            border-radius: 10px;
+        }
+
+        .announcement-item .announcement-meta .tag.admin-tag {
+            background: var(--admin-color);
+            color: #fff;
+        }
+
+        .announcement-item .announcement-meta .tag.owner-tag {
+            background: var(--owner-color);
+            color: #fff;
+        }
+
+        .announcement-item .announcement-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: 4px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .announcement-item .announcement-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .announcement-item .announcement-actions button {
+            padding: 4px 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .announcement-item .announcement-actions .delete-announce-btn {
+            background: rgba(239, 68, 68, 0.08);
+            color: #EF4444;
+        }
+
+        .announcement-item .announcement-actions .delete-announce-btn:hover {
+            background: rgba(239, 68, 68, 0.16);
+        }
+
+        .announcement-item .announcement-actions .delete-announce-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* 发布公告表单 */
+        .announcement-form {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            display: none;
+        }
+
+        .announcement-form.active {
+            display: block;
+        }
+
+        .announcement-form .form-row {
+            margin-bottom: 12px;
+        }
+
+        .announcement-form .form-row label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .announcement-form .form-row input,
+        .announcement-form .form-row textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: var(--font);
+            outline: none;
+            background: #f8fafc;
+        }
+
+        .announcement-form .form-row input:focus,
+        .announcement-form .form-row textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91, 106, 240, 0.12);
+            background: #fff;
+        }
+
+        .announcement-form .form-row textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .announcement-form .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .announcement-form .form-actions button {
+            padding: 8px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .announcement-form .form-actions .submit-btn {
+            background: var(--gradient);
+            color: #fff;
+        }
+
+        .announcement-form .form-actions .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(91, 106, 240, 0.30);
+        }
+
+        .announcement-form .form-actions .cancel-btn {
+            background: #F1F3F5;
+            color: var(--text-secondary);
+        }
+
+        .announcement-form .form-actions .cancel-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .empty-announcement {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .empty-announcement i {
+            font-size: 32px;
+            opacity: 0.3;
+            display: block;
+            margin-bottom: 8px;
         }
 
         /* ========== 登录/注册模态框 ========== */
@@ -926,10 +1188,24 @@
             color: var(--admin-color);
         }
 
+        .file-card .file-uploader .uploader-name.owner {
+            color: var(--owner-color);
+        }
+
         .file-card .file-uploader .admin-tag {
             font-size: 9px;
             font-weight: 700;
             background: var(--admin-color);
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 2px;
+        }
+
+        .file-card .file-uploader .owner-tag {
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--owner-color);
             color: #fff;
             padding: 1px 8px;
             border-radius: 10px;
@@ -1300,6 +1576,17 @@
                 white-space: normal;
             }
 
+            .announcement-item {
+                padding: 14px 16px;
+            }
+            .announcement-item .announcement-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .announcement-form {
+                padding: 16px;
+            }
+
             .upload-zone {
                 padding: 32px 20px;
             }
@@ -1445,6 +1732,41 @@
             </div>
         </header>
 
+        <!-- ====== 📢 公告区域 ====== -->
+        <div class="announcement-section">
+            <div class="section-title">
+                <i class="fas fa-bullhorn"></i>
+                全站公告
+                <span style="font-size:13px;font-weight:400;color:var(--text-light);" id="announcementCount"></span>
+                <button class="refresh-btn" id="refreshAnnouncementsBtn" style="margin-left:auto;padding:4px 12px;font-size:12px;">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+            </div>
+
+            <!-- 发布公告表单（仅管理员/站长可见） -->
+            <div class="announcement-form" id="announcementForm">
+                <div class="form-row">
+                    <label>公告标题</label>
+                    <input type="text" id="announcementTitle" placeholder="输入公告标题..." maxlength="100" />
+                </div>
+                <div class="form-row">
+                    <label>公告内容</label>
+                    <textarea id="announcementContent" placeholder="输入公告内容..." rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="submit-btn" id="publishAnnouncementBtn">
+                        <i class="fas fa-paper-plane"></i> 发布公告
+                    </button>
+                    <button class="cancel-btn" id="cancelAnnouncementBtn">取消</button>
+                </div>
+            </div>
+
+            <!-- 公告列表 -->
+            <div class="announcement-list" id="announcementList">
+                <!-- 由 JS 动态渲染 -->
+            </div>
+        </div>
+
         <!-- ====== 介绍横幅 ====== -->
         <div class="intro-banner">
             <div class="intro-avatar">📖</div>
@@ -1578,7 +1900,7 @@
         </div>
     </div>
 
-    <!-- ====== 删除确认弹窗 ====== -->
+    <!-- ====== 删除确认弹窗（文件） ====== -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal-box">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -1587,6 +1909,19 @@
             <div class="modal-actions">
                 <button class="cancel-btn" id="modalCancelBtn">取消</button>
                 <button class="confirm-btn" id="modalConfirmBtn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 删除公告确认弹窗 ====== -->
+    <div class="modal-overlay" id="deleteAnnouncementModal">
+        <div class="modal-box">
+            <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3>确认删除公告</h3>
+            <p id="deleteAnnouncementMsg">确定要删除此公告吗？</p>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="deleteAnnouncementCancelBtn">取消</button>
+                <button class="confirm-btn" id="deleteAnnouncementConfirmBtn">确认删除</button>
             </div>
         </div>
     </div>
@@ -1603,8 +1938,10 @@
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjYXZkd3Rhbm9tcHV1Z3JhZXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTA2ODQsImV4cCI6MjEwMjYyNjY4NH0.I8__ydLirwnfEG-ijHEaa-JMaoTY2EBBlwN2TCkETSk";
 
         // ========================================================================
-        //  【超级用户配置】- 管理员名单
+        //  【角色配置】
         // ========================================================================
+        const OWNER_USER = "U_BOTE"; // 站长
+
         const ADMIN_USERS = [
             "U_BOTE",
             "TerryGao-FireFly",
@@ -1614,12 +1951,22 @@
             "高正懿"
         ];
 
+        function isOwner(username) {
+            return username === OWNER_USER;
+        }
+
         function isAdmin(username) {
             return ADMIN_USERS.includes(username);
         }
 
+        function getRole(username) {
+            if (isOwner(username)) return 'owner';
+            if (isAdmin(username)) return 'admin';
+            return 'user';
+        }
+
         // ========================================================================
-        //  1. Supabase 客户端（修复空响应 bug）
+        //  1. Supabase 客户端
         // ========================================================================
         async function supabaseRequest(path, options = {}) {
             const url = `${SUPABASE_URL}/rest/v1${path}`;
@@ -1630,19 +1977,16 @@
                 ...options.headers
             };
 
-            // 对于 POST/PATCH 请求，添加 Prefer 头处理空响应
             if (options.method === 'POST' || options.method === 'PATCH') {
                 headers['Prefer'] = 'return=representation';
             }
 
             const response = await fetch(url, { ...options, headers });
 
-            // 204 No Content 或空响应，直接返回成功
             if (response.status === 204) {
                 return { success: true };
             }
 
-            // 检查内容长度
             const contentLength = response.headers.get('content-length');
             if (contentLength === '0') {
                 return { success: true };
@@ -1658,7 +2002,6 @@
                 }
             }
 
-            // 尝试解析 JSON
             const text = await response.text();
             if (!text || text.trim() === '') {
                 return { success: true };
@@ -1722,7 +2065,7 @@
         }
 
         // ========================================================================
-        //  4. 注册（修复空响应 bug）
+        //  4. 注册
         // ========================================================================
         async function register(username, password, passwordConfirm) {
             if (!username || username.length < 3 || username.length > 20) {
@@ -1740,13 +2083,11 @@
 
             const passwordHash = await hashPassword(password);
 
-            // 检查用户名是否已存在
             const existing = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
             if (existing && existing.length > 0 && existing.success !== true) {
                 throw new Error('用户名已被占用');
             }
 
-            // 创建用户 - 使用 Prefer: return=representation 确保返回数据
             const result = await supabaseRequest('/users', {
                 method: 'POST',
                 headers: {
@@ -1758,36 +2099,24 @@
                 })
             });
 
-            // 如果返回了数组且包含 id，说明创建成功
             if (Array.isArray(result) && result.length > 0) {
                 return { success: true, user: result[0] };
             }
-
-            // 如果返回了单个对象且包含 id
             if (result && result.id) {
                 return { success: true, user: result };
             }
-
-            // 如果返回的是 { success: true }，说明创建成功但没返回数据
             if (result && result.success === true) {
-                // 再次查询获取用户信息
                 const newUser = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
                 if (newUser && newUser.length > 0) {
                     return { success: true, user: newUser[0] };
                 }
                 return { success: true };
             }
-
-            // 如果 result 是数字（id），说明创建成功
-            if (typeof result === 'number') {
-                return { success: true };
-            }
-
             return { success: true };
         }
 
         // ========================================================================
-        //  5. 登录（返回用户信息包含 id）
+        //  5. 登录
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) {
@@ -1806,13 +2135,85 @@
                 throw new Error('用户名或密码错误');
             }
 
-            // 保存 session，包含用户 ID
             setSession(username, user.id);
             return { success: true, username, userId: user.id };
         }
 
         // ========================================================================
-        //  6. 工具函数
+        //  6. 公告管理
+        // ========================================================================
+        async function fetchAnnouncements() {
+            try {
+                const result = await supabaseRequest('/announcements?order=created_at.desc');
+                if (result && result.success !== true) {
+                    return Array.isArray(result) ? result : [];
+                }
+                return [];
+            } catch (err) {
+                console.error('获取公告失败:', err);
+                return [];
+            }
+        }
+
+        async function publishAnnouncement(title, content, author) {
+            if (!title || !content) {
+                throw new Error('标题和内容不能为空');
+            }
+            if (title.length > 100) {
+                throw new Error('标题不能超过100个字符');
+            }
+
+            const role = getRole(author);
+            const isAdminUser = role === 'admin' || role === 'owner';
+
+            const result = await supabaseRequest('/announcements', {
+                method: 'POST',
+                headers: {
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify({
+                    title: title.trim(),
+                    content: content.trim(),
+                    author: author,
+                    is_admin: isAdminUser
+                })
+            });
+
+            return { success: true };
+        }
+
+        async function deleteAnnouncement(id, currentUser) {
+            // 先获取公告信息，检查权限
+            const announcements = await supabaseRequest(`/announcements?id=eq.${id}`);
+            if (!announcements || announcements.length === 0) {
+                throw new Error('公告不存在');
+            }
+
+            const announcement = announcements[0];
+            const role = getRole(currentUser);
+
+            // 权限检查
+            if (role === 'owner') {
+                // 站长可以删除所有公告
+                // 允许
+            } else if (role === 'admin') {
+                // 管理员只能删除自己发的
+                if (announcement.author !== currentUser) {
+                    throw new Error('你只能删除自己发布的公告');
+                }
+            } else {
+                throw new Error('没有权限删除公告');
+            }
+
+            await supabaseRequest(`/announcements?id=eq.${id}`, {
+                method: 'DELETE'
+            });
+
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  7. 工具函数
         // ========================================================================
         function formatSize(bytes) {
             if (bytes === 0) return '0 B';
@@ -1863,8 +2264,14 @@
             return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
         }
 
+        function formatTime(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return d.toLocaleString('zh-CN', { hour12: false });
+        }
+
         // ========================================================================
-        //  7. Toast 通知
+        //  8. Toast 通知
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
@@ -1888,7 +2295,7 @@
         }
 
         // ========================================================================
-        //  8. IndexedDB 操作（本地文件）
+        //  9. IndexedDB 操作（本地文件）
         // ========================================================================
         const DB_NAME = 'ClassResourceDB';
         const STORE_NAME = 'files';
@@ -1950,7 +2357,7 @@
         }
 
         // ========================================================================
-        //  9. GitHub 云端文件（只读）
+        //  10. GitHub 云端文件（只读）
         // ========================================================================
         const GH_USER = "TerryGao-FireFly";
         const GH_REPO = "-2510-";
@@ -1988,13 +2395,101 @@
         }
 
         // ========================================================================
-        //  10. 渲染文件列表
+        //  11. 渲染公告
+        // ========================================================================
+        let announcements = [];
+
+        function renderAnnouncements() {
+            const container = document.getElementById('announcementList');
+            const countEl = document.getElementById('announcementCount');
+            const currentUser = getCurrentUser();
+            const role = currentUser ? getRole(currentUser) : 'user';
+
+            countEl.textContent = `(${announcements.length} 条)`;
+
+            // 显示/隐藏发布表单
+            const form = document.getElementById('announcementForm');
+            if (role === 'admin' || role === 'owner') {
+                form.classList.add('active');
+            } else {
+                form.classList.remove('active');
+            }
+
+            if (announcements.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-announcement">
+                        <i class="fas fa-inbox"></i>
+                        暂无公告
+                        ${role === 'admin' || role === 'owner' ? '<br><span style="font-size:12px;">点击上方表单发布第一条公告！</span>' : ''}
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = announcements.map(item => {
+                const isAuthorAdmin = isAdmin(item.author);
+                const isAuthorOwner = isOwner(item.author);
+                const canDelete = (currentUser && (
+                    isOwner(currentUser) ||
+                    (isAdmin(currentUser) && item.author === currentUser)
+                ));
+
+                let authorDisplay = item.author;
+                let authorClass = '';
+                let tagHtml = '';
+
+                if (isAuthorOwner) {
+                    authorClass = 'owner';
+                    tagHtml = '<span class="tag owner-tag">站长</span>';
+                } else if (isAuthorAdmin) {
+                    authorClass = 'admin';
+                    tagHtml = '<span class="tag admin-tag">管理员</span>';
+                }
+
+                return `
+                    <div class="announcement-item" data-id="${item.id}">
+                        <div class="announcement-header">
+                            <div class="announcement-title">
+                                ${item.title}
+                            </div>
+                            <div class="announcement-meta">
+                                <span>
+                                    <span class="author-name ${authorClass}">${authorDisplay}</span>
+                                    ${tagHtml}
+                                </span>
+                                <span>${formatTime(item.created_at)}</span>
+                            </div>
+                        </div>
+                        <div class="announcement-content">${item.content}</div>
+                        ${canDelete ? `
+                            <div class="announcement-actions">
+                                <button class="delete-announce-btn" data-id="${item.id}">
+                                    <i class="fas fa-trash"></i> 删除
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // 绑定删除事件
+            container.querySelectorAll('.delete-announce-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    const item = announcements.find(a => a.id === id);
+                    if (item) {
+                        showDeleteAnnouncementModal(id, item.title, item.author);
+                    }
+                });
+            });
+        }
+
+        // ========================================================================
+        //  12. 渲染文件列表
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
         let searchQuery = '';
-        let currentLoggedIn = isLoggedIn();
-        let currentUser = getCurrentUser();
 
         function renderFiles(fileList) {
             const grid = document.getElementById('fileGrid');
@@ -2038,13 +2533,15 @@
 
                 const isCloud = file.source === 'cloud';
                 const uploaderName = file.uploadedBy || '未知用户';
+                const isUploaderOwner = isOwner(uploaderName);
                 const isUploaderAdmin = isAdmin(uploaderName);
 
-                // 判断当前用户是否有权限删除此文件
                 let canDelete = false;
                 if (loggedIn && currentUser) {
                     if (file.source === 'local') {
-                        if (isAdmin(currentUser)) {
+                        if (isOwner(currentUser)) {
+                            canDelete = true;
+                        } else if (isAdmin(currentUser) && file.uploadedBy === currentUser) {
                             canDelete = true;
                         } else if (file.uploadedBy === currentUser) {
                             canDelete = true;
@@ -2052,10 +2549,17 @@
                     }
                 }
 
-                // 上传者显示
                 let uploaderHtml = '';
                 if (file.source !== 'cloud') {
-                    if (isUploaderAdmin) {
+                    if (isUploaderOwner) {
+                        uploaderHtml = `
+                            <div class="file-uploader">
+                                <i class="fas fa-crown" style="color:var(--owner-color);"></i>
+                                <span class="uploader-name owner">${uploaderName}</span>
+                                <span class="owner-tag">站长</span>
+                            </div>
+                        `;
+                    } else if (isUploaderAdmin) {
                         uploaderHtml = `
                             <div class="file-uploader">
                                 <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
@@ -2080,7 +2584,6 @@
                     `;
                 }
 
-                // 操作按钮
                 let actionHtml = '';
                 if (loggedIn) {
                     let deleteBtnHtml = '';
@@ -2119,7 +2622,6 @@
                 `;
             }).join('');
 
-            // 绑定按钮事件
             if (loggedIn) {
                 grid.querySelectorAll('.download-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -2153,7 +2655,7 @@
         }
 
         // ========================================================================
-        //  11. 本地文件操作
+        //  13. 本地文件操作
         // ========================================================================
         async function handleLocalDownload(id) {
             try {
@@ -2180,7 +2682,7 @@
         }
 
         // ========================================================================
-        //  12. 上传处理
+        //  14. 上传处理
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) {
@@ -2262,7 +2764,7 @@
             }
 
             setTimeout(async () => {
-                await refreshList();
+                await refreshAll();
                 setTimeout(() => {
                     container.innerHTML = '';
                     container.classList.remove('active');
@@ -2271,7 +2773,7 @@
         }
 
         // ========================================================================
-        //  13. 删除相关
+        //  15. 删除相关（文件）
         // ========================================================================
         let deleteTargetId = null;
 
@@ -2280,7 +2782,9 @@
             const currentUser = getCurrentUser();
             let msg = `确定要删除文件 "${name}" 吗？`;
 
-            if (isAdmin(currentUser) && uploader !== currentUser) {
+            if (isOwner(currentUser) && uploader !== currentUser) {
+                msg = `👑 站长权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
+            } else if (isAdmin(currentUser) && uploader !== currentUser && !isOwner(uploader)) {
                 msg = `🔑 管理员权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
             }
 
@@ -2298,7 +2802,7 @@
             try {
                 await deleteLocalFile(deleteTargetId);
                 showToast('🗑️ 文件已删除', 'success', 1500);
-                await refreshList();
+                await refreshAll();
             } catch (err) {
                 console.error(err);
                 showToast('删除失败', 'error');
@@ -2315,14 +2819,64 @@
             if (confirm(`确定要删除全部 ${localFiles.length} 个本地文件吗？`)) {
                 await clearAllLocalFiles();
                 showToast('🗑️ 已清空全部本地文件', 'success', 1500);
-                await refreshList();
+                await refreshAll();
             }
         }
 
         // ========================================================================
-        //  14. 刷新列表
+        //  16. 删除公告相关
         // ========================================================================
-        async function refreshList() {
+        let deleteAnnouncementTargetId = null;
+
+        function showDeleteAnnouncementModal(id, title, author) {
+            deleteAnnouncementTargetId = id;
+            const currentUser = getCurrentUser();
+            let msg = `确定要删除公告 "${title}" 吗？`;
+
+            if (isOwner(currentUser) && author !== currentUser) {
+                msg = `👑 站长权限：确定要删除 "${author}" 发布的公告 "${title}" 吗？`;
+            }
+
+            document.getElementById('deleteAnnouncementMsg').textContent = msg;
+            document.getElementById('deleteAnnouncementModal').classList.add('active');
+        }
+
+        function hideDeleteAnnouncementModal() {
+            document.getElementById('deleteAnnouncementModal').classList.remove('active');
+            deleteAnnouncementTargetId = null;
+        }
+
+        async function confirmDeleteAnnouncement() {
+            if (deleteAnnouncementTargetId === null) return;
+            const currentUser = getCurrentUser();
+            try {
+                await deleteAnnouncement(deleteAnnouncementTargetId, currentUser);
+                showToast('🗑️ 公告已删除', 'success', 1500);
+                await loadAnnouncements();
+            } catch (err) {
+                console.error(err);
+                showToast(`❌ ${err.message}`, 'error');
+            }
+            hideDeleteAnnouncementModal();
+        }
+
+        // ========================================================================
+        //  17. 加载公告
+        // ========================================================================
+        async function loadAnnouncements() {
+            try {
+                announcements = await fetchAnnouncements();
+                renderAnnouncements();
+            } catch (err) {
+                console.error('加载公告失败:', err);
+                showToast('加载公告失败', 'error');
+            }
+        }
+
+        // ========================================================================
+        //  18. 刷新所有数据
+        // ========================================================================
+        async function refreshAll() {
             try {
                 const local = await getAllLocalFiles();
                 const cloud = await fetchGithubFiles();
@@ -2338,6 +2892,7 @@
                 allFiles.sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
                 renderFiles(allFiles);
 
+                await loadAnnouncements();
                 updateUI();
 
             } catch (err) {
@@ -2347,7 +2902,7 @@
         }
 
         // ========================================================================
-        //  15. UI 更新（包含用户 ID 显示）
+        //  19. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -2368,11 +2923,18 @@
                 guestButtons.classList.add('hidden');
                 userInfo.classList.remove('hidden');
 
-                // 显示用户 ID
                 currentUserIdEl.textContent = `ID: ${userId || '--'}`;
 
-                // 判断是否为管理员
-                if (isAdmin(username)) {
+                const role = getRole(username);
+
+                if (role === 'owner') {
+                    usernameDisplay.innerHTML = `
+                        <i class="fas fa-crown" style="color:var(--owner-color);"></i>
+                        <span style="color:var(--owner-color);font-weight:700;">${username}</span>
+                        <span class="owner-tag">站长</span>
+                        <span class="user-id">ID: ${userId || '--'}</span>
+                    `;
+                } else if (role === 'admin') {
                     usernameDisplay.innerHTML = `
                         <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
                         <span style="color:var(--admin-color);font-weight:700;">${username}</span>
@@ -2403,10 +2965,11 @@
             }
 
             renderFiles(allFiles);
+            // 公告会单独刷新，这里不重复渲染
         }
 
         // ========================================================================
-        //  16. 认证模态框控制
+        //  20. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -2438,7 +3001,7 @@
         }
 
         // ========================================================================
-        //  17. 初始化 & 事件绑定
+        //  21. 初始化 & 事件绑定
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             try {
@@ -2449,7 +3012,7 @@
                 return;
             }
 
-            await refreshList();
+            await refreshAll();
 
             // ---- 顶栏按钮 ----
             document.getElementById('showLoginBtn').addEventListener('click', () => openAuthModal('login'));
@@ -2458,8 +3021,7 @@
             document.getElementById('logoutBtn').addEventListener('click', () => {
                 clearSession();
                 showToast('👋 已登出', 'info', 1500);
-                updateUI();
-                refreshList();
+                refreshAll();
             });
 
             // ---- 模态框切换 ----
@@ -2507,9 +3069,10 @@
                 try {
                     const result = await login(username, password);
                     closeAuthModal();
-                    showToast(`✅ 欢迎回来，${username}！(ID: ${result.userId})`, 'success', 2000);
-                    await refreshList();
-                    updateUI();
+                    const role = getRole(username);
+                    const roleText = role === 'owner' ? '👑 站长' : role === 'admin' ? '🔑 管理员' : '👤 用户';
+                    showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
+                    await refreshAll();
                 } catch (err) {
                     showToast(`❌ ${err.message}`, 'error', 3000);
                     if (err.message.includes('用户名或密码')) {
@@ -2529,7 +3092,7 @@
                 if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click();
             });
 
-            // ---- 注册（修复版） ----
+            // ---- 注册 ----
             document.getElementById('registerSubmitBtn').addEventListener('click', async () => {
                 const username = document.getElementById('registerUsername').value.trim();
                 const password = document.getElementById('registerPassword').value;
@@ -2564,7 +3127,7 @@
                 btn.textContent = '注册中...';
 
                 try {
-                    const result = await register(username, password, confirm);
+                    await register(username, password, confirm);
                     closeAuthModal();
                     showToast(`🎉 注册成功！请登录`, 'success', 2000);
                     openAuthModal('login');
@@ -2583,6 +3146,62 @@
 
             document.getElementById('registerPasswordConfirm').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') document.getElementById('registerSubmitBtn').click();
+            });
+
+            // ---- 公告发布 ----
+            document.getElementById('publishAnnouncementBtn').addEventListener('click', async () => {
+                const title = document.getElementById('announcementTitle').value.trim();
+                const content = document.getElementById('announcementContent').value.trim();
+                const currentUser = getCurrentUser();
+
+                if (!currentUser) {
+                    showToast('⚠️ 请先登录', 'error');
+                    return;
+                }
+
+                const role = getRole(currentUser);
+                if (role !== 'admin' && role !== 'owner') {
+                    showToast('⚠️ 只有管理员可以发布公告', 'error');
+                    return;
+                }
+
+                if (!title || !content) {
+                    showToast('⚠️ 标题和内容不能为空', 'error');
+                    return;
+                }
+
+                const btn = document.getElementById('publishAnnouncementBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+
+                try {
+                    await publishAnnouncement(title, content, currentUser);
+                    showToast('✅ 公告发布成功！', 'success', 2000);
+                    document.getElementById('announcementTitle').value = '';
+                    document.getElementById('announcementContent').value = '';
+                    await loadAnnouncements();
+                } catch (err) {
+                    showToast(`❌ ${err.message}`, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布公告';
+                }
+            });
+
+            document.getElementById('cancelAnnouncementBtn').addEventListener('click', () => {
+                document.getElementById('announcementTitle').value = '';
+                document.getElementById('announcementContent').value = '';
+            });
+
+            // ---- 刷新公告 ----
+            document.getElementById('refreshAnnouncementsBtn').addEventListener('click', async () => {
+                const btn = document.getElementById('refreshAnnouncementsBtn');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                btn.disabled = true;
+                await loadAnnouncements();
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
+                btn.disabled = false;
+                showToast('✅ 公告已刷新', 'success', 1000);
             });
 
             // ---- 上传 ----
@@ -2641,7 +3260,7 @@
                 const btn = document.getElementById('refreshBtn');
                 btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> 刷新中...';
                 btn.disabled = true;
-                await refreshList();
+                await refreshAll();
                 btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                 btn.disabled = false;
                 showToast('✅ 已刷新', 'success', 1000);
@@ -2650,19 +3269,32 @@
             // ---- 清空本地 ----
             document.getElementById('clearAllBtn').addEventListener('click', handleClearAll);
 
-            // ---- 删除模态框 ----
+            // ---- 文件删除模态框 ----
             document.getElementById('modalCancelBtn').addEventListener('click', hideDeleteModal);
             document.getElementById('modalConfirmBtn').addEventListener('click', confirmDelete);
             document.getElementById('deleteModal').addEventListener('click', (e) => {
                 if (e.target === e.currentTarget) hideDeleteModal();
             });
+
+            // ---- 公告删除模态框 ----
+            document.getElementById('deleteAnnouncementCancelBtn').addEventListener('click', hideDeleteAnnouncementModal);
+            document.getElementById('deleteAnnouncementConfirmBtn').addEventListener('click', confirmDeleteAnnouncement);
+            document.getElementById('deleteAnnouncementModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) hideDeleteAnnouncementModal();
+            });
+
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') hideDeleteModal();
+                if (e.key === 'Escape') {
+                    hideDeleteModal();
+                    hideDeleteAnnouncementModal();
+                }
             });
 
             console.log('✅ 2510班资源站已启动！');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'} (ID: ${getCurrentUserId() || '--'})`);
-            console.log(`👑 管理员: ${ADMIN_USERS.join(', ')}`);
+            console.log(`👑 站长: ${OWNER_USER}`);
+            console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER).join(', ')}`);
+            console.log(`📢 公告数: ${announcements.length}`);
         });
     </script>
 
