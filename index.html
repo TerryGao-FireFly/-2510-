@@ -2718,7 +2718,7 @@
         }
 
         // ========================================================================
-        //  10. 文件管理（Supabase Storage）- 修复中文文件名 + 超时
+        //  10. 文件管理（Supabase Storage）- 【终极修复版】纯英文文件名
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -2750,11 +2750,11 @@
             } catch (err) { console.error('初始化 Storage 失败:', err); }
         }
 
-        // 【修复版】上传文件 - 使用安全文件名 + 30秒超时
+        // 【终极修复版】上传文件 - 纯英文文件名，彻底避免中文
         async function uploadFileToStorage(file, fileName) {
-            // 使用安全文件名：时间戳 + 随机数 + 扩展名（完全避免中文和特殊字符）
+            // 只保留扩展名，文件名用时间戳+随机数（纯英文数字）
             const ext = fileName.split('.').pop() || '';
-            const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}.${ext}`;
+            const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
             const filePath = `uploads/${safeName}`;
             const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
 
@@ -2786,7 +2786,7 @@
             } catch (err) {
                 clearTimeout(timeoutId);
                 if (err.name === 'AbortError') {
-                    throw new Error('上传超时，文件可能过大，请压缩后重试（建议小于10MB）');
+                    throw new Error('上传超时，请重试');
                 }
                 throw err;
             }
@@ -2896,41 +2896,13 @@
         async function openReportsReview() {
             const overlay = document.createElement('div');
             overlay.id = 'reportsReviewModal';
-            overlay.style.cssText = `
-                position: fixed; inset: 0; background: rgba(0,0,0,0.40);
-                backdrop-filter: blur(8px); z-index: 99999;
-                display: flex; align-items: center; justify-content: center;
-                animation: fadeInOverlay 0.25s ease;
-            `;
+            overlay.style.cssText =
+                `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
             const modal = document.createElement('div');
-            modal.style.cssText = `
-                background: #fff; border-radius: 16px; padding: 28px 24px 24px;
-                max-width: 750px; width: 92%; max-height: 85vh;
-                box-shadow: 0 24px 64px rgba(0,0,0,0.20);
-                display: flex; flex-direction: column;
-                animation: scaleIn 0.3s ease;
-                position: relative;
-            `;
-            modal.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                    <h3 style="font-size:20px;font-weight:700;">
-                        <i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核中心
-                        <span id="reportsCount" style="font-size:14px;font-weight:400;color:var(--text-light);"></span>
-                    </h3>
-                    <button id="closeReportsBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
-                </div>
-                <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-                    <button class="reports-filter-btn active" data-filter="all" style="padding:4px 14px;border:none;border-radius:8px;background:var(--primary);color:#fff;font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">全部</button>
-                    <button class="reports-filter-btn" data-filter="pending" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">待处理</button>
-                    <button class="reports-filter-btn" data-filter="resolved" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已处理</button>
-                    <button class="reports-filter-btn" data-filter="dismissed" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已驳回</button>
-                </div>
-                <div id="reportsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;">
-                    <div style="text-align:center;padding:30px 0;color:var(--text-light);">
-                        <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...
-                    </div>
-                </div>
-            `;
+            modal.style.cssText =
+                `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 750px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); display: flex; flex-direction: column; animation: scaleIn 0.3s ease; position: relative;`;
+            modal.innerHTML =
+                `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:20px;font-weight:700;"><i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核中心<span id="reportsCount" style="font-size:14px;font-weight:400;color:var(--text-light);"></span></h3><button id="closeReportsBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><button class="reports-filter-btn active" data-filter="all" style="padding:4px 14px;border:none;border-radius:8px;background:var(--primary);color:#fff;font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">全部</button><button class="reports-filter-btn" data-filter="pending" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">待处理</button><button class="reports-filter-btn" data-filter="resolved" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已处理</button><button class="reports-filter-btn" data-filter="dismissed" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已驳回</button></div><div id="reportsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;"><div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div></div>`;
             overlay.appendChild(modal);
             document.body.appendChild(overlay);
             document.getElementById('closeReportsBtn').addEventListener('click', () => overlay.remove());
@@ -3413,18 +3385,8 @@
 
                 const panel = document.createElement('div');
                 panel.id = 'adminReviewPanel';
-                panel.style.cssText = `
-                    background: #FEF3C7;
-                    border-radius: 12px;
-                    padding: 12px 20px;
-                    margin-bottom: 16px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    flex-wrap: wrap;
-                    gap: 12px;
-                    border: 1px solid #FCD34D;
-                `;
+                panel.style.cssText =
+                    `background: #FEF3C7; border-radius: 12px; padding: 12px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border: 1px solid #FCD34D;`;
                 panel.innerHTML =
                     `<span style="font-size:14px;font-weight:600;color:#92400E;"><i class="fas fa-clock" style="color:#D97706;"></i> 有 ${pendingFiles.length} 个文件待审核</span><button id="goToReviewBtn" style="padding:6px 20px;border:none;border-radius:8px;background:#D97706;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);"><i class="fas fa-eye"></i> 前往审核</button>`;
                 announcementSection.parentNode.insertBefore(panel, announcementSection);
@@ -3841,7 +3803,7 @@
         }
 
         // ========================================================================
-        //  32. 文件上传（修复版：限制10MB + 安全文件名 + 30秒超时）
+        //  32. 文件上传（限制10MB + 30秒超时）
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
@@ -3853,7 +3815,6 @@
             container.classList.add('active');
 
             for (const file of Array.from(fileList)) {
-                // 【修复】限制 10MB
                 if (file.size > 10 * 1024 * 1024) {
                     showToast(`❌ ${file.name} 超过 10MB 限制，请压缩后重试`, 'error');
                     continue;
@@ -3880,14 +3841,15 @@
                     }, 200);
 
                     const fileName = file.name;
+                    // 使用修复版上传函数（纯英文路径）
                     const uploadResult = await uploadFileToStorage(file, fileName);
                     clearInterval(interval);
 
                     const fileData = {
-                        file_name: fileName,
+                        file_name: fileName, // 数据库保存原始中文名
                         file_size: file.size,
                         file_type: ext || 'unknown',
-                        file_path: uploadResult.filePath,
+                        file_path: uploadResult.filePath, // 存储路径是纯英文
                         uploaded_by: currentUser,
                         status: 'pending',
                         is_admin: isAdmin(currentUser)
@@ -4251,7 +4213,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整修复版 - 10MB限制）');
+            console.log('✅ 2510班资源站已启动！（终极修复版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
