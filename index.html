@@ -6,7 +6,6 @@
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ========== CSS 变量与重置 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -31,6 +30,7 @@
             --admin-color: #7C3AED;
             --owner-color: #DC2626;
             --banned-color: #9CA3AF;
+            --official-color: #059669;
         }
 
         body {
@@ -122,6 +122,16 @@
             color: var(--primary);
         }
 
+        .topbar .user-section .username-display .official-tag {
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--official-color);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 4px;
+        }
+
         .topbar .user-section .username-display .admin-tag {
             font-size: 10px;
             font-weight: 700;
@@ -164,6 +174,11 @@
 
         .topbar .user-section .username-display .owner-name {
             color: var(--owner-color);
+            font-weight: 700;
+        }
+
+        .topbar .user-section .username-display .official-name {
+            color: var(--official-color);
             font-weight: 700;
         }
 
@@ -520,6 +535,10 @@
             color: var(--owner-color);
         }
 
+        .announcement-item .announcement-meta .author-name.official {
+            color: var(--official-color);
+        }
+
         .announcement-item .announcement-meta .tag {
             font-size: 10px;
             font-weight: 700;
@@ -534,6 +553,11 @@
 
         .announcement-item .announcement-meta .tag.owner-tag {
             background: var(--owner-color);
+            color: #fff;
+        }
+
+        .announcement-item .announcement-meta .tag.official-tag {
+            background: var(--official-color);
             color: #fff;
         }
 
@@ -1361,8 +1385,22 @@
             color: var(--owner-color);
         }
 
+        .file-card .file-uploader .uploader-name.official {
+            color: var(--official-color);
+        }
+
         .file-card .file-uploader .uploader-name.banned {
             color: var(--banned-color);
+        }
+
+        .file-card .file-uploader .official-tag {
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--official-color);
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 2px;
         }
 
         .file-card .file-uploader .admin-tag {
@@ -1698,7 +1736,7 @@
             cursor: not-allowed;
         }
 
-        /* ====== 封禁用户模态框（修复版 - 默认隐藏，覆盖全屏） ====== */
+        /* ====== 封禁用户模态框 ====== */
         .ban-user-modal-overlay {
             position: fixed;
             inset: 0;
@@ -2422,7 +2460,7 @@
         </div>
     </div>
 
-    <!-- ====== 封禁用户模态框（修复版 - 放在页面末尾，默认隐藏） ====== -->
+    <!-- ====== 封禁用户模态框 ====== -->
     <div class="ban-user-modal-overlay" id="banUserModal">
         <div class="ban-user-modal">
             <button class="close-btn" id="banUserModalClose">&times;</button>
@@ -2489,17 +2527,28 @@
         // ========================================================================
         const OWNER_USER = "U_BOTE";
 
+        const OFFICIAL_USERS = [
+            "2510班资源站开发组",
+            "2510班资源站管理组"
+        ];
+
         const ADMIN_USERS = [
             "U_BOTE",
             "TerryGao-FireFly",
             "王彦锦",
             "2510班班主任",
             "陈韵如",
-            "高正懿"
+            "高正懿",
+            "2510班资源站开发组",
+            "2510班资源站管理组"
         ];
 
         function isOwner(username) {
             return username === OWNER_USER;
+        }
+
+        function isOfficial(username) {
+            return OFFICIAL_USERS.includes(username);
         }
 
         function isAdmin(username) {
@@ -2508,6 +2557,7 @@
 
         function getRole(username) {
             if (isOwner(username)) return 'owner';
+            if (isOfficial(username)) return 'official';
             if (isAdmin(username)) return 'admin';
             return 'user';
         }
@@ -2699,7 +2749,7 @@
                 throw new Error('用户名或密码错误');
             }
 
-            // 检查是否被封禁（新表 user_bans）
+            // 检查是否被封禁
             const bans = await supabaseRequest(`/user_bans?user_id=eq.${user.id}`);
             if (bans && bans.length > 0 && bans[0].is_banned === true) {
                 throw new Error('您已被封禁，无法登录');
@@ -2773,7 +2823,7 @@
             }
 
             const role = getRole(author);
-            const isAdminUser = role === 'admin' || role === 'owner';
+            const isAdminUser = role === 'admin' || role === 'owner' || role === 'official';
 
             const result = await supabaseRequest('/announcements', {
                 method: 'POST',
@@ -2803,7 +2853,7 @@
 
             if (role === 'owner') {
                 // 允许
-            } else if (role === 'admin') {
+            } else if (role === 'admin' || role === 'official') {
                 if (announcement.author !== currentUser) {
                     throw new Error('你只能删除自己发布的公告');
                 }
@@ -3387,7 +3437,7 @@
 
             const form = document.getElementById('announcementForm');
             if (form) {
-                if (role === 'admin' || role === 'owner') {
+                if (role === 'admin' || role === 'owner' || role === 'official') {
                     form.classList.add('active');
                 } else {
                     form.classList.remove('active');
@@ -3399,7 +3449,7 @@
                     <div class="empty-announcement">
                         <i class="fas fa-inbox"></i>
                         暂无公告
-                        ${role === 'admin' || role === 'owner' ? '<br><span style="font-size:12px;">点击上方表单发布第一条公告！</span>' : ''}
+                        ${role === 'admin' || role === 'owner' || role === 'official' ? '<br><span style="font-size:12px;">点击上方表单发布第一条公告！</span>' : ''}
                     </div>
                 `;
                 return;
@@ -3418,11 +3468,13 @@
                 const isHidden = index >= visibleCount;
                 const isAuthorAdmin = isAdmin(item.author);
                 const isAuthorOwner = isOwner(item.author);
+                const isAuthorOfficial = isOfficial(item.author);
                 const isPinned = item.is_pinned || false;
 
                 const canDelete = (currentUser && (
                     isOwner(currentUser) ||
-                    (isAdmin(currentUser) && item.author === currentUser)
+                    (isAdmin(currentUser) && item.author === currentUser) ||
+                    (isOfficial(currentUser) && item.author === currentUser)
                 ));
 
                 const canPin = currentUser && isOwner(currentUser);
@@ -3434,6 +3486,9 @@
                 if (isAuthorOwner) {
                     authorClass = 'owner';
                     tagHtml = '<span class="tag owner-tag">站长</span>';
+                } else if (isAuthorOfficial) {
+                    authorClass = 'official';
+                    tagHtml = '<span class="tag official-tag">官方</span>';
                 } else if (isAuthorAdmin) {
                     authorClass = 'admin';
                     tagHtml = '<span class="tag admin-tag">管理员</span>';
@@ -3605,6 +3660,7 @@
 
                 const uploaderName = file.uploaded_by || '未知用户';
                 const isUploaderOwner = isOwner(uploaderName);
+                const isUploaderOfficial = isOfficial(uploaderName);
                 const isUploaderAdmin = isAdmin(uploaderName);
 
                 let canDelete = false;
@@ -3612,6 +3668,8 @@
                     if (isOwner(currentUser)) {
                         canDelete = true;
                     } else if (isAdmin(currentUser) && file.uploaded_by === currentUser) {
+                        canDelete = true;
+                    } else if (isOfficial(currentUser) && file.uploaded_by === currentUser) {
                         canDelete = true;
                     } else if (file.uploaded_by === currentUser) {
                         canDelete = true;
@@ -3627,6 +3685,14 @@
                             <span class="owner-tag">站长</span>
                         </div>
                     `;
+                } else if (isUploaderOfficial) {
+                    uploaderHtml = `
+                        <div class="file-uploader">
+                            <i class="fas fa-badge-check" style="color:var(--official-color);"></i>
+                            <span class="uploader-name official">${uploaderName}</span>
+                            <span class="official-tag">官方</span>
+                        </div>
+                    `;
                 } else if (isUploaderAdmin) {
                     uploaderHtml = `
                         <div class="file-uploader">
@@ -3636,6 +3702,9 @@
                         </div>
                     `;
                 } else {
+                    // 检查是否是封禁用户（通过 user_bans 表查询）
+                    let isBannedUser = false;
+                    // 这里简单判断：如果名字是灰色且带封禁标签，但不做复杂查询
                     uploaderHtml = `
                         <div class="file-uploader">
                             <i class="fas fa-user" style="color:#6B7280;"></i>
@@ -4288,6 +4357,13 @@
                             <span class="owner-tag">站长</span>
                             <span class="user-id">ID: ${userId || '--'}</span>
                         `;
+                    } else if (role === 'official') {
+                        usernameDisplay.innerHTML = `
+                            <i class="fas fa-badge-check" style="color:var(--official-color);"></i>
+                            <span class="official-name">${username}</span>
+                            <span class="official-tag">官方</span>
+                            <span class="user-id">ID: ${userId || '--'}</span>
+                        `;
                     } else if (role === 'admin') {
                         usernameDisplay.innerHTML = `
                             <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
@@ -4304,9 +4380,9 @@
                     }
                 }
 
-                // 显示管理菜单
+                // 显示管理菜单（官方账号也有管理权限）
                 if (adminWrapper) {
-                    if (role === 'admin' || role === 'owner') {
+                    if (role === 'admin' || role === 'owner' || role === 'official') {
                         adminWrapper.style.display = 'inline-block';
                         setupAdminMenu();
                     } else {
@@ -4361,7 +4437,7 @@
         }
 
         // ========================================================================
-        //  32. 文件上传
+        //  32. 文件上传（允许所有文件类型）
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) {
@@ -4381,6 +4457,7 @@
             container.classList.add('active');
 
             for (const file of Array.from(fileList)) {
+                // 只限制大小，不限制文件类型
                 if (file.size > 50 * 1024 * 1024) {
                     showToast(`❌ ${file.name} 超过 50MB 限制`, 'error');
                     continue;
@@ -4566,7 +4643,8 @@
                         const result = await login(username, password);
                         closeAuthModal();
                         const role = getRole(username);
-                        const roleText = role === 'owner' ? '👑 站长' : role === 'admin' ? '🔑 管理员' : '👤 用户';
+                        const roleText = role === 'owner' ? '👑 站长' : role === 'official' ? '🏛️ 官方' : role === 'admin' ?
+                            '🔑 管理员' : '👤 用户';
                         showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
                         await refreshAll();
                     } catch (err) {
@@ -4696,7 +4774,7 @@
                     }
 
                     const role = getRole(currentUser);
-                    if (role !== 'admin' && role !== 'owner') {
+                    if (role !== 'admin' && role !== 'owner' && role !== 'official') {
                         showToast('⚠️ 只有管理员可以发布公告', 'error');
                         return;
                     }
@@ -4879,10 +4957,11 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（修复版）');
+            console.log('✅ 2510班资源站已启动！（完整版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
-            console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER).join(', ')}`);
+            console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
+            console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER && !OFFICIAL_USERS.includes(u)).join(', ')}`);
             console.log(`📢 公告数: ${announcements.length}`);
         });
     </script>
