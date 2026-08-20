@@ -6,7 +6,6 @@
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ========== CSS 变量与重置 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -64,6 +63,7 @@
             margin: 0 auto;
         }
 
+        /* ====== 顶栏 ====== */
         .topbar {
             display: flex;
             flex-wrap: wrap;
@@ -215,6 +215,71 @@
             background: rgba(239, 68, 68, 0.16);
         }
 
+        /* ====== 管理按钮（简化版） ====== */
+        .admin-menu-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .admin-menu-wrapper .admin-menu-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(91, 106, 240, 0.08);
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .admin-menu-wrapper .admin-menu-btn:hover {
+            background: rgba(91, 106, 240, 0.16);
+        }
+
+        .admin-menu-wrapper .admin-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            padding: 8px 0;
+            min-width: 160px;
+            z-index: 100;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+        }
+
+        .admin-menu-wrapper .admin-dropdown.show {
+            display: block;
+        }
+
+        .admin-menu-wrapper .admin-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: var(--transition);
+            color: var(--text-primary);
+        }
+
+        .admin-menu-wrapper .admin-dropdown-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        /* ====== 头部 ====== */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -308,6 +373,7 @@
             font-size: 16px;
         }
 
+        /* ====== 存储用量 ====== */
         .storage-bar {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -362,6 +428,7 @@
             white-space: nowrap;
         }
 
+        /* ====== 公告区域 ====== */
         .announcement-section {
             margin-bottom: 24px;
         }
@@ -403,6 +470,11 @@
             transform: translateY(-1px);
         }
 
+        .announcement-item.pinned {
+            border-left: 4px solid #F59E0B;
+            background: rgba(245, 158, 11, 0.04);
+        }
+
         .announcement-item .announcement-header {
             display: flex;
             justify-content: space-between;
@@ -419,6 +491,11 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .announcement-item .announcement-title .pin-icon {
+            color: #F59E0B;
+            font-size: 14px;
         }
 
         .announcement-item .announcement-meta {
@@ -459,6 +536,11 @@
             color: #fff;
         }
 
+        .announcement-item .announcement-meta .tag.pinned-tag {
+            background: #F59E0B;
+            color: #fff;
+        }
+
         .announcement-item .announcement-content {
             font-size: 14px;
             color: var(--text-secondary);
@@ -472,6 +554,7 @@
             margin-top: 10px;
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .announcement-item .announcement-actions button {
@@ -492,6 +575,24 @@
 
         .announcement-item .announcement-actions .delete-announce-btn:hover {
             background: rgba(239, 68, 68, 0.16);
+        }
+
+        .announcement-item .announcement-actions .pin-announce-btn {
+            background: rgba(245, 158, 11, 0.08);
+            color: #F59E0B;
+        }
+
+        .announcement-item .announcement-actions .pin-announce-btn:hover {
+            background: rgba(245, 158, 11, 0.16);
+        }
+
+        .announcement-item .announcement-actions .pin-announce-btn.pinned {
+            background: rgba(34, 197, 94, 0.08);
+            color: #22C55E;
+        }
+
+        .announcement-item .announcement-actions .pin-announce-btn.pinned:hover {
+            background: rgba(34, 197, 94, 0.16);
         }
 
         .announcement-item.announcement-hidden {
@@ -524,6 +625,7 @@
             background: rgba(91, 106, 240, 0.16);
         }
 
+        /* ====== 发布公告表单 ====== */
         .announcement-form {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -626,6 +728,7 @@
             margin-bottom: 8px;
         }
 
+        /* ====== 登录/注册模态框 ====== */
         .auth-modal-overlay {
             position: fixed;
             inset: 0;
@@ -785,6 +888,7 @@
             transform: none;
         }
 
+        /* ====== 介绍横幅 ====== */
         .intro-banner {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -871,6 +975,7 @@
             color: var(--primary);
         }
 
+        /* ====== 工具栏 ====== */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -955,6 +1060,7 @@
             box-shadow: 0 4px 12px rgba(91, 106, 240, 0.30);
         }
 
+        /* ====== 上传区域 ====== */
         .upload-zone {
             position: relative;
             background: var(--card-bg);
@@ -1027,6 +1133,7 @@
             display: none;
         }
 
+        /* ====== 上传进度 ====== */
         .upload-progress-container {
             margin-bottom: 24px;
             display: none;
@@ -1113,6 +1220,7 @@
             text-align: right;
         }
 
+        /* ====== 资源列表 ====== */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -1144,6 +1252,7 @@
             margin-bottom: 24px;
         }
 
+        /* ====== 文件卡片 ====== */
         .file-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -1357,6 +1466,7 @@
             z-index: 3;
         }
 
+        /* ====== 空状态 ====== */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -1387,6 +1497,7 @@
             margin-top: 4px;
         }
 
+        /* ====== 底部 ====== */
         .footer {
             text-align: center;
             padding: 20px 0 8px;
@@ -1416,312 +1527,7 @@
             text-decoration: underline;
         }
 
-        .ban-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.40);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeInOverlay 0.25s ease;
-        }
-
-        .ban-modal-overlay.active {
-            display: flex;
-        }
-
-        .ban-modal {
-            background: #fff;
-            border-radius: var(--border-radius);
-            padding: 32px 28px 24px;
-            max-width: 600px;
-            width: 92%;
-            max-height: 80vh;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
-            animation: scaleIn 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ban-modal .close-btn {
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-        }
-
-        .ban-modal .close-btn:hover {
-            color: var(--text-primary);
-            transform: rotate(90deg);
-        }
-
-        .ban-modal .ban-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ban-modal .ban-title i {
-            color: #EF4444;
-        }
-
-        .ban-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .ban-list .ban-item {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 12px 16px;
-            border-left: 4px solid #EF4444;
-        }
-
-        .ban-list .ban-item .ban-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-
-        .ban-list .ban-item .ban-user {
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-
-        .ban-list .ban-item .ban-admin {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .ban-list .ban-item .ban-admin span {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .ban-list .ban-item .ban-reason {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .ban-list .ban-item .ban-time {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 2px;
-        }
-
-        .ban-list .empty-ban {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        .ban-list .empty-ban i {
-            font-size: 32px;
-            opacity: 0.3;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .ban-modal .ban-actions {
-            margin-top: 16px;
-            text-align: right;
-        }
-
-        .ban-modal .ban-actions button {
-            padding: 8px 24px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            background: #F1F3F5;
-            color: var(--text-secondary);
-        }
-
-        .ban-modal .ban-actions button:hover {
-            background: #E5E7EB;
-        }
-
-        .ban-user-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.40);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeInOverlay 0.25s ease;
-        }
-
-        .ban-user-modal-overlay.active {
-            display: flex;
-        }
-
-        .ban-user-modal {
-            background: #fff;
-            border-radius: var(--border-radius);
-            padding: 32px 28px 24px;
-            max-width: 420px;
-            width: 92%;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
-            animation: scaleIn 0.3s ease;
-            position: relative;
-        }
-
-        .ban-user-modal .close-btn {
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-        }
-
-        .ban-user-modal .close-btn:hover {
-            color: var(--text-primary);
-            transform: rotate(90deg);
-        }
-
-        .ban-user-modal .ban-user-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .ban-user-modal .ban-user-title i {
-            color: #EF4444;
-        }
-
-        .ban-user-modal .ban-user-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .ban-user-modal .ban-user-subtitle strong {
-            color: var(--text-primary);
-        }
-
-        .ban-user-modal .form-group {
-            margin-bottom: 16px;
-        }
-
-        .ban-user-modal .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-        }
-
-        .ban-user-modal .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: var(--transition);
-            font-family: var(--font);
-            outline: none;
-            background: #f8fafc;
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .ban-user-modal .form-group textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(91, 106, 240, 0.12);
-            background: #fff;
-        }
-
-        .ban-user-modal .ban-warning {
-            font-size: 13px;
-            color: #EF4444;
-            background: #FEE2E2;
-            padding: 8px 14px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .ban-user-modal .ban-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        .ban-user-modal .ban-actions button {
-            padding: 8px 24px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-        }
-
-        .ban-user-modal .ban-actions .cancel-btn {
-            background: #F1F3F5;
-            color: var(--text-secondary);
-        }
-
-        .ban-user-modal .ban-actions .cancel-btn:hover {
-            background: #E5E7EB;
-        }
-
-        .ban-user-modal .ban-actions .confirm-btn {
-            background: #EF4444;
-            color: #fff;
-        }
-
-        .ban-user-modal .ban-actions .confirm-btn:hover {
-            background: #DC2626;
-            transform: scale(1.02);
-        }
-
-        .ban-user-modal .ban-actions .confirm-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        /* ====== Toast ====== */
         .toast-container {
             position: fixed;
             bottom: 24px;
@@ -1784,6 +1590,7 @@
             color: var(--primary);
         }
 
+        /* ====== 删除确认弹窗 ====== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1890,6 +1697,7 @@
             cursor: not-allowed;
         }
 
+        /* ====== 响应式 ====== */
         @media (max-width: 768px) {
             body {
                 padding: 12px;
@@ -2047,13 +1855,9 @@
                 padding: 28px 20px 24px;
             }
 
-            .ban-modal {
-                padding: 24px 16px 20px;
-                max-height: 85vh;
-            }
-
-            .ban-user-modal {
-                padding: 24px 16px 20px;
+            .admin-menu-wrapper .admin-dropdown {
+                right: auto;
+                left: 0;
             }
         }
 
@@ -2146,6 +1950,24 @@
                         <i class="fas fa-user-circle"></i>
                         <span id="currentUsername">用户</span>
                         <span class="user-id" id="currentUserId">ID: --</span>
+                    </span>
+                    <!-- 管理按钮（简化版） -->
+                    <span class="admin-menu-wrapper" id="adminMenuWrapper" style="display:none;">
+                        <button class="admin-menu-btn" id="adminMenuBtn">
+                            <i class="fas fa-crown"></i> 管理
+                            <i class="fas fa-chevron-down" style="font-size:10px;"></i>
+                        </button>
+                        <div class="admin-dropdown" id="adminDropdown">
+                            <button class="admin-dropdown-item" data-action="review">
+                                <i class="fas fa-clipboard-check" style="color:var(--primary);"></i> 审核中心
+                            </button>
+                            <button class="admin-dropdown-item" data-action="ban">
+                                <i class="fas fa-gavel" style="color:#EF4444;"></i> 封禁用户
+                            </button>
+                            <button class="admin-dropdown-item" data-action="reports">
+                                <i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核
+                            </button>
+                        </div>
                     </span>
                     <button class="btn btn-logout" id="logoutBtn">
                         <i class="fas fa-sign-out-alt"></i> 登出
@@ -2298,8 +2120,6 @@
         <!-- ====== 底部 ====== -->
         <div class="footer">
             <div class="footer-links">
-                <a id="showBanRecordsBtn"><i class="fas fa-ban"></i> 封禁记录</a>
-                <span style="color:var(--text-light);">·</span>
                 <span id="loginStatusText">🔒 未登录</span>
             </div>
             <div style="font-size:12px;color:var(--text-light);opacity:0.7;">
@@ -2357,23 +2177,7 @@
         </div>
     </div>
 
-    <!-- ====== 封禁记录弹窗 ====== -->
-    <div class="ban-modal-overlay" id="banModal">
-        <div class="ban-modal">
-            <button class="close-btn" id="banModalClose">&times;</button>
-            <div class="ban-title">
-                <i class="fas fa-ban"></i> 封禁记录
-            </div>
-            <div class="ban-list" id="banList">
-                <!-- 由 JS 动态渲染 -->
-            </div>
-            <div class="ban-actions">
-                <button id="banModalCloseBtn">关闭</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ====== 封禁用户模态框 ====== -->
+    <!-- ====== 封禁用户模态框（简化版） ====== -->
     <div class="ban-user-modal-overlay" id="banUserModal">
         <div class="ban-user-modal">
             <button class="close-btn" id="banUserModalClose">&times;</button>
@@ -2385,15 +2189,15 @@
             </div>
             <div class="form-group">
                 <label>封禁原因</label>
-                <textarea id="banUserReason" placeholder="请输入封禁原因..."></textarea>
+                <textarea id="banUserReason" placeholder="请输入封禁原因..." style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;min-height:80px;resize:vertical;"></textarea>
             </div>
-            <div class="ban-warning">
+            <div class="ban-warning" style="font-size:13px;color:#EF4444;background:#FEE2E2;padding:8px 14px;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
                 <i class="fas fa-exclamation-triangle"></i>
                 封禁后该用户将无法查看和上传任何文件
             </div>
-            <div class="ban-actions">
-                <button class="cancel-btn" id="banUserCancelBtn">取消</button>
-                <button class="confirm-btn" id="banUserConfirmBtn">确认封禁</button>
+            <div class="ban-actions" style="display:flex;gap:10px;justify-content:flex-end;">
+                <button class="cancel-btn" id="banUserCancelBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button>
+                <button class="confirm-btn" id="banUserConfirmBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#EF4444;color:#fff;">确认封禁</button>
             </div>
         </div>
     </div>
@@ -2631,7 +2435,7 @@
         }
 
         // ========================================================================
-        //  5. 登录
+        //  5. 登录（检查新封禁表）
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) {
@@ -2650,9 +2454,10 @@
                 throw new Error('用户名或密码错误');
             }
 
-            const bans = await supabaseRequest(`/bans?banned_user=eq.${encodeURIComponent(username)}`);
-            if (bans && bans.length > 0) {
-                throw new Error(`您已被封禁！原因: ${bans[0].reason || '未说明'}`);
+            // 检查是否被封禁（新表 user_bans）
+            const bans = await supabaseRequest(`/user_bans?user_id=eq.${user.id}`);
+            if (bans && bans.length > 0 && bans[0].is_banned === true) {
+                throw new Error('您已被封禁，无法登录');
             }
 
             setSession(username, user.id);
@@ -2662,21 +2467,51 @@
         // ========================================================================
         //  6. 检查用户是否被封禁
         // ========================================================================
-        async function isUserBanned(username) {
+        async function isUserBanned(userId) {
             try {
-                const bans = await supabaseRequest(`/bans?banned_user=eq.${encodeURIComponent(username)}`);
-                return bans && bans.length > 0 ? bans[0] : null;
+                const bans = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
+                return bans && bans.length > 0 && bans[0].is_banned === true;
             } catch {
-                return null;
+                return false;
             }
         }
 
         // ========================================================================
-        //  7. 公告管理
+        //  7. 封禁用户（新表）
+        // ========================================================================
+        async function banUserById(userId, bannedBy) {
+            // 检查是否已被封禁
+            const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
+            if (existing && existing.length > 0) {
+                if (existing[0].is_banned === true) {
+                    throw new Error('该用户已被封禁');
+                }
+                // 更新为封禁状态
+                await supabaseRequest(`/user_bans?id=eq.${existing[0].id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ is_banned: true })
+                });
+                return { success: true };
+            }
+
+            // 新建封禁记录
+            await supabaseRequest('/user_bans', {
+                method: 'POST',
+                body: JSON.stringify({
+                    user_id: userId,
+                    is_banned: true
+                })
+            });
+
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  8. 公告管理（含置顶功能）
         // ========================================================================
         async function fetchAnnouncements() {
             try {
-                const result = await supabaseRequest('/announcements?order=created_at.desc');
+                const result = await supabaseRequest('/announcements?order=is_pinned.desc,created_at.desc');
                 if (result && result.success !== true) {
                     return Array.isArray(result) ? result : [];
                 }
@@ -2707,7 +2542,8 @@
                     title: title.trim(),
                     content: content.trim(),
                     author: author,
-                    is_admin: isAdminUser
+                    is_admin: isAdminUser,
+                    is_pinned: false
                 })
             });
 
@@ -2741,7 +2577,29 @@
         }
 
         // ========================================================================
-        //  8. 文件管理（Supabase Storage）
+        //  9. 置顶/取消置顶公告（仅站长）
+        // ========================================================================
+        async function toggleAnnouncementPin(id, currentUser) {
+            if (!isOwner(currentUser)) {
+                throw new Error('只有站长可以置顶公告');
+            }
+
+            const announcements = await supabaseRequest(`/announcements?id=eq.${id}`);
+            if (!announcements || announcements.length === 0) {
+                throw new Error('公告不存在');
+            }
+
+            const currentPin = announcements[0].is_pinned || false;
+            await supabaseRequest(`/announcements?id=eq.${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ is_pinned: !currentPin })
+            });
+
+            return { success: true, is_pinned: !currentPin };
+        }
+
+        // ========================================================================
+        //  10. 文件管理（Supabase Storage）
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -2825,7 +2683,7 @@
         }
 
         // ========================================================================
-        //  9. 获取存储用量
+        //  11. 获取存储用量
         // ========================================================================
         async function getStorageUsage() {
             try {
@@ -2863,7 +2721,7 @@
         }
 
         // ========================================================================
-        //  10. 文件数据库操作
+        //  12. 文件数据库操作
         // ========================================================================
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
@@ -2926,41 +2784,7 @@
         }
 
         // ========================================================================
-        //  11. 封禁管理
-        // ========================================================================
-        async function banUser(bannedUser, bannedBy, reason) {
-            const existing = await supabaseRequest(`/bans?banned_user=eq.${encodeURIComponent(bannedUser)}`);
-            if (existing && existing.length > 0) {
-                throw new Error('该用户已被封禁');
-            }
-
-            await supabaseRequest('/bans', {
-                method: 'POST',
-                body: JSON.stringify({
-                    banned_user: bannedUser,
-                    banned_by: bannedBy,
-                    reason: reason.trim()
-                })
-            });
-
-            return { success: true };
-        }
-
-        async function getBanRecords() {
-            try {
-                const result = await supabaseRequest('/bans?order=banned_at.desc');
-                if (result && result.success !== true) {
-                    return Array.isArray(result) ? result : [];
-                }
-                return [];
-            } catch (err) {
-                console.error('获取封禁记录失败:', err);
-                return [];
-            }
-        }
-
-        // ========================================================================
-        //  12. 举报功能
+        //  13. 举报功能
         // ========================================================================
         async function reportFile(fileId, reportedBy, reason) {
             if (!reason || reason.trim().length < 5) {
@@ -2981,7 +2805,7 @@
         }
 
         // ========================================================================
-        //  13. 举报审核
+        //  14. 举报审核
         // ========================================================================
         async function fetchReports(status = null) {
             try {
@@ -3218,7 +3042,7 @@
         }
 
         // ========================================================================
-        //  14. 工具函数
+        //  15. 工具函数
         // ========================================================================
         function formatSize(bytes) {
             if (bytes === 0) return '0 B';
@@ -3279,7 +3103,7 @@
         }
 
         // ========================================================================
-        //  15. Toast 通知
+        //  16. Toast 通知
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
@@ -3303,7 +3127,7 @@
         }
 
         // ========================================================================
-        //  16. 渲染公告
+        //  17. 渲染公告
         // ========================================================================
         let announcements = [];
         let announcementsExpanded = false;
@@ -3339,18 +3163,28 @@
                 return;
             }
 
-            const visibleCount = announcementsExpanded ? announcements.length : Math.min(announcements.length, MAX_VISIBLE_ANNOUNCEMENTS);
+            // 置顶公告排在最前面
+            const sorted = [...announcements].sort((a, b) => {
+                if (a.is_pinned && !b.is_pinned) return -1;
+                if (!a.is_pinned && b.is_pinned) return 1;
+                return 0;
+            });
+
+            const visibleCount = announcementsExpanded ? sorted.length : Math.min(sorted.length, MAX_VISIBLE_ANNOUNCEMENTS);
 
             let html = '';
-            announcements.forEach((item, index) => {
+            sorted.forEach((item, index) => {
                 const isHidden = index >= visibleCount;
                 const isAuthorAdmin = isAdmin(item.author);
                 const isAuthorOwner = isOwner(item.author);
+                const isPinned = item.is_pinned || false;
 
                 const canDelete = (currentUser && (
                     isOwner(currentUser) ||
                     (isAdmin(currentUser) && item.author === currentUser)
                 ));
+
+                const canPin = currentUser && isOwner(currentUser);
 
                 let authorDisplay = item.author;
                 let authorClass = '';
@@ -3364,11 +3198,29 @@
                     tagHtml = '<span class="tag admin-tag">管理员</span>';
                 }
 
+                let actionsHtml = '';
+                if (canDelete) {
+                    actionsHtml += `
+                        <button class="delete-announce-btn" data-id="${item.id}">
+                            <i class="fas fa-trash"></i> 删除
+                        </button>
+                    `;
+                }
+                if (canPin) {
+                    actionsHtml += `
+                        <button class="pin-announce-btn ${isPinned ? 'pinned' : ''}" data-id="${item.id}" data-pinned="${isPinned}">
+                            <i class="fas fa-thumbtack"></i> ${isPinned ? '取消置顶' : '置顶'}
+                        </button>
+                    `;
+                }
+
                 html += `
-                    <div class="announcement-item ${isHidden ? 'announcement-hidden' : ''}" data-id="${item.id}">
+                    <div class="announcement-item ${isPinned ? 'pinned' : ''} ${isHidden ? 'announcement-hidden' : ''}" data-id="${item.id}">
                         <div class="announcement-header">
                             <div class="announcement-title">
+                                ${isPinned ? '<i class="fas fa-thumbtack pin-icon"></i>' : ''}
                                 ${item.title}
+                                ${isPinned ? '<span class="tag pinned-tag">置顶</span>' : ''}
                             </div>
                             <div class="announcement-meta">
                                 <span>
@@ -3379,19 +3231,13 @@
                             </div>
                         </div>
                         <div class="announcement-content">${item.content}</div>
-                        ${canDelete ? `
-                            <div class="announcement-actions">
-                                <button class="delete-announce-btn" data-id="${item.id}">
-                                    <i class="fas fa-trash"></i> 删除
-                                </button>
-                            </div>
-                        ` : ''}
+                        ${actionsHtml ? `<div class="announcement-actions">${actionsHtml}</div>` : ''}
                     </div>
                 `;
             });
 
-            if (announcements.length > MAX_VISIBLE_ANNOUNCEMENTS) {
-                const toggleText = announcementsExpanded ? '收起 ↑' : `展开查看更多 (${announcements.length - MAX_VISIBLE_ANNOUNCEMENTS} 条) ↓`;
+            if (sorted.length > MAX_VISIBLE_ANNOUNCEMENTS) {
+                const toggleText = announcementsExpanded ? '收起 ↑' : `展开查看更多 (${sorted.length - MAX_VISIBLE_ANNOUNCEMENTS} 条) ↓`;
                 html += `
                     <div class="announcement-toggle">
                         <button id="announcementToggleBtn">${toggleText}</button>
@@ -3401,12 +3247,28 @@
 
             container.innerHTML = html;
 
+            // 删除公告
             container.querySelectorAll('.delete-announce-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = parseInt(btn.dataset.id);
                     const item = announcements.find(a => a.id === id);
                     if (item) {
                         showDeleteAnnouncementModal(id, item.title, item.author);
+                    }
+                });
+            });
+
+            // 置顶/取消置顶
+            container.querySelectorAll('.pin-announce-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = parseInt(btn.dataset.id);
+                    const currentUser = getCurrentUser();
+                    try {
+                        const result = await toggleAnnouncementPin(id, currentUser);
+                        showToast(result.is_pinned ? '✅ 已置顶' : '✅ 已取消置顶', 'success');
+                        await loadAnnouncements();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
                     }
                 });
             });
@@ -3421,7 +3283,7 @@
         }
 
         // ========================================================================
-        //  17. 渲染文件列表
+        //  18. 渲染文件列表
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
@@ -3616,7 +3478,7 @@
         }
 
         // ========================================================================
-        //  18. 举报弹窗
+        //  19. 举报弹窗
         // ========================================================================
         function showReportFileModal(fileId) {
             const reason = prompt('请输入举报原因（至少5个字）：');
@@ -3642,7 +3504,7 @@
         }
 
         // ========================================================================
-        //  19. 管理员审核面板
+        //  20. 管理员审核面板
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -3820,7 +3682,7 @@
         }
 
         // ========================================================================
-        //  20. 删除文件相关
+        //  21. 删除文件相关
         // ========================================================================
         let deleteFileTargetId = null;
 
@@ -3862,7 +3724,7 @@
         }
 
         // ========================================================================
-        //  21. 删除公告相关
+        //  22. 删除公告相关
         // ========================================================================
         let deleteAnnouncementTargetId = null;
 
@@ -3899,7 +3761,7 @@
         }
 
         // ========================================================================
-        //  22. 加载公告
+        //  23. 加载公告
         // ========================================================================
         async function loadAnnouncements() {
             try {
@@ -3912,68 +3774,12 @@
         }
 
         // ========================================================================
-        //  23. 封禁记录弹窗
-        // ========================================================================
-        async function showBanRecords() {
-            const modal = document.getElementById('banModal');
-            const list = document.getElementById('banList');
-
-            if (!modal || !list) return;
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            list.innerHTML = `
-                <div style="text-align:center;padding:30px 0;color:var(--text-light);">
-                    <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...
-                </div>
-            `;
-
-            try {
-                const records = await getBanRecords();
-                if (records.length === 0) {
-                    list.innerHTML = `
-                        <div class="empty-ban">
-                            <i class="fas fa-check-circle" style="color:#22C55E;"></i>
-                            暂无封禁记录
-                        </div>
-                    `;
-                    return;
-                }
-
-                list.innerHTML = records.map(record => `
-                    <div class="ban-item">
-                        <div class="ban-header">
-                            <span class="ban-user">🚫 ${record.banned_user}</span>
-                            <span class="ban-admin">执行者: <span>${record.banned_by}</span></span>
-                        </div>
-                        <div class="ban-reason">📝 ${record.reason || '未说明原因'}</div>
-                        <div class="ban-time">${formatTime(record.banned_at)}</div>
-                    </div>
-                `).join('');
-
-            } catch (err) {
-                list.innerHTML = `
-                    <div style="text-align:center;padding:30px 0;color:#EF4444;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>
-                        加载失败: ${err.message}
-                    </div>
-                `;
-            }
-        }
-
-        function hideBanRecords() {
-            document.getElementById('banModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // ========================================================================
-        //  24. 封禁用户
+        //  24. 封禁用户（新方式）
         // ========================================================================
         let banUserTarget = null;
 
-        function showBanUserModal(username) {
-            banUserTarget = username;
+        function showBanUserModal(username, userId) {
+            banUserTarget = { username, userId };
             document.getElementById('banUserTargetName').textContent = username;
             document.getElementById('banUserReason').value = '';
             document.getElementById('banUserModal').classList.add('active');
@@ -4004,8 +3810,8 @@
             btn.textContent = '封禁中...';
 
             try {
-                await banUser(banUserTarget, currentUser, reason);
-                showToast(`✅ 已封禁用户 ${banUserTarget}`, 'success', 3000);
+                await banUserById(banUserTarget.userId, currentUser);
+                showToast(`✅ 已封禁用户 ${banUserTarget.username}`, 'success', 3000);
                 hideBanUserModal();
                 await refreshAll();
             } catch (err) {
@@ -4021,7 +3827,7 @@
         // ========================================================================
         async function getUserList() {
             try {
-                const users = await supabaseRequest('/users?select=username');
+                const users = await supabaseRequest('/users?select=id,username');
                 if (users && users.success !== true) {
                     return Array.isArray(users) ? users : [];
                 }
@@ -4032,81 +3838,59 @@
             }
         }
 
-        function addAdminMenu() {
-            const userInfo = document.getElementById('userInfo');
-            const currentUser = getCurrentUser();
-
-            if (!currentUser || !isAdmin(currentUser)) return;
-
-            if (document.getElementById('adminMenu')) return;
-
-            const menu = document.createElement('span');
-            menu.id = 'adminMenu';
-            menu.style.cssText = 'position:relative;';
-
-            menu.innerHTML = `
-                <button id="adminMenuBtn" style="padding:6px 14px;border:none;border-radius:8px;background:rgba(91,106,240,0.08);color:var(--primary);font-weight:600;cursor:pointer;font-family:var(--font);font-size:13px;display:flex;align-items:center;gap:6px;">
-                    <i class="fas fa-crown"></i> 管理
-                    <i class="fas fa-chevron-down" style="font-size:10px;"></i>
-                </button>
-                <div id="adminDropdown" style="display:none;position:absolute;top:100%;right:0;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.12);padding:8px 0;min-width:160px;z-index:100;border:1px solid rgba(255,255,255,0.5);margin-top:4px;">
-                    <button class="admin-dropdown-item" data-action="review" style="display:flex;align-items:center;gap:10px;padding:10px 18px;border:none;background:none;width:100%;text-align:left;font-size:14px;cursor:pointer;font-family:var(--font);transition:var(--transition);color:var(--text-primary);">
-                        <i class="fas fa-clipboard-check" style="color:var(--primary);"></i> 审核中心
-                    </button>
-                    <button class="admin-dropdown-item" data-action="ban" style="display:flex;align-items:center;gap:10px;padding:10px 18px;border:none;background:none;width:100%;text-align:left;font-size:14px;cursor:pointer;font-family:var(--font);transition:var(--transition);color:var(--text-primary);">
-                        <i class="fas fa-gavel" style="color:#EF4444;"></i> 封禁用户
-                    </button>
-                    <button class="admin-dropdown-item" data-action="reports" style="display:flex;align-items:center;gap:10px;padding:10px 18px;border:none;background:none;width:100%;text-align:left;font-size:14px;cursor:pointer;font-family:var(--font);transition:var(--transition);color:var(--text-primary);">
-                        <i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核
-                    </button>
-                </div>
-            `;
-
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn && userInfo) {
-                userInfo.insertBefore(menu, logoutBtn);
-            }
-
-            const menuBtn = document.getElementById('adminMenuBtn');
+        // ========================================================================
+        //  26. 管理员菜单
+        // ========================================================================
+        function setupAdminMenu() {
+            const wrapper = document.getElementById('adminMenuWrapper');
+            const btn = document.getElementById('adminMenuBtn');
             const dropdown = document.getElementById('adminDropdown');
 
-            if (menuBtn && dropdown) {
-                menuBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-                });
+            if (!wrapper || !btn || !dropdown) return;
 
-                document.addEventListener('click', () => {
-                    dropdown.style.display = 'none';
-                });
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+            });
 
-                document.querySelectorAll('.admin-dropdown-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        dropdown.style.display = 'none';
-                        const action = item.dataset.action;
-                        if (action === 'review') {
-                            openReviewModal();
-                        } else if (action === 'ban') {
-                            showBanUserSelector();
-                        } else if (action === 'reports') {
-                            openReportsReview();
-                        }
-                    });
+            document.addEventListener('click', () => {
+                dropdown.classList.remove('show');
+            });
+
+            dropdown.querySelectorAll('.admin-dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    dropdown.classList.remove('show');
+                    const action = item.dataset.action;
+                    if (action === 'review') {
+                        openReviewModal();
+                    } else if (action === 'ban') {
+                        showBanUserSelector();
+                    } else if (action === 'reports') {
+                        openReportsReview();
+                    }
                 });
-            }
+            });
         }
 
         // ========================================================================
-        //  26. 封禁用户选择器
+        //  27. 封禁用户选择器
         // ========================================================================
         async function showBanUserSelector() {
             try {
                 const users = await getUserList();
                 const currentUser = getCurrentUser();
 
+                // 获取已封禁用户列表
+                const bannedUsers = await supabaseRequest('/user_bans?is_banned=eq.true');
+                const bannedIds = new Set();
+                if (bannedUsers && bannedUsers.length > 0) {
+                    bannedUsers.forEach(b => bannedIds.add(b.user_id));
+                }
+
                 const availableUsers = users.filter(u =>
                     u.username !== currentUser &&
-                    !isAdmin(u.username)
+                    !isAdmin(u.username) &&
+                    !bannedIds.has(u.id)
                 );
 
                 if (availableUsers.length === 0) {
@@ -4136,8 +3920,8 @@
                     </h3>
                     <div style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;">
                         ${availableUsers.map(u => `
-                            <button class="ban-user-select-btn" data-username="${u.username}" style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:14px;cursor:pointer;transition:var(--transition);font-family:var(--font);text-align:left;">
-                                <i class="fas fa-user"></i> ${u.username}
+                            <button class="ban-user-select-btn" data-id="${u.id}" data-username="${u.username}" style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:14px;cursor:pointer;transition:var(--transition);font-family:var(--font);text-align:left;">
+                                <i class="fas fa-user"></i> ${u.username} (ID: ${u.id})
                             </button>
                         `).join('')}
                     </div>
@@ -4151,9 +3935,10 @@
 
                 modal.querySelectorAll('.ban-user-select-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
+                        const userId = parseInt(btn.dataset.id);
                         const username = btn.dataset.username;
                         overlay.remove();
-                        showBanUserModal(username);
+                        showBanUserModal(username, userId);
                     });
                 });
 
@@ -4171,14 +3956,15 @@
         }
 
         // ========================================================================
-        //  27. 刷新所有数据
+        //  28. 刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
                 const currentUser = getCurrentUser();
-                if (currentUser) {
-                    const banInfo = await isUserBanned(currentUser);
-                    currentUserBanned = !!banInfo;
+                const userId = getCurrentUserId();
+
+                if (userId) {
+                    currentUserBanned = await isUserBanned(userId);
                 } else {
                     currentUserBanned = false;
                 }
@@ -4195,7 +3981,6 @@
                 updateUI();
 
                 if (currentUser && isAdmin(currentUser)) {
-                    addAdminMenu();
                     await loadAdminPanel();
                 }
 
@@ -4206,7 +3991,7 @@
         }
 
         // ========================================================================
-        //  28. 更新存储用量 UI
+        //  29. 更新存储用量 UI
         // ========================================================================
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
@@ -4232,7 +4017,7 @@
         }
 
         // ========================================================================
-        //  29. UI 更新
+        //  30. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -4245,6 +4030,7 @@
             const currentUserIdEl = document.getElementById('currentUserId');
             const usernameDisplay = document.getElementById('usernameDisplay');
             const loginStatusText = document.getElementById('loginStatusText');
+            const adminWrapper = document.getElementById('adminMenuWrapper');
 
             if (loggedIn && username) {
                 if (guestButtons) guestButtons.classList.add('hidden');
@@ -4286,10 +4072,21 @@
                     }
                 }
 
+                // 显示管理菜单
+                if (adminWrapper) {
+                    if (role === 'admin' || role === 'owner') {
+                        adminWrapper.style.display = 'inline-block';
+                        setupAdminMenu();
+                    } else {
+                        adminWrapper.style.display = 'none';
+                    }
+                }
+
                 if (loginStatusText) loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
             } else {
                 if (guestButtons) guestButtons.classList.remove('hidden');
                 if (userInfo) userInfo.classList.add('hidden');
+                if (adminWrapper) adminWrapper.style.display = 'none';
                 if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
             }
 
@@ -4297,7 +4094,7 @@
         }
 
         // ========================================================================
-        //  30. 认证模态框控制
+        //  31. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -4332,7 +4129,7 @@
         }
 
         // ========================================================================
-        //  31. 文件上传
+        //  32. 文件上传
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) {
@@ -4439,7 +4236,7 @@
         }
 
         // ========================================================================
-        //  32. 初始化 & 事件绑定
+        //  33. 初始化 & 事件绑定
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
@@ -4826,21 +4623,6 @@
                 });
             }
 
-            // ---- 封禁记录弹窗 ----
-            const showBanRecordsBtn = document.getElementById('showBanRecordsBtn');
-            const banModalClose = document.getElementById('banModalClose');
-            const banModalCloseBtn = document.getElementById('banModalCloseBtn');
-            const banModal = document.getElementById('banModal');
-
-            if (showBanRecordsBtn) showBanRecordsBtn.addEventListener('click', showBanRecords);
-            if (banModalClose) banModalClose.addEventListener('click', hideBanRecords);
-            if (banModalCloseBtn) banModalCloseBtn.addEventListener('click', hideBanRecords);
-            if (banModal) {
-                banModal.addEventListener('click', (e) => {
-                    if (e.target === e.currentTarget) hideBanRecords();
-                });
-            }
-
             // ---- 封禁用户模态框 ----
             const banUserModalClose = document.getElementById('banUserModalClose');
             const banUserCancelBtn = document.getElementById('banUserCancelBtn');
@@ -4860,13 +4642,12 @@
                 if (e.key === 'Escape') {
                     hideDeleteFileModal();
                     hideDeleteAnnouncementModal();
-                    hideBanRecords();
                     hideBanUserModal();
                     closeAuthModal();
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整修复版 + 举报审核）');
+            console.log('✅ 2510班资源站已启动！（简化版 + 公告置顶）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER).join(', ')}`);
