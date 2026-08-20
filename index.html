@@ -6,6 +6,7 @@
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ========== CSS 变量与重置 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -215,7 +216,7 @@
             background: rgba(239, 68, 68, 0.16);
         }
 
-        /* ====== 管理按钮（简化版） ====== */
+        /* ====== 管理按钮 ====== */
         .admin-menu-wrapper {
             position: relative;
             display: inline-block;
@@ -1697,6 +1698,246 @@
             cursor: not-allowed;
         }
 
+        /* ====== 封禁用户模态框（修复版 - 默认隐藏，覆盖全屏） ====== */
+        .ban-user-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.40);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.25s ease;
+        }
+
+        .ban-user-modal-overlay.active {
+            display: flex;
+        }
+
+        .ban-user-modal {
+            background: #fff;
+            border-radius: var(--border-radius);
+            padding: 32px 28px 24px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
+            animation: scaleIn 0.3s ease;
+            position: relative;
+        }
+
+        .ban-user-modal .close-btn {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .ban-user-modal .close-btn:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .ban-user-modal .ban-user-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ban-user-modal .ban-user-title i {
+            color: #EF4444;
+        }
+
+        .ban-user-modal .ban-user-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .ban-user-modal .ban-user-subtitle strong {
+            color: var(--text-primary);
+        }
+
+        .ban-user-modal .form-group {
+            margin-bottom: 16px;
+        }
+
+        .ban-user-modal .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .ban-user-modal .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: var(--font);
+            outline: none;
+            background: #f8fafc;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .ban-user-modal .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91, 106, 240, 0.12);
+            background: #fff;
+        }
+
+        .ban-user-modal .ban-warning {
+            font-size: 13px;
+            color: #EF4444;
+            background: #FEE2E2;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ban-user-modal .ban-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .ban-user-modal .ban-actions button {
+            padding: 8px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .ban-user-modal .ban-actions .cancel-btn {
+            background: #F1F3F5;
+            color: var(--text-secondary);
+        }
+
+        .ban-user-modal .ban-actions .cancel-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .ban-user-modal .ban-actions .confirm-btn {
+            background: #EF4444;
+            color: #fff;
+        }
+
+        .ban-user-modal .ban-actions .confirm-btn:hover {
+            background: #DC2626;
+            transform: scale(1.02);
+        }
+
+        .ban-user-modal .ban-actions .confirm-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ====== 删除公告确认弹窗 ====== */
+        .delete-announcement-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.25s ease;
+        }
+
+        .delete-announcement-modal-overlay.active {
+            display: flex;
+        }
+
+        .delete-announcement-modal {
+            background: #fff;
+            border-radius: var(--border-radius);
+            padding: 32px 28px 24px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .delete-announcement-modal .modal-icon {
+            font-size: 48px;
+            color: #EF4444;
+            margin-bottom: 12px;
+        }
+
+        .delete-announcement-modal h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .delete-announcement-modal p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .delete-announcement-modal .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .delete-announcement-modal .modal-actions button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .delete-announcement-modal .modal-actions .cancel-btn {
+            background: #F1F3F5;
+            color: var(--text-secondary);
+        }
+
+        .delete-announcement-modal .modal-actions .cancel-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .delete-announcement-modal .modal-actions .confirm-btn {
+            background: #EF4444;
+            color: #fff;
+        }
+
+        .delete-announcement-modal .modal-actions .confirm-btn:hover {
+            background: #DC2626;
+            transform: scale(1.02);
+        }
+
         /* ====== 响应式 ====== */
         @media (max-width: 768px) {
             body {
@@ -1855,6 +2096,10 @@
                 padding: 28px 20px 24px;
             }
 
+            .ban-user-modal {
+                padding: 24px 16px 20px;
+            }
+
             .admin-menu-wrapper .admin-dropdown {
                 right: auto;
                 left: 0;
@@ -1951,7 +2196,7 @@
                         <span id="currentUsername">用户</span>
                         <span class="user-id" id="currentUserId">ID: --</span>
                     </span>
-                    <!-- 管理按钮（简化版） -->
+                    <!-- 管理按钮 -->
                     <span class="admin-menu-wrapper" id="adminMenuWrapper" style="display:none;">
                         <button class="admin-menu-btn" id="adminMenuBtn">
                             <i class="fas fa-crown"></i> 管理
@@ -2177,7 +2422,7 @@
         </div>
     </div>
 
-    <!-- ====== 封禁用户模态框（简化版） ====== -->
+    <!-- ====== 封禁用户模态框（修复版 - 放在页面末尾，默认隐藏） ====== -->
     <div class="ban-user-modal-overlay" id="banUserModal">
         <div class="ban-user-modal">
             <button class="close-btn" id="banUserModalClose">&times;</button>
@@ -2189,20 +2434,20 @@
             </div>
             <div class="form-group">
                 <label>封禁原因</label>
-                <textarea id="banUserReason" placeholder="请输入封禁原因..." style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;min-height:80px;resize:vertical;"></textarea>
+                <textarea id="banUserReason" placeholder="请输入封禁原因..."></textarea>
             </div>
-            <div class="ban-warning" style="font-size:13px;color:#EF4444;background:#FEE2E2;padding:8px 14px;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+            <div class="ban-warning">
                 <i class="fas fa-exclamation-triangle"></i>
                 封禁后该用户将无法查看和上传任何文件
             </div>
-            <div class="ban-actions" style="display:flex;gap:10px;justify-content:flex-end;">
-                <button class="cancel-btn" id="banUserCancelBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button>
-                <button class="confirm-btn" id="banUserConfirmBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#EF4444;color:#fff;">确认封禁</button>
+            <div class="ban-actions">
+                <button class="cancel-btn" id="banUserCancelBtn">取消</button>
+                <button class="confirm-btn" id="banUserConfirmBtn">确认封禁</button>
             </div>
         </div>
     </div>
 
-    <!-- ====== 删除确认弹窗（文件） ====== -->
+    <!-- ====== 删除文件确认弹窗 ====== -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal-box">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -2216,8 +2461,8 @@
     </div>
 
     <!-- ====== 删除公告确认弹窗 ====== -->
-    <div class="modal-overlay" id="deleteAnnouncementModal">
-        <div class="modal-box">
+    <div class="delete-announcement-modal-overlay" id="deleteAnnouncementModal">
+        <div class="delete-announcement-modal">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
             <h3>确认删除公告</h3>
             <p id="deleteAnnouncementMsg">确定要删除此公告吗？</p>
@@ -2435,7 +2680,7 @@
         }
 
         // ========================================================================
-        //  5. 登录（检查新封禁表）
+        //  5. 登录
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) {
@@ -2477,16 +2722,14 @@
         }
 
         // ========================================================================
-        //  7. 封禁用户（新表）
+        //  7. 封禁用户
         // ========================================================================
         async function banUserById(userId, bannedBy) {
-            // 检查是否已被封禁
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
             if (existing && existing.length > 0) {
                 if (existing[0].is_banned === true) {
                     throw new Error('该用户已被封禁');
                 }
-                // 更新为封禁状态
                 await supabaseRequest(`/user_bans?id=eq.${existing[0].id}`, {
                     method: 'PATCH',
                     body: JSON.stringify({ is_banned: true })
@@ -2494,7 +2737,6 @@
                 return { success: true };
             }
 
-            // 新建封禁记录
             await supabaseRequest('/user_bans', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -2507,7 +2749,7 @@
         }
 
         // ========================================================================
-        //  8. 公告管理（含置顶功能）
+        //  8. 公告管理
         // ========================================================================
         async function fetchAnnouncements() {
             try {
@@ -2577,7 +2819,7 @@
         }
 
         // ========================================================================
-        //  9. 置顶/取消置顶公告（仅站长）
+        //  9. 置顶/取消置顶公告
         // ========================================================================
         async function toggleAnnouncementPin(id, currentUser) {
             if (!isOwner(currentUser)) {
@@ -3163,7 +3405,6 @@
                 return;
             }
 
-            // 置顶公告排在最前面
             const sorted = [...announcements].sort((a, b) => {
                 if (a.is_pinned && !b.is_pinned) return -1;
                 if (!a.is_pinned && b.is_pinned) return 1;
@@ -3247,7 +3488,6 @@
 
             container.innerHTML = html;
 
-            // 删除公告
             container.querySelectorAll('.delete-announce-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = parseInt(btn.dataset.id);
@@ -3258,7 +3498,6 @@
                 });
             });
 
-            // 置顶/取消置顶
             container.querySelectorAll('.pin-announce-btn').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const id = parseInt(btn.dataset.id);
@@ -3730,14 +3969,8 @@
 
         function showDeleteAnnouncementModal(id, title, author) {
             deleteAnnouncementTargetId = id;
-            const currentUser = getCurrentUser();
-            let msg = `确定要删除公告 "${title}" 吗？`;
-
-            if (isOwner(currentUser) && author !== currentUser) {
-                msg = `👑 站长权限：确定要删除 "${author}" 发布的公告 "${title}" 吗？`;
-            }
-
-            document.getElementById('deleteAnnouncementMsg').textContent = msg;
+            document.getElementById('deleteAnnouncementMsg').textContent =
+                `确定要删除公告 "${title}" 吗？${isOwner(getCurrentUser()) && author !== getCurrentUser() ? `\n👑 站长权限：此公告由 "${author}" 发布` : ''}`;
             document.getElementById('deleteAnnouncementModal').classList.add('active');
         }
 
@@ -3774,7 +4007,7 @@
         }
 
         // ========================================================================
-        //  24. 封禁用户（新方式）
+        //  24. 封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -3823,7 +4056,7 @@
         }
 
         // ========================================================================
-        //  25. 用户列表（管理员用）
+        //  25. 用户列表
         // ========================================================================
         async function getUserList() {
             try {
@@ -3880,7 +4113,6 @@
                 const users = await getUserList();
                 const currentUser = getCurrentUser();
 
-                // 获取已封禁用户列表
                 const bannedUsers = await supabaseRequest('/user_bans?is_banned=eq.true');
                 const bannedIds = new Set();
                 if (bannedUsers && bannedUsers.length > 0) {
@@ -4647,7 +4879,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（简化版 + 公告置顶）');
+            console.log('✅ 2510班资源站已启动！（修复版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER).join(', ')}`);
