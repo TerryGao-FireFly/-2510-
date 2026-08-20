@@ -64,7 +64,6 @@
             margin: 0 auto;
         }
 
-        /* ====== 顶栏 ====== */
         .topbar {
             display: flex;
             flex-wrap: wrap;
@@ -231,7 +230,6 @@
             background: rgba(239, 68, 68, 0.16);
         }
 
-        /* ====== 管理按钮 ====== */
         .admin-menu-wrapper {
             position: relative;
             display: inline-block;
@@ -295,7 +293,6 @@
             background: rgba(0, 0, 0, 0.04);
         }
 
-        /* ====== 头部 ====== */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -389,7 +386,6 @@
             font-size: 16px;
         }
 
-        /* ====== 存储用量 ====== */
         .storage-bar {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -444,7 +440,6 @@
             white-space: nowrap;
         }
 
-        /* ====== 公告区域 ====== */
         .announcement-section {
             margin-bottom: 24px;
         }
@@ -650,7 +645,6 @@
             background: rgba(91, 106, 240, 0.16);
         }
 
-        /* ====== 发布公告表单 ====== */
         .announcement-form {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -753,7 +747,6 @@
             margin-bottom: 8px;
         }
 
-        /* ====== 登录/注册模态框 ====== */
         .auth-modal-overlay {
             position: fixed;
             inset: 0;
@@ -913,7 +906,6 @@
             transform: none;
         }
 
-        /* ====== 介绍横幅 ====== */
         .intro-banner {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -1000,7 +992,6 @@
             color: var(--primary);
         }
 
-        /* ====== 工具栏 ====== */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -1085,7 +1076,6 @@
             box-shadow: 0 4px 12px rgba(91, 106, 240, 0.30);
         }
 
-        /* ====== 上传区域 ====== */
         .upload-zone {
             position: relative;
             background: var(--card-bg);
@@ -1158,7 +1148,6 @@
             display: none;
         }
 
-        /* ====== 上传进度 ====== */
         .upload-progress-container {
             margin-bottom: 24px;
             display: none;
@@ -1245,7 +1234,6 @@
             text-align: right;
         }
 
-        /* ====== 资源列表 ====== */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -1277,7 +1265,6 @@
             margin-bottom: 24px;
         }
 
-        /* ====== 文件卡片 ====== */
         .file-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -1505,7 +1492,6 @@
             z-index: 3;
         }
 
-        /* ====== 空状态 ====== */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -1536,7 +1522,6 @@
             margin-top: 4px;
         }
 
-        /* ====== 底部 ====== */
         .footer {
             text-align: center;
             padding: 20px 0 8px;
@@ -1566,7 +1551,6 @@
             text-decoration: underline;
         }
 
-        /* ====== Toast ====== */
         .toast-container {
             position: fixed;
             bottom: 24px;
@@ -1629,7 +1613,6 @@
             color: var(--primary);
         }
 
-        /* ====== 删除确认弹窗 ====== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1736,7 +1719,6 @@
             cursor: not-allowed;
         }
 
-        /* ====== 封禁用户模态框 ====== */
         .ban-user-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1893,7 +1875,6 @@
             transform: none;
         }
 
-        /* ====== 删除公告确认弹窗 ====== */
         .delete-announcement-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1976,7 +1957,6 @@
             transform: scale(1.02);
         }
 
-        /* ====== 响应式 ====== */
         @media (max-width: 768px) {
             body {
                 padding: 12px;
@@ -2217,7 +2197,6 @@
 
     <div class="app-container">
 
-        <!-- ====== 顶栏 ====== -->
         <nav class="topbar">
             <div class="brand">
                 <i class="fas fa-graduation-cap"></i>
@@ -2234,7 +2213,6 @@
                         <span id="currentUsername">用户</span>
                         <span class="user-id" id="currentUserId">ID: --</span>
                     </span>
-                    <!-- 管理按钮 -->
                     <span class="admin-menu-wrapper" id="adminMenuWrapper" style="display:none;">
                         <button class="admin-menu-btn" id="adminMenuBtn">
                             <i class="fas fa-crown"></i> 管理
@@ -2259,7 +2237,6 @@
             </div>
         </nav>
 
-        <!-- ====== 头部 ====== -->
         <header class="header">
             <div class="header-left">
                 <div class="header-logo">📚</div>
@@ -2276,7 +2253,6 @@
             </div>
         </header>
 
-        <!-- ====== 存储用量 ====== -->
         <div class="storage-bar" id="storageBar">
             <div class="storage-label">
                 <i class="fas fa-database"></i> 存储用量
@@ -2287,7 +2263,6 @@
             <div class="storage-text" id="storageText">0 MB / 1 GB</div>
         </div>
 
-        <!-- ====== 📢 公告区域 ====== -->
         <div class="announcement-section">
             <div class="section-title">
                 <i class="fas fa-bullhorn"></i>
@@ -2298,7 +2273,6 @@
                 </button>
             </div>
 
-            <!-- 发布公告表单 -->
             <div class="announcement-form" id="announcementForm">
                 <div class="form-row">
                     <label>公告标题</label>
@@ -2316,13 +2290,9 @@
                 </div>
             </div>
 
-            <!-- 公告列表 -->
-            <div class="announcement-list" id="announcementList">
-                <!-- 由 JS 动态渲染 -->
-            </div>
+            <div class="announcement-list" id="announcementList"></div>
         </div>
 
-        <!-- ====== 介绍横幅 ====== -->
         <div class="intro-banner">
             <div class="intro-avatar">📖</div>
             <div class="intro-content">
@@ -2343,15 +2313,13 @@
                     <i class="fas fa-cloud"></i> 云端账号
                 </span>
                 <span class="feature-item">
-                    <i class="fas fa-laptop"></i> 多设备同步
-                </span>
+                    <i class="fas fa-laptop"></i> 多设备同步                </span>
                 <span class="feature-item">
                     <i class="fas fa-shield-alt"></i> 安全存储
                 </span>
             </div>
         </div>
 
-        <!-- ====== 工具栏 ====== -->
         <div class="toolbar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -2368,7 +2336,6 @@
             </div>
         </div>
 
-        <!-- ====== 上传区域 ====== -->
         <div class="upload-zone" id="uploadZone">
             <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
             <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
@@ -2377,10 +2344,8 @@
             <input type="file" id="fileInput" multiple />
         </div>
 
-        <!-- ====== 上传进度 ====== -->
         <div class="upload-progress-container" id="progressContainer"></div>
 
-        <!-- ====== 资源列表 ====== -->
         <div class="section-header">
             <h2>
                 📂 资源列表
@@ -2393,14 +2358,10 @@
             </div>
         </div>
 
-        <!-- ====== 文件网格容器 ====== -->
         <div id="fileContent">
-            <div class="file-grid" id="fileGrid">
-                <!-- 由 JS 动态渲染 -->
-            </div>
+            <div class="file-grid" id="fileGrid"></div>
         </div>
 
-        <!-- ====== 底部 ====== -->
         <div class="footer">
             <div class="footer-links">
                 <span id="loginStatusText">🔒 未登录</span>
@@ -2412,16 +2373,13 @@
 
     </div>
 
-    <!-- ====== 登录/注册模态框 ====== -->
+    <!-- ====== 模态框 ====== -->
     <div class="auth-modal-overlay" id="authModal">
         <div class="auth-modal">
             <button class="close-btn" id="authModalClose">&times;</button>
-
             <div id="loginForm">
                 <div class="auth-title">🔐 登录</div>
-                <div class="auth-subtitle">
-                    还没有账号？<a id="switchToRegister">立即注册</a>
-                </div>
+                <div class="auth-subtitle">还没有账号？<a id="switchToRegister">立即注册</a></div>
                 <div class="form-group">
                     <label>用户名</label>
                     <input type="text" id="loginUsername" placeholder="请输入用户名" />
@@ -2434,12 +2392,9 @@
                 </div>
                 <button class="btn-submit" id="loginSubmitBtn">登 录</button>
             </div>
-
             <div id="registerForm" class="hidden">
                 <div class="auth-title">📝 注册</div>
-                <div class="auth-subtitle">
-                    已有账号？<a id="switchToLogin">去登录</a>
-                </div>
+                <div class="auth-subtitle">已有账号？<a id="switchToLogin">去登录</a></div>
                 <div class="form-group">
                     <label>用户名</label>
                     <input type="text" id="registerUsername" placeholder="请设置用户名（3-20个字符）" />
@@ -2460,24 +2415,16 @@
         </div>
     </div>
 
-    <!-- ====== 封禁用户模态框 ====== -->
     <div class="ban-user-modal-overlay" id="banUserModal">
         <div class="ban-user-modal">
             <button class="close-btn" id="banUserModalClose">&times;</button>
-            <div class="ban-user-title">
-                <i class="fas fa-gavel"></i> 封禁用户
-            </div>
-            <div class="ban-user-subtitle">
-                确定要封禁用户 <strong id="banUserTargetName">--</strong> 吗？
-            </div>
+            <div class="ban-user-title"><i class="fas fa-gavel"></i> 封禁用户</div>
+            <div class="ban-user-subtitle">确定要封禁用户 <strong id="banUserTargetName">--</strong> 吗？</div>
             <div class="form-group">
                 <label>封禁原因</label>
                 <textarea id="banUserReason" placeholder="请输入封禁原因..."></textarea>
             </div>
-            <div class="ban-warning">
-                <i class="fas fa-exclamation-triangle"></i>
-                封禁后该用户将无法查看和上传任何文件
-            </div>
+            <div class="ban-warning"><i class="fas fa-exclamation-triangle"></i> 封禁后该用户将无法查看和上传任何文件</div>
             <div class="ban-actions">
                 <button class="cancel-btn" id="banUserCancelBtn">取消</button>
                 <button class="confirm-btn" id="banUserConfirmBtn">确认封禁</button>
@@ -2485,7 +2432,6 @@
         </div>
     </div>
 
-    <!-- ====== 删除文件确认弹窗 ====== -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal-box">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -2498,7 +2444,6 @@
         </div>
     </div>
 
-    <!-- ====== 删除公告确认弹窗 ====== -->
     <div class="delete-announcement-modal-overlay" id="deleteAnnouncementModal">
         <div class="delete-announcement-modal">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -2511,7 +2456,6 @@
         </div>
     </div>
 
-    <!-- ====== Toast 容器 ====== -->
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
@@ -2543,17 +2487,11 @@
             "2510班资源站管理组"
         ];
 
-        function isOwner(username) {
-            return username === OWNER_USER;
-        }
+        function isOwner(username) { return username === OWNER_USER; }
 
-        function isOfficial(username) {
-            return OFFICIAL_USERS.includes(username);
-        }
+        function isOfficial(username) { return OFFICIAL_USERS.includes(username); }
 
-        function isAdmin(username) {
-            return ADMIN_USERS.includes(username);
-        }
+        function isAdmin(username) { return ADMIN_USERS.includes(username); }
 
         function getRole(username) {
             if (isOwner(username)) return 'owner';
@@ -2580,51 +2518,25 @@
                 headers['Prefer'] = 'return=representation';
             }
 
-            const fetchOptions = {
-                method: options.method || 'GET',
-                headers: headers,
-            };
-
-            if (options.body) {
-                fetchOptions.body = options.body;
-            }
+            const fetchOptions = { method: options.method || 'GET', headers: headers };
+            if (options.body) fetchOptions.body = options.body;
 
             try {
                 const response = await fetch(url, fetchOptions);
-
-                if (response.status === 204) {
-                    return { success: true };
-                }
-
+                if (response.status === 204) return { success: true };
                 const contentLength = response.headers.get('content-length');
-                if (contentLength === '0') {
-                    return { success: true };
-                }
-
+                if (contentLength === '0') return { success: true };
                 if (!response.ok) {
                     const errorText = await response.text();
-                    try {
-                        const error = JSON.parse(errorText);
-                        throw new Error(error.message || `请求失败 (${response.status})`);
-                    } catch {
-                        throw new Error(`请求失败 (${response.status}): ${errorText || '未知错误'}`);
-                    }
+                    try { const error = JSON.parse(errorText);
+                        throw new Error(error.message || `请求失败 (${response.status})`); } catch { throw new Error(
+                            `请求失败 (${response.status}): ${errorText || '未知错误'}`); }
                 }
-
                 const text = await response.text();
-                if (!text || text.trim() === '') {
-                    return { success: true };
-                }
-
-                try {
-                    return JSON.parse(text);
-                } catch {
-                    return { success: true, raw: text };
-                }
-            } catch (err) {
-                console.error('Supabase 请求失败:', err);
-                throw err;
-            }
+                if (!text || text.trim() === '') return { success: true };
+                try { return JSON.parse(text); } catch { return { success: true, raw: text }; }
+            } catch (err) { console.error('Supabase 请求失败:', err);
+                throw err; }
         }
 
         // ========================================================================
@@ -2644,86 +2556,45 @@
         const SESSION_KEY = 'class_resource_session';
 
         function getSession() {
-            try {
-                const data = localStorage.getItem(SESSION_KEY);
-                return data ? JSON.parse(data) : null;
-            } catch {
-                return null;
-            }
+            try { const data = localStorage.getItem(SESSION_KEY); return data ? JSON.parse(data) : null; } catch { return null; }
         }
 
         function setSession(username, userId) {
-            localStorage.setItem(SESSION_KEY, JSON.stringify({
-                username,
-                userId,
-                loginTime: Date.now()
-            }));
+            localStorage.setItem(SESSION_KEY, JSON.stringify({ username, userId, loginTime: Date.now() }));
         }
 
-        function clearSession() {
-            localStorage.removeItem(SESSION_KEY);
-        }
+        function clearSession() { localStorage.removeItem(SESSION_KEY); }
 
-        function isLoggedIn() {
-            return !!getSession();
-        }
+        function isLoggedIn() { return !!getSession(); }
 
-        function getCurrentUser() {
-            const session = getSession();
-            return session ? session.username : null;
-        }
+        function getCurrentUser() { const session = getSession(); return session ? session.username : null; }
 
-        function getCurrentUserId() {
-            const session = getSession();
-            return session ? session.userId : null;
-        }
+        function getCurrentUserId() { const session = getSession(); return session ? session.userId : null; }
 
         // ========================================================================
         //  4. 注册
         // ========================================================================
         async function register(username, password, passwordConfirm) {
-            if (!username || username.length < 3 || username.length > 20) {
-                throw new Error('用户名必须是 3-20 个字符');
-            }
-            if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(username)) {
-                throw new Error('用户名只能包含字母、数字、下划线和中文');
-            }
-            if (!password || password.length < 6) {
-                throw new Error('密码至少 6 位');
-            }
-            if (password !== passwordConfirm) {
-                throw new Error('两次输入的密码不一致');
-            }
+            if (!username || username.length < 3 || username.length > 20) throw new Error('用户名必须是 3-20 个字符');
+            if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(username)) throw new Error('用户名只能包含字母、数字、下划线和中文');
+            if (!password || password.length < 6) throw new Error('密码至少 6 位');
+            if (password !== passwordConfirm) throw new Error('两次输入的密码不一致');
 
             const passwordHash = await hashPassword(password);
-
             const existing = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
-            if (existing && existing.length > 0 && existing.success !== true) {
-                throw new Error('用户名已被占用');
-            }
+            if (existing && existing.length > 0 && existing.success !== true) throw new Error('用户名已被占用');
 
             const result = await supabaseRequest('/users', {
                 method: 'POST',
-                headers: {
-                    'Prefer': 'return=representation'
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password_hash: passwordHash
-                })
+                headers: { 'Prefer': 'return=representation' },
+                body: JSON.stringify({ username, password_hash: passwordHash })
             });
 
-            if (Array.isArray(result) && result.length > 0) {
-                return { success: true, user: result[0] };
-            }
-            if (result && result.id) {
-                return { success: true, user: result };
-            }
+            if (Array.isArray(result) && result.length > 0) return { success: true, user: result[0] };
+            if (result && result.id) return { success: true, user: result };
             if (result && result.success === true) {
                 const newUser = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
-                if (newUser && newUser.length > 0) {
-                    return { success: true, user: newUser[0] };
-                }
+                if (newUser && newUser.length > 0) return { success: true, user: newUser[0] };
                 return { success: true };
             }
             return { success: true };
@@ -2733,27 +2604,17 @@
         //  5. 登录
         // ========================================================================
         async function login(username, password) {
-            if (!username || !password) {
-                throw new Error('请输入用户名和密码');
-            }
+            if (!username || !password) throw new Error('请输入用户名和密码');
 
             const passwordHash = await hashPassword(password);
-
             const users = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
-            if (!users || users.length === 0) {
-                throw new Error('用户名或密码错误');
-            }
+            if (!users || users.length === 0) throw new Error('用户名或密码错误');
 
             const user = users[0];
-            if (user.password_hash !== passwordHash) {
-                throw new Error('用户名或密码错误');
-            }
+            if (user.password_hash !== passwordHash) throw new Error('用户名或密码错误');
 
-            // 检查是否被封禁
             const bans = await supabaseRequest(`/user_bans?user_id=eq.${user.id}`);
-            if (bans && bans.length > 0 && bans[0].is_banned === true) {
-                throw new Error('您已被封禁，无法登录');
-            }
+            if (bans && bans.length > 0 && bans[0].is_banned === true) throw new Error('您已被封禁，无法登录');
 
             setSession(username, user.id);
             return { success: true, username, userId: user.id };
@@ -2766,9 +2627,7 @@
             try {
                 const bans = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
                 return bans && bans.length > 0 && bans[0].is_banned === true;
-            } catch {
-                return false;
-            }
+            } catch { return false; }
         }
 
         // ========================================================================
@@ -2777,24 +2636,17 @@
         async function banUserById(userId, bannedBy) {
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
             if (existing && existing.length > 0) {
-                if (existing[0].is_banned === true) {
-                    throw new Error('该用户已被封禁');
-                }
+                if (existing[0].is_banned === true) throw new Error('该用户已被封禁');
                 await supabaseRequest(`/user_bans?id=eq.${existing[0].id}`, {
                     method: 'PATCH',
                     body: JSON.stringify({ is_banned: true })
                 });
                 return { success: true };
             }
-
             await supabaseRequest('/user_bans', {
                 method: 'POST',
-                body: JSON.stringify({
-                    user_id: userId,
-                    is_banned: true
-                })
+                body: JSON.stringify({ user_id: userId, is_banned: true })
             });
-
             return { success: true };
         }
 
@@ -2804,32 +2656,21 @@
         async function fetchAnnouncements() {
             try {
                 const result = await supabaseRequest('/announcements?order=is_pinned.desc,created_at.desc');
-                if (result && result.success !== true) {
-                    return Array.isArray(result) ? result : [];
-                }
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
                 return [];
-            } catch (err) {
-                console.error('获取公告失败:', err);
-                return [];
-            }
+            } catch (err) { console.error('获取公告失败:', err); return []; }
         }
 
         async function publishAnnouncement(title, content, author) {
-            if (!title || !content) {
-                throw new Error('标题和内容不能为空');
-            }
-            if (title.length > 100) {
-                throw new Error('标题不能超过100个字符');
-            }
+            if (!title || !content) throw new Error('标题和内容不能为空');
+            if (title.length > 100) throw new Error('标题不能超过100个字符');
 
             const role = getRole(author);
             const isAdminUser = role === 'admin' || role === 'owner' || role === 'official';
 
-            const result = await supabaseRequest('/announcements', {
+            await supabaseRequest('/announcements', {
                 method: 'POST',
-                headers: {
-                    'Prefer': 'return=representation'
-                },
+                headers: { 'Prefer': 'return=representation' },
                 body: JSON.stringify({
                     title: title.trim(),
                     content: content.trim(),
@@ -2838,33 +2679,23 @@
                     is_pinned: false
                 })
             });
-
             return { success: true };
         }
 
         async function deleteAnnouncement(id, currentUser) {
             const announcements = await supabaseRequest(`/announcements?id=eq.${id}`);
-            if (!announcements || announcements.length === 0) {
-                throw new Error('公告不存在');
-            }
+            if (!announcements || announcements.length === 0) throw new Error('公告不存在');
 
             const announcement = announcements[0];
             const role = getRole(currentUser);
 
-            if (role === 'owner') {
-                // 允许
-            } else if (role === 'admin' || role === 'official') {
-                if (announcement.author !== currentUser) {
-                    throw new Error('你只能删除自己发布的公告');
-                }
+            if (role === 'owner') {} else if (role === 'admin' || role === 'official') {
+                if (announcement.author !== currentUser) throw new Error('你只能删除自己发布的公告');
             } else {
                 throw new Error('没有权限删除公告');
             }
 
-            await supabaseRequest(`/announcements?id=eq.${id}`, {
-                method: 'DELETE'
-            });
-
+            await supabaseRequest(`/announcements?id=eq.${id}`, { method: 'DELETE' });
             return { success: true };
         }
 
@@ -2872,26 +2703,21 @@
         //  9. 置顶/取消置顶公告
         // ========================================================================
         async function toggleAnnouncementPin(id, currentUser) {
-            if (!isOwner(currentUser)) {
-                throw new Error('只有站长可以置顶公告');
-            }
+            if (!isOwner(currentUser)) throw new Error('只有站长可以置顶公告');
 
             const announcements = await supabaseRequest(`/announcements?id=eq.${id}`);
-            if (!announcements || announcements.length === 0) {
-                throw new Error('公告不存在');
-            }
+            if (!announcements || announcements.length === 0) throw new Error('公告不存在');
 
             const currentPin = announcements[0].is_pinned || false;
             await supabaseRequest(`/announcements?id=eq.${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ is_pinned: !currentPin })
             });
-
             return { success: true, is_pinned: !currentPin };
         }
 
         // ========================================================================
-        //  10. 文件管理（Supabase Storage）
+        //  10. 文件管理（Supabase Storage）- 修复中文文件名
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -2913,31 +2739,20 @@
                             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            id: STORAGE_BUCKET,
-                            name: STORAGE_BUCKET,
-                            public: true
-                        })
+                        body: JSON.stringify({ id: STORAGE_BUCKET, name: STORAGE_BUCKET, public: true })
                     });
-
-                    if (createRes.ok) {
-                        console.log('✅ Storage bucket 已创建');
-                    } else {
-                        const error = await createRes.text();
-                        console.error('创建 bucket 失败:', error);
-                    }
+                    if (createRes.ok) console.log('✅ Storage bucket 已创建');
+                    else console.error('创建 bucket 失败:', await createRes.text());
                 } else if (response.ok) {
                     console.log('✅ Storage bucket 已存在');
-                } else {
-                    console.warn('检查 bucket 状态:', response.status);
                 }
-            } catch (err) {
-                console.error('初始化 Storage 失败:', err);
-            }
+            } catch (err) { console.error('初始化 Storage 失败:', err); }
         }
 
         async function uploadFileToStorage(file, fileName) {
-            const filePath = `uploads/${Date.now()}_${fileName}`;
+            // 【修复】对文件名进行 URL 编码，避免中文和特殊字符报错
+            const encodedFileName = encodeURIComponent(fileName);
+            const filePath = `uploads/${Date.now()}_${encodedFileName}`;
             const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
 
             const response = await fetch(url, {
@@ -2968,10 +2783,7 @@
                     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                 }
             });
-
-            if (!response.ok && response.status !== 404) {
-                console.error('删除 Storage 文件失败:', await response.text());
-            }
+            if (!response.ok && response.status !== 404) console.error('删除 Storage 文件失败:', await response.text());
         }
 
         // ========================================================================
@@ -2986,30 +2798,14 @@
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     }
                 });
-
-                if (response.status === 404) {
-                    return { used: 0, total: 1024 * 1024 * 1024 };
-                }
-
-                if (!response.ok) {
-                    console.warn('获取存储用量失败:', await response.text());
-                    return { used: 0, total: 1024 * 1024 * 1024 };
-                }
-
+                if (response.status === 404) return { used: 0, total: 1024 * 1024 * 1024 };
+                if (!response.ok) { console.warn('获取存储用量失败:', await response.text()); return { used: 0,
+                        total: 1024 * 1024 * 1024 }; }
                 const objects = await response.json();
                 let totalSize = 0;
-                if (Array.isArray(objects)) {
-                    totalSize = objects.reduce((sum, obj) => sum + (obj.metadata?.size || 0), 0);
-                }
-
-                return {
-                    used: totalSize,
-                    total: 1024 * 1024 * 1024
-                };
-            } catch (err) {
-                console.error('获取存储用量失败:', err);
-                return { used: 0, total: 1024 * 1024 * 1024 };
-            }
+                if (Array.isArray(objects)) totalSize = objects.reduce((sum, obj) => sum + (obj.metadata?.size || 0), 0);
+                return { used: totalSize, total: 1024 * 1024 * 1024 };
+            } catch (err) { console.error('获取存储用量失败:', err); return { used: 0, total: 1024 * 1024 * 1024 }; }
         }
 
         // ========================================================================
@@ -3018,60 +2814,33 @@
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
                 method: 'POST',
-                headers: {
-                    'Prefer': 'return=representation'
-                },
+                headers: { 'Prefer': 'return=representation' },
                 body: JSON.stringify(fileData)
             });
-
-            if (Array.isArray(result) && result.length > 0) {
-                return result[0];
-            }
-            if (result && result.id) {
-                return result;
-            }
+            if (Array.isArray(result) && result.length > 0) return result[0];
+            if (result && result.id) return result;
             return result;
         }
 
         async function fetchFiles(status = null) {
             try {
                 let url = '/files?order=created_at.desc';
-                if (status) {
-                    url += `&status=eq.${status}`;
-                }
+                if (status) url += `&status=eq.${status}`;
                 const result = await supabaseRequest(url);
-                if (result && result.success !== true) {
-                    return Array.isArray(result) ? result : [];
-                }
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
                 return [];
-            } catch (err) {
-                console.error('获取文件列表失败:', err);
-                return [];
-            }
+            } catch (err) { console.error('获取文件列表失败:', err); return []; }
         }
 
         async function updateFileStatus(fileId, status, reviewedBy, rejectReason = null) {
-            const data = {
-                status: status,
-                reviewed_by: reviewedBy,
-                reviewed_at: new Date().toISOString()
-            };
-            if (rejectReason) {
-                data.reject_reason = rejectReason;
-            }
-
-            await supabaseRequest(`/files?id=eq.${fileId}`, {
-                method: 'PATCH',
-                body: JSON.stringify(data)
-            });
-
+            const data = { status, reviewed_by: reviewedBy, reviewed_at: new Date().toISOString() };
+            if (rejectReason) data.reject_reason = rejectReason;
+            await supabaseRequest(`/files?id=eq.${fileId}`, { method: 'PATCH', body: JSON.stringify(data) });
             return { success: true };
         }
 
         async function deleteFileRecord(fileId) {
-            await supabaseRequest(`/files?id=eq.${fileId}`, {
-                method: 'DELETE'
-            });
+            await supabaseRequest(`/files?id=eq.${fileId}`, { method: 'DELETE' });
             return { success: true };
         }
 
@@ -3079,20 +2848,12 @@
         //  13. 举报功能
         // ========================================================================
         async function reportFile(fileId, reportedBy, reason) {
-            if (!reason || reason.trim().length < 5) {
-                throw new Error('请详细描述举报原因（至少5个字）');
-            }
-
+            if (!reason || reason.trim().length < 5) throw new Error('请详细描述举报原因（至少5个字）');
             await supabaseRequest('/reports', {
                 method: 'POST',
-                body: JSON.stringify({
-                    file_id: fileId,
-                    reported_by: reportedBy,
-                    reason: reason.trim(),
-                    status: 'pending'
-                })
+                body: JSON.stringify({ file_id: fileId, reported_by: reportedBy, reason: reason.trim(),
+                status: 'pending' })
             });
-
             return { success: true };
         }
 
@@ -3102,25 +2863,15 @@
         async function fetchReports(status = null) {
             try {
                 let url = '/reports?order=created_at.desc';
-                if (status) {
-                    url += `&status=eq.${status}`;
-                }
+                if (status) url += `&status=eq.${status}`;
                 const result = await supabaseRequest(url);
-                if (result && result.success !== true) {
-                    return Array.isArray(result) ? result : [];
-                }
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
                 return [];
-            } catch (err) {
-                console.error('获取举报列表失败:', err);
-                return [];
-            }
+            } catch (err) { console.error('获取举报列表失败:', err); return []; }
         }
 
         async function updateReportStatus(reportId, status) {
-            await supabaseRequest(`/reports?id=eq.${reportId}`, {
-                method: 'PATCH',
-                body: JSON.stringify({ status: status })
-            });
+            await supabaseRequest(`/reports?id=eq.${reportId}`, { method: 'PATCH', body: JSON.stringify({ status }) });
             return { success: true };
         }
 
@@ -3133,7 +2884,6 @@
                 display: flex; align-items: center; justify-content: center;
                 animation: fadeInOverlay 0.25s ease;
             `;
-
             const modal = document.createElement('div');
             modal.style.cssText = `
                 background: #fff; border-radius: 16px; padding: 28px 24px 24px;
@@ -3143,7 +2893,6 @@
                 animation: scaleIn 0.3s ease;
                 position: relative;
             `;
-
             modal.innerHTML = `
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
                     <h3 style="font-size:20px;font-weight:700;">
@@ -3164,15 +2913,10 @@
                     </div>
                 </div>
             `;
-
             overlay.appendChild(modal);
             document.body.appendChild(overlay);
-
             document.getElementById('closeReportsBtn').addEventListener('click', () => overlay.remove());
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.remove();
-            });
-
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
             document.querySelectorAll('.reports-filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.reports-filter-btn').forEach(b => {
@@ -3186,41 +2930,28 @@
                     loadReports(btn.dataset.filter);
                 });
             });
-
             await loadReports('all');
         }
 
         async function loadReports(filter) {
             const list = document.getElementById('reportsList');
             const countEl = document.getElementById('reportsCount');
-
             try {
                 const reports = await fetchReports(filter === 'all' ? null : filter);
                 countEl.textContent = `(${reports.length} 条)`;
-
                 if (reports.length === 0) {
-                    list.innerHTML = `
-                        <div style="text-align:center;padding:30px 0;color:var(--text-light);">
-                            <i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>
-                            暂无举报记录
-                        </div>
-                    `;
+                    list.innerHTML =
+                        `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无举报记录</div>`;
                     return;
                 }
-
                 const fileIds = reports.map(r => r.file_id).filter(id => id);
                 let filesMap = {};
                 if (fileIds.length > 0) {
                     try {
                         const files = await supabaseRequest(`/files?id=in.(${fileIds.join(',')})`);
-                        if (files && files.length > 0) {
-                            files.forEach(f => { filesMap[f.id] = f; });
-                        }
-                    } catch (e) {
-                        console.warn('获取文件信息失败:', e);
-                    }
+                        if (files && files.length > 0) files.forEach(f => { filesMap[f.id] = f; });
+                    } catch (e) { console.warn('获取文件信息失败:', e); }
                 }
-
                 list.innerHTML = reports.map(report => {
                     const file = filesMap[report.file_id];
                     const statusMap = {
@@ -3229,37 +2960,21 @@
                         dismissed: { label: '❌ 已驳回', color: '#DC2626', bg: '#FEE2E2' }
                     };
                     const statusInfo = statusMap[report.status] || statusMap.pending;
-
                     return `
                         <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;">
                             <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
                                 <div style="flex:1;min-width:150px;">
-                                    <div style="font-weight:600;font-size:14px;">
-                                        📁 ${file ? file.file_name : '文件已删除 (ID: ' + report.file_id + ')'}
-                                    </div>
-                                    <div style="font-size:13px;color:var(--text-secondary);">
-                                        📝 ${report.reason || '未说明原因'}
-                                    </div>
-                                    <div style="font-size:12px;color:var(--text-light);margin-top:4px;">
-                                        🚨 举报人: ${report.reported_by} · ${formatTime(report.created_at)}
-                                        ${file ? ` · 上传者: ${file.uploaded_by}` : ''}
-                                    </div>
+                                    <div style="font-weight:600;font-size:14px;">📁 ${file ? file.file_name : '文件已删除 (ID: ' + report.file_id + ')'}</div>
+                                    <div style="font-size:13px;color:var(--text-secondary);">📝 ${report.reason || '未说明原因'}</div>
+                                    <div style="font-size:12px;color:var(--text-light);margin-top:4px;">🚨 举报人: ${report.reported_by} · ${formatTime(report.created_at)}${file ? ` · 上传者: ${file.uploaded_by}` : ''}</div>
                                 </div>
                                 <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-                                    <span style="font-size:12px;font-weight:600;padding:2px 12px;border-radius:10px;background:${statusInfo.bg};color:${statusInfo.color};">
-                                        ${statusInfo.label}
-                                    </span>
+                                    <span style="font-size:12px;font-weight:600;padding:2px 12px;border-radius:10px;background:${statusInfo.bg};color:${statusInfo.color};">${statusInfo.label}</span>
                                     ${report.status === 'pending' ? `
                                         <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
-                                            <button class="report-resolve-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
-                                                ✅ 处理
-                                            </button>
-                                            <button class="report-dismiss-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#6B7280;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
-                                                ❌ 驳回
-                                            </button>
-                                            ${file ? `<button class="report-delete-file-btn" data-id="${report.id}" data-file-id="${file.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
-                                                🗑️ 删除文件
-                                            </button>` : ''}
+                                            <button class="report-resolve-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">✅ 处理</button>
+                                            <button class="report-dismiss-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#6B7280;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">❌ 驳回</button>
+                                            ${file ? `<button class="report-delete-file-btn" data-id="${report.id}" data-file-id="${file.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">🗑️ 删除文件</button>` : ''}
                                         </div>
                                     ` : ''}
                                 </div>
@@ -3267,7 +2982,6 @@
                         </div>
                     `;
                 }).join('');
-
                 list.querySelectorAll('.report-resolve-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -3275,15 +2989,12 @@
                             try {
                                 await updateReportStatus(id, 'resolved');
                                 showToast('✅ 举报已标记为已处理', 'success');
-                                await loadReports(document.querySelector('.reports-filter-btn.active')
-                                    ?.dataset.filter || 'all');
-                            } catch (err) {
-                                showToast(`❌ ${err.message}`, 'error');
-                            }
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
                         }
                     });
                 });
-
                 list.querySelectorAll('.report-dismiss-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -3291,15 +3002,12 @@
                             try {
                                 await updateReportStatus(id, 'dismissed');
                                 showToast('✅ 举报已驳回', 'success');
-                                await loadReports(document.querySelector('.reports-filter-btn.active')
-                                    ?.dataset.filter || 'all');
-                            } catch (err) {
-                                showToast(`❌ ${err.message}`, 'error');
-                            }
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
                         }
                     });
                 });
-
                 list.querySelectorAll('.report-delete-file-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const reportId = parseInt(btn.dataset.id);
@@ -3307,29 +3015,20 @@
                         if (confirm('⚠️ 确定要删除此文件并处理举报吗？')) {
                             try {
                                 const file = allFiles.find(f => f.id === fileId);
-                                if (file && file.file_path) {
-                                    await deleteFileFromStorage(file.file_path);
-                                }
+                                if (file && file.file_path) await deleteFileFromStorage(file.file_path);
                                 await deleteFileRecord(fileId);
                                 await updateReportStatus(reportId, 'resolved');
                                 showToast('🗑️ 文件已删除，举报已处理', 'success');
                                 await refreshAll();
-                                await loadReports(document.querySelector('.reports-filter-btn.active')
-                                    ?.dataset.filter || 'all');
-                            } catch (err) {
-                                showToast(`❌ ${err.message}`, 'error');
-                            }
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
                         }
                     });
                 });
-
             } catch (err) {
-                list.innerHTML = `
-                    <div style="text-align:center;padding:30px 0;color:#EF4444;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>
-                        加载失败: ${err.message}
-                    </div>
-                `;
+                list.innerHTML =
+                    `<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
             }
         }
 
@@ -3364,27 +3063,14 @@
 
         function getFileEmoji(extension) {
             const type = getFileType(extension);
-            const map = {
-                pdf: '📄',
-                doc: '📝',
-                image: '🖼️',
-                video: '🎬',
-                zip: '📦',
-                other: '📁'
-            };
+            const map = { pdf: '📄', doc: '📝', image: '🖼️', video: '🎬', zip: '📦', other: '📁' };
             return map[type] || '📁';
         }
 
         function getFileColor(extension) {
             const type = getFileType(extension);
-            const map = {
-                pdf: '#EF4444',
-                doc: '#3B82F6',
-                image: '#8B5CF6',
-                video: '#EC4899',
-                zip: '#F59E0B',
-                other: '#6B7280'
-            };
+            const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B',
+                other: '#6B7280' };
             return map[type] || '#6B7280';
         }
 
@@ -3399,17 +3085,11 @@
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
-            const icons = {
-                success: 'fa-check-circle',
-                error: 'fa-times-circle',
-                info: 'fa-info-circle'
-            };
+            const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span>
-                <span>${message}</span>
-            `;
+            toast.innerHTML =
+                `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span><span>${message}</span>`;
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -3430,28 +3110,18 @@
             const countEl = document.getElementById('announcementCount');
             const currentUser = getCurrentUser();
             const role = currentUser ? getRole(currentUser) : 'user';
-
             if (!container) return;
-
             countEl.textContent = `(${announcements.length} 条)`;
 
             const form = document.getElementById('announcementForm');
             if (form) {
-                if (role === 'admin' || role === 'owner' || role === 'official') {
-                    form.classList.add('active');
-                } else {
-                    form.classList.remove('active');
-                }
+                if (role === 'admin' || role === 'owner' || role === 'official') form.classList.add('active');
+                else form.classList.remove('active');
             }
 
             if (announcements.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-announcement">
-                        <i class="fas fa-inbox"></i>
-                        暂无公告
-                        ${role === 'admin' || role === 'owner' || role === 'official' ? '<br><span style="font-size:12px;">点击上方表单发布第一条公告！</span>' : ''}
-                    </div>
-                `;
+                container.innerHTML =
+                    `<div class="empty-announcement"><i class="fas fa-inbox"></i>暂无公告${role === 'admin' || role === 'owner' || role === 'official' ? '<br><span style="font-size:12px;">点击上方表单发布第一条公告！</span>' : ''}</div>`;
                 return;
             }
 
@@ -3460,7 +3130,6 @@
                 if (!a.is_pinned && b.is_pinned) return 1;
                 return 0;
             });
-
             const visibleCount = announcementsExpanded ? sorted.length : Math.min(sorted.length, MAX_VISIBLE_ANNOUNCEMENTS);
 
             let html = '';
@@ -3470,59 +3139,32 @@
                 const isAuthorOwner = isOwner(item.author);
                 const isAuthorOfficial = isOfficial(item.author);
                 const isPinned = item.is_pinned || false;
-
-                const canDelete = (currentUser && (
-                    isOwner(currentUser) ||
-                    (isAdmin(currentUser) && item.author === currentUser) ||
-                    (isOfficial(currentUser) && item.author === currentUser)
-                ));
-
+                const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && item.author ===
+                    currentUser) || (isOfficial(currentUser) && item.author === currentUser)));
                 const canPin = currentUser && isOwner(currentUser);
 
                 let authorDisplay = item.author;
                 let authorClass = '';
                 let tagHtml = '';
-
-                if (isAuthorOwner) {
-                    authorClass = 'owner';
-                    tagHtml = '<span class="tag owner-tag">站长</span>';
-                } else if (isAuthorOfficial) {
-                    authorClass = 'official';
-                    tagHtml = '<span class="tag official-tag">官方</span>';
-                } else if (isAuthorAdmin) {
-                    authorClass = 'admin';
-                    tagHtml = '<span class="tag admin-tag">管理员</span>';
-                }
+                if (isAuthorOwner) { authorClass = 'owner';
+                    tagHtml = '<span class="tag owner-tag">站长</span>'; } else if (isAuthorOfficial) { authorClass =
+                        'official';
+                    tagHtml = '<span class="tag official-tag">官方</span>'; } else if (isAuthorAdmin) { authorClass =
+                        'admin';
+                    tagHtml = '<span class="tag admin-tag">管理员</span>'; }
 
                 let actionsHtml = '';
-                if (canDelete) {
-                    actionsHtml += `
-                        <button class="delete-announce-btn" data-id="${item.id}">
-                            <i class="fas fa-trash"></i> 删除
-                        </button>
-                    `;
-                }
-                if (canPin) {
-                    actionsHtml += `
-                        <button class="pin-announce-btn ${isPinned ? 'pinned' : ''}" data-id="${item.id}" data-pinned="${isPinned}">
-                            <i class="fas fa-thumbtack"></i> ${isPinned ? '取消置顶' : '置顶'}
-                        </button>
-                    `;
-                }
+                if (canDelete) actionsHtml +=
+                    `<button class="delete-announce-btn" data-id="${item.id}"><i class="fas fa-trash"></i> 删除</button>`;
+                if (canPin) actionsHtml +=
+                    `<button class="pin-announce-btn ${isPinned ? 'pinned' : ''}" data-id="${item.id}" data-pinned="${isPinned}"><i class="fas fa-thumbtack"></i> ${isPinned ? '取消置顶' : '置顶'}</button>`;
 
                 html += `
                     <div class="announcement-item ${isPinned ? 'pinned' : ''} ${isHidden ? 'announcement-hidden' : ''}" data-id="${item.id}">
                         <div class="announcement-header">
-                            <div class="announcement-title">
-                                ${isPinned ? '<i class="fas fa-thumbtack pin-icon"></i>' : ''}
-                                ${item.title}
-                                ${isPinned ? '<span class="tag pinned-tag">置顶</span>' : ''}
-                            </div>
+                            <div class="announcement-title">${isPinned ? '<i class="fas fa-thumbtack pin-icon"></i>' : ''}${item.title}${isPinned ? '<span class="tag pinned-tag">置顶</span>' : ''}</div>
                             <div class="announcement-meta">
-                                <span>
-                                    <span class="author-name ${authorClass}">${authorDisplay}</span>
-                                    ${tagHtml}
-                                </span>
+                                <span><span class="author-name ${authorClass}">${authorDisplay}</span>${tagHtml}</span>
                                 <span>${formatTime(item.created_at)}</span>
                             </div>
                         </div>
@@ -3533,12 +3175,9 @@
             });
 
             if (sorted.length > MAX_VISIBLE_ANNOUNCEMENTS) {
-                const toggleText = announcementsExpanded ? '收起 ↑' : `展开查看更多 (${sorted.length - MAX_VISIBLE_ANNOUNCEMENTS} 条) ↓`;
-                html += `
-                    <div class="announcement-toggle">
-                        <button id="announcementToggleBtn">${toggleText}</button>
-                    </div>
-                `;
+                const toggleText = announcementsExpanded ? '收起 ↑' :
+                    `展开查看更多 (${sorted.length - MAX_VISIBLE_ANNOUNCEMENTS} 条) ↓`;
+                html += `<div class="announcement-toggle"><button id="announcementToggleBtn">${toggleText}</button></div>`;
             }
 
             container.innerHTML = html;
@@ -3547,9 +3186,7 @@
                 btn.addEventListener('click', () => {
                     const id = parseInt(btn.dataset.id);
                     const item = announcements.find(a => a.id === id);
-                    if (item) {
-                        showDeleteAnnouncementModal(id, item.title, item.author);
-                    }
+                    if (item) showDeleteAnnouncementModal(id, item.title, item.author);
                 });
             });
 
@@ -3561,19 +3198,13 @@
                         const result = await toggleAnnouncementPin(id, currentUser);
                         showToast(result.is_pinned ? '✅ 已置顶' : '✅ 已取消置顶', 'success');
                         await loadAnnouncements();
-                    } catch (err) {
-                        showToast(`❌ ${err.message}`, 'error');
-                    }
+                    } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
                 });
             });
 
             const toggleBtn = document.getElementById('announcementToggleBtn');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    announcementsExpanded = !announcementsExpanded;
-                    renderAnnouncements();
-                });
-            }
+            if (toggleBtn) toggleBtn.addEventListener('click', () => { announcementsExpanded = !announcementsExpanded;
+                renderAnnouncements(); });
         }
 
         // ========================================================================
@@ -3599,21 +3230,13 @@
             const fileCountEl = document.getElementById('fileCount');
             const totalSizeEl = document.getElementById('totalSize');
 
-            if (!countEl || !fileCountEl || !totalSizeEl) {
-                console.warn('统计元素缺失');
-                return;
-            }
+            if (!countEl || !fileCountEl || !totalSizeEl) { console.warn('统计元素缺失'); return; }
 
             if (currentUserBanned) {
                 const container = document.getElementById('fileContent');
                 if (container) {
-                    container.innerHTML = `
-                        <div class="banned-overlay">
-                            <i class="fas fa-ban"></i>
-                            <h3>⚠️ 您已被封禁</h3>
-                            <p>您无法查看和上传任何文件。如有疑问，请联系管理员。</p>
-                        </div>
-                    `;
+                    container.innerHTML =
+                        `<div class="banned-overlay"><i class="fas fa-ban"></i><h3>⚠️ 您已被封禁</h3><p>您无法查看和上传任何文件。如有疑问，请联系管理员。</p></div>`;
                 }
                 countEl.textContent = '(0 个)';
                 fileCountEl.textContent = '0';
@@ -3624,9 +3247,8 @@
             let filtered = [...fileList];
             filtered = filtered.filter(f => f.status === 'approved');
 
-            if (currentFilter !== 'all') {
-                filtered = filtered.filter(f => getFileType(f.file_type || f.extension) === currentFilter);
-            }
+            if (currentFilter !== 'all') filtered = filtered.filter(f => getFileType(f.file_type || f.extension) ===
+                currentFilter);
             if (searchQuery.trim()) {
                 const q = searchQuery.trim().toLowerCase();
                 filtered = filtered.filter(f => f.file_name.toLowerCase().includes(q));
@@ -3634,18 +3256,12 @@
 
             countEl.textContent = `(${filtered.length} 个)`;
             fileCountEl.textContent = fileList.length;
-
             const totalBytes = fileList.reduce((sum, f) => sum + (f.file_size || 0), 0);
             totalSizeEl.textContent = formatSize(totalBytes);
 
             if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon"><i class="fas fa-inbox"></i></div>
-                        <h3>${fileList.length === 0 ? '还没有任何资源' : '没有匹配的文件'}</h3>
-                        <p>${fileList.length === 0 ? '等待管理员上传文件' : '试试其他关键词或筛选条件'}</p>
-                    </div>
-                `;
+                grid.innerHTML =
+                    `<div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><h3>${fileList.length === 0 ? '还没有任何资源' : '没有匹配的文件'}</h3><p>${fileList.length === 0 ? '等待管理员上传文件' : '试试其他关键词或筛选条件'}</p></div>`;
                 return;
             }
 
@@ -3665,68 +3281,34 @@
 
                 let canDelete = false;
                 if (loggedIn && currentUser) {
-                    if (isOwner(currentUser)) {
-                        canDelete = true;
-                    } else if (isAdmin(currentUser) && file.uploaded_by === currentUser) {
-                        canDelete = true;
-                    } else if (isOfficial(currentUser) && file.uploaded_by === currentUser) {
-                        canDelete = true;
-                    } else if (file.uploaded_by === currentUser) {
-                        canDelete = true;
-                    }
+                    if (isOwner(currentUser)) canDelete = true;
+                    else if (isAdmin(currentUser) && file.uploaded_by === currentUser) canDelete = true;
+                    else if (isOfficial(currentUser) && file.uploaded_by === currentUser) canDelete = true;
+                    else if (file.uploaded_by === currentUser) canDelete = true;
                 }
 
                 let uploaderHtml = '';
                 if (isUploaderOwner) {
-                    uploaderHtml = `
-                        <div class="file-uploader">
-                            <i class="fas fa-crown" style="color:var(--owner-color);"></i>
-                            <span class="uploader-name owner">${uploaderName}</span>
-                            <span class="owner-tag">站长</span>
-                        </div>
-                    `;
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="uploader-name owner">${uploaderName}</span><span class="owner-tag">站长</span></div>`;
                 } else if (isUploaderOfficial) {
-                    uploaderHtml = `
-                        <div class="file-uploader">
-                            <i class="fas fa-badge-check" style="color:var(--official-color);"></i>
-                            <span class="uploader-name official">${uploaderName}</span>
-                            <span class="official-tag">官方</span>
-                        </div>
-                    `;
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-badge-check" style="color:var(--official-color);"></i><span class="uploader-name official">${uploaderName}</span><span class="official-tag">官方</span></div>`;
                 } else if (isUploaderAdmin) {
-                    uploaderHtml = `
-                        <div class="file-uploader">
-                            <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
-                            <span class="uploader-name admin">${uploaderName}</span>
-                            <span class="admin-tag">管理员</span>
-                        </div>
-                    `;
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="uploader-name admin">${uploaderName}</span><span class="admin-tag">管理员</span></div>`;
                 } else {
-                    // 检查是否是封禁用户（通过 user_bans 表查询）
-                    let isBannedUser = false;
-                    // 这里简单判断：如果名字是灰色且带封禁标签，但不做复杂查询
-                    uploaderHtml = `
-                        <div class="file-uploader">
-                            <i class="fas fa-user" style="color:#6B7280;"></i>
-                            <span class="uploader-name">${uploaderName}</span>
-                        </div>
-                    `;
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-user" style="color:#6B7280;"></i><span class="uploader-name">${uploaderName}</span></div>`;
                 }
 
                 let actionHtml = '';
                 if (loggedIn) {
                     let deleteBtnHtml = '';
-                    if (canDelete) {
-                        deleteBtnHtml = `<button class="delete-btn" data-id="${file.id}"><i class="fas fa-trash"></i> 删除</button>`;
-                    }
-
-                    actionHtml = `
-                        <div class="file-actions">
-                            <button class="download-btn" data-id="${file.id}"><i class="fas fa-download"></i> 下载</button>
-                            ${deleteBtnHtml}
-                            <button class="report-btn" data-id="${file.id}"><i class="fas fa-flag"></i> 举报</button>
-                        </div>
-                    `;
+                    if (canDelete) deleteBtnHtml =
+                        `<button class="delete-btn" data-id="${file.id}"><i class="fas fa-trash"></i> 删除</button>`;
+                    actionHtml =
+                        `<div class="file-actions"><button class="download-btn" data-id="${file.id}"><i class="fas fa-download"></i> 下载</button>${deleteBtnHtml}<button class="report-btn" data-id="${file.id}"><i class="fas fa-flag"></i> 举报</button></div>`;
                 }
 
                 const statusBadge = file.status === 'pending' ? '⏳ 审核中' :
@@ -3739,10 +3321,7 @@
                         <div class="file-icon-big" style="color:${color};">${emoji}</div>
                         <div class="file-name text-ellipsis" title="${file.file_name}">${file.file_name}</div>
                         ${statusBadge ? `<span class="file-status-badge ${file.status}">${statusBadge}</span>` : ''}
-                        <div class="file-meta">
-                            <span>${formatSize(file.file_size)}</span>
-                            <span>${formatTime(file.created_at)}</span>
-                        </div>
+                        <div class="file-meta"><span>${formatSize(file.file_size)}</span><span>${formatTime(file.created_at)}</span></div>
                         ${uploaderHtml}
                         ${actionHtml}
                     </div>
@@ -3756,9 +3335,9 @@
                         const id = parseInt(btn.dataset.id);
                         const file = allFiles.find(f => f.id === id);
                         if (file && file.file_path) {
-                            const url =
-                                `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${file.file_path}`;
-                            window.open(url, '_blank');
+                            window.open(
+                                `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${file.file_path}`,
+                            '_blank');
                             showToast(`📥 下载: ${file.file_name}`, 'info', 1500);
                         }
                     });
@@ -3769,9 +3348,7 @@
                         e.stopPropagation();
                         const id = parseInt(btn.dataset.id);
                         const file = allFiles.find(f => f.id === id);
-                        if (file) {
-                            showDeleteFileModal(id, file.file_name, file.uploaded_by);
-                        }
+                        if (file) showDeleteFileModal(id, file.file_name, file.uploaded_by);
                     });
                 });
 
@@ -3791,24 +3368,14 @@
         function showReportFileModal(fileId) {
             const reason = prompt('请输入举报原因（至少5个字）：');
             if (reason === null) return;
-            if (reason.trim().length < 5) {
-                showToast('❌ 举报原因至少5个字', 'error');
-                return;
-            }
+            if (reason.trim().length < 5) { showToast('❌ 举报原因至少5个字', 'error'); return; }
 
             const currentUser = getCurrentUser();
-            if (!currentUser) {
-                showToast('⚠️ 请先登录', 'error');
-                return;
-            }
+            if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
 
-            reportFile(fileId, currentUser, reason.trim())
-                .then(() => {
-                    showToast('✅ 举报已提交，管理员将尽快处理', 'success', 3000);
-                })
-                .catch(err => {
-                    showToast(`❌ 举报失败: ${err.message}`, 'error');
-                });
+            reportFile(fileId, currentUser, reason.trim()).then(() => {
+                showToast('✅ 举报已提交，管理员将尽快处理', 'success', 3000);
+            }).catch(err => { showToast(`❌ 举报失败: ${err.message}`, 'error'); });
         }
 
         // ========================================================================
@@ -3840,68 +3407,27 @@
                     gap: 12px;
                     border: 1px solid #FCD34D;
                 `;
-                panel.innerHTML = `
-                    <span style="font-size:14px;font-weight:600;color:#92400E;">
-                        <i class="fas fa-clock" style="color:#D97706;"></i>
-                        有 ${pendingFiles.length} 个文件待审核
-                    </span>
-                    <button id="goToReviewBtn" style="padding:6px 20px;border:none;border-radius:8px;background:#D97706;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);">
-                        <i class="fas fa-eye"></i> 前往审核
-                    </button>
-                `;
+                panel.innerHTML =
+                    `<span style="font-size:14px;font-weight:600;color:#92400E;"><i class="fas fa-clock" style="color:#D97706;"></i> 有 ${pendingFiles.length} 个文件待审核</span><button id="goToReviewBtn" style="padding:6px 20px;border:none;border-radius:8px;background:#D97706;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);"><i class="fas fa-eye"></i> 前往审核</button>`;
                 announcementSection.parentNode.insertBefore(panel, announcementSection);
-
-                document.getElementById('goToReviewBtn').addEventListener('click', () => {
-                    openReviewModal();
-                });
-
-            } catch (err) {
-                console.error('加载审核面板失败:', err);
-            }
+                document.getElementById('goToReviewBtn').addEventListener('click', () => { openReviewModal(); });
+            } catch (err) { console.error('加载审核面板失败:', err); }
         }
 
         function openReviewModal() {
             const overlay = document.createElement('div');
             overlay.id = 'reviewModal';
-            overlay.style.cssText = `
-                position: fixed; inset: 0; background: rgba(0,0,0,0.40);
-                backdrop-filter: blur(8px); z-index: 99999;
-                display: flex; align-items: center; justify-content: center;
-                animation: fadeInOverlay 0.25s ease;
-            `;
-
+            overlay.style.cssText =
+                `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
             const modal = document.createElement('div');
-            modal.style.cssText = `
-                background: #fff; border-radius: 16px; padding: 28px 24px 24px;
-                max-width: 700px; width: 92%; max-height: 85vh;
-                box-shadow: 0 24px 64px rgba(0,0,0,0.20);
-                display: flex; flex-direction: column;
-                animation: scaleIn 0.3s ease;
-                position: relative;
-            `;
-
-            modal.innerHTML = `
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                    <h3 style="font-size:20px;font-weight:700;"><i class="fas fa-clipboard-check" style="color:var(--primary);"></i> 文件审核中心</h3>
-                    <button id="closeReviewBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
-                </div>
-                <div id="reviewList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;">
-                    <div style="text-align:center;padding:30px 0;color:var(--text-light);">
-                        <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...
-                    </div>
-                </div>
-            `;
-
+            modal.style.cssText =
+                `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 700px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); display: flex; flex-direction: column; animation: scaleIn 0.3s ease; position: relative;`;
+            modal.innerHTML =
+                `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:20px;font-weight:700;"><i class="fas fa-clipboard-check" style="color:var(--primary);"></i> 文件审核中心</h3><button id="closeReviewBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div id="reviewList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;"><div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div></div>`;
             overlay.appendChild(modal);
             document.body.appendChild(overlay);
-
-            document.getElementById('closeReviewBtn').addEventListener('click', () => {
-                overlay.remove();
-            });
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) overlay.remove();
-            });
-
+            document.getElementById('closeReviewBtn').addEventListener('click', () => { overlay.remove(); });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
             loadPendingReviews();
         }
 
@@ -3910,33 +3436,22 @@
             try {
                 const pendingFiles = await fetchFiles('pending');
                 if (pendingFiles.length === 0) {
-                    list.innerHTML = `
-                        <div style="text-align:center;padding:30px 0;color:var(--text-light);">
-                            <i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>
-                            暂无待审核文件
-                        </div>
-                    `;
+                    list.innerHTML =
+                        `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无待审核文件</div>`;
                     return;
                 }
-
                 const currentUser = getCurrentUser();
-                list.innerHTML = pendingFiles.map(file => `
+                list.innerHTML = pendingFiles.map(file =>
+                    `
                     <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;">
                         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
                             <div>
                                 <div style="font-weight:600;font-size:15px;">${file.file_name}</div>
-                                <div style="font-size:13px;color:var(--text-light);">
-                                    ${formatSize(file.file_size)} · 上传者: ${file.uploaded_by}
-                                    <span style="margin-left:10px;">${formatTime(file.created_at)}</span>
-                                </div>
+                                <div style="font-size:13px;color:var(--text-light);">${formatSize(file.file_size)} · 上传者: ${file.uploaded_by}<span style="margin-left:10px;">${formatTime(file.created_at)}</span></div>
                             </div>
                             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                                <button class="review-approve-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
-                                    ✅ 通过
-                                </button>
-                                <button class="review-reject-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">
-                                    ❌ 拒绝
-                                </button>
+                                <button class="review-approve-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">✅ 通过</button>
+                                <button class="review-reject-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">❌ 拒绝</button>
                             </div>
                         </div>
                     </div>
@@ -3951,9 +3466,7 @@
                                 showToast('✅ 已通过审核', 'success');
                                 loadPendingReviews();
                                 await refreshAll();
-                            } catch (err) {
-                                showToast(`❌ ${err.message}`, 'error');
-                            }
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
                         }
                     });
                 });
@@ -3966,26 +3479,18 @@
                         try {
                             await updateFileStatus(id, 'rejected', getCurrentUser(), reason || '未说明原因');
                             const file = allFiles.find(f => f.id === id);
-                            if (file && file.file_path) {
-                                await deleteFileFromStorage(file.file_path);
-                            }
+                            if (file && file.file_path) await deleteFileFromStorage(file.file_path);
                             await deleteFileRecord(id);
                             showToast('❌ 已拒绝并删除文件', 'success');
                             loadPendingReviews();
                             await refreshAll();
-                        } catch (err) {
-                            showToast(`❌ ${err.message}`, 'error');
-                        }
+                        } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
                     });
                 });
 
             } catch (err) {
-                list.innerHTML = `
-                    <div style="text-align:center;padding:30px 0;color:var(--text-light);">
-                        <i class="fas fa-exclamation-triangle" style="font-size:32px;color:#EF4444;display:block;margin-bottom:8px;"></i>
-                        加载失败: ${err.message}
-                    </div>
-                `;
+                list.innerHTML =
+                    `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-exclamation-triangle" style="font-size:32px;color:#EF4444;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
             }
         }
 
@@ -3998,13 +3503,10 @@
             deleteFileTargetId = id;
             const currentUser = getCurrentUser();
             let msg = `确定要删除文件 "${name}" 吗？`;
-
-            if (isOwner(currentUser) && uploader !== currentUser) {
-                msg = `👑 站长权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
-            } else if (isAdmin(currentUser) && uploader !== currentUser && !isOwner(uploader)) {
-                msg = `🔑 管理员权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
-            }
-
+            if (isOwner(currentUser) && uploader !== currentUser) msg =
+                `👑 站长权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
+            else if (isAdmin(currentUser) && uploader !== currentUser && !isOwner(uploader)) msg =
+                `🔑 管理员权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
             document.getElementById('deleteModalMsg').textContent = msg;
             document.getElementById('deleteModal').classList.add('active');
         }
@@ -4018,16 +3520,12 @@
             if (deleteFileTargetId === null) return;
             try {
                 const file = allFiles.find(f => f.id === deleteFileTargetId);
-                if (file && file.file_path) {
-                    await deleteFileFromStorage(file.file_path);
-                }
+                if (file && file.file_path) await deleteFileFromStorage(file.file_path);
                 await deleteFileRecord(deleteFileTargetId);
                 showToast('🗑️ 文件已删除', 'success', 1500);
                 await refreshAll();
-            } catch (err) {
-                console.error(err);
-                showToast('删除失败', 'error');
-            }
+            } catch (err) { console.error(err);
+                showToast('删除失败', 'error'); }
             hideDeleteFileModal();
         }
 
@@ -4055,10 +3553,8 @@
                 await deleteAnnouncement(deleteAnnouncementTargetId, currentUser);
                 showToast('🗑️ 公告已删除', 'success', 1500);
                 await loadAnnouncements();
-            } catch (err) {
-                console.error(err);
-                showToast(`❌ ${err.message}`, 'error');
-            }
+            } catch (err) { console.error(err);
+                showToast(`❌ ${err.message}`, 'error'); }
             hideDeleteAnnouncementModal();
         }
 
@@ -4069,10 +3565,8 @@
             try {
                 announcements = await fetchAnnouncements();
                 renderAnnouncements();
-            } catch (err) {
-                console.error('加载公告失败:', err);
-                showToast('加载公告失败', 'error');
-            }
+            } catch (err) { console.error('加载公告失败:', err);
+                showToast('加载公告失败', 'error'); }
         }
 
         // ========================================================================
@@ -4096,16 +3590,10 @@
 
         async function confirmBanUser() {
             const reason = document.getElementById('banUserReason').value.trim();
-            if (!reason) {
-                showToast('⚠️ 请填写封禁原因', 'error');
-                return;
-            }
+            if (!reason) { showToast('⚠️ 请填写封禁原因', 'error'); return; }
 
             const currentUser = getCurrentUser();
-            if (!currentUser) {
-                showToast('⚠️ 请先登录', 'error');
-                return;
-            }
+            if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
 
             const btn = document.getElementById('banUserConfirmBtn');
             btn.disabled = true;
@@ -4116,12 +3604,8 @@
                 showToast(`✅ 已封禁用户 ${banUserTarget.username}`, 'success', 3000);
                 hideBanUserModal();
                 await refreshAll();
-            } catch (err) {
-                showToast(`❌ ${err.message}`, 'error');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = '确认封禁';
-            }
+            } catch (err) { showToast(`❌ ${err.message}`, 'error'); } finally { btn.disabled = false;
+                btn.textContent = '确认封禁'; }
         }
 
         // ========================================================================
@@ -4130,14 +3614,9 @@
         async function getUserList() {
             try {
                 const users = await supabaseRequest('/users?select=id,username');
-                if (users && users.success !== true) {
-                    return Array.isArray(users) ? users : [];
-                }
+                if (users && users.success !== true) return Array.isArray(users) ? users : [];
                 return [];
-            } catch (err) {
-                console.error('获取用户列表失败:', err);
-                return [];
-            }
+            } catch (err) { console.error('获取用户列表失败:', err); return []; }
         }
 
         // ========================================================================
@@ -4147,29 +3626,21 @@
             const wrapper = document.getElementById('adminMenuWrapper');
             const btn = document.getElementById('adminMenuBtn');
             const dropdown = document.getElementById('adminDropdown');
-
             if (!wrapper || !btn || !dropdown) return;
 
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 dropdown.classList.toggle('show');
             });
-
-            document.addEventListener('click', () => {
-                dropdown.classList.remove('show');
-            });
+            document.addEventListener('click', () => { dropdown.classList.remove('show'); });
 
             dropdown.querySelectorAll('.admin-dropdown-item').forEach(item => {
                 item.addEventListener('click', () => {
                     dropdown.classList.remove('show');
                     const action = item.dataset.action;
-                    if (action === 'review') {
-                        openReviewModal();
-                    } else if (action === 'ban') {
-                        showBanUserSelector();
-                    } else if (action === 'reports') {
-                        openReportsReview();
-                    }
+                    if (action === 'review') openReviewModal();
+                    else if (action === 'ban') showBanUserSelector();
+                    else if (action === 'reports') openReportsReview();
                 });
             });
         }
@@ -4184,53 +3655,22 @@
 
                 const bannedUsers = await supabaseRequest('/user_bans?is_banned=eq.true');
                 const bannedIds = new Set();
-                if (bannedUsers && bannedUsers.length > 0) {
-                    bannedUsers.forEach(b => bannedIds.add(b.user_id));
-                }
+                if (bannedUsers && bannedUsers.length > 0) bannedUsers.forEach(b => bannedIds.add(b.user_id));
 
                 const availableUsers = users.filter(u =>
-                    u.username !== currentUser &&
-                    !isAdmin(u.username) &&
-                    !bannedIds.has(u.id)
+                    u.username !== currentUser && !isAdmin(u.username) && !bannedIds.has(u.id)
                 );
 
-                if (availableUsers.length === 0) {
-                    showToast('暂无普通用户可封禁', 'info');
-                    return;
-                }
+                if (availableUsers.length === 0) { showToast('暂无普通用户可封禁', 'info'); return; }
 
                 const overlay = document.createElement('div');
-                overlay.style.cssText = `
-                    position: fixed; inset: 0; background: rgba(0,0,0,0.40);
-                    backdrop-filter: blur(8px); z-index: 99999;
-                    display: flex; align-items: center; justify-content: center;
-                    animation: fadeInOverlay 0.25s ease;
-                `;
-
+                overlay.style.cssText =
+                    `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
                 const modal = document.createElement('div');
-                modal.style.cssText = `
-                    background: #fff; border-radius: 16px; padding: 28px 24px 24px;
-                    max-width: 400px; width: 92%;
-                    box-shadow: 0 24px 64px rgba(0,0,0,0.20);
-                    animation: scaleIn 0.3s ease;
-                `;
-
-                modal.innerHTML = `
-                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;">
-                        <i class="fas fa-user-slash" style="color:#EF4444;"></i> 选择要封禁的用户
-                    </h3>
-                    <div style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;">
-                        ${availableUsers.map(u => `
-                            <button class="ban-user-select-btn" data-id="${u.id}" data-username="${u.username}" style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:14px;cursor:pointer;transition:var(--transition);font-family:var(--font);text-align:left;">
-                                <i class="fas fa-user"></i> ${u.username} (ID: ${u.id})
-                            </button>
-                        `).join('')}
-                    </div>
-                    <div style="margin-top:12px;text-align:right;">
-                        <button id="banUserSelectorClose" style="padding:6px 20px;border:none;border-radius:8px;background:#F1F3F5;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);">取消</button>
-                    </div>
-                `;
-
+                modal.style.cssText =
+                    `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 400px; width: 92%; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease;`;
+                modal.innerHTML =
+                    `<h3 style="font-size:18px;font-weight:700;margin-bottom:12px;"><i class="fas fa-user-slash" style="color:#EF4444;"></i> 选择要封禁的用户</h3><div style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;">${availableUsers.map(u => `<button class="ban-user-select-btn" data-id="${u.id}" data-username="${u.username}" style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:14px;cursor:pointer;transition:var(--transition);font-family:var(--font);text-align:left;"><i class="fas fa-user"></i> ${u.username} (ID: ${u.id})</button>`).join('')}</div><div style="margin-top:12px;text-align:right;"><button id="banUserSelectorClose" style="padding:6px 20px;border:none;border-radius:8px;background:#F1F3F5;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);">取消</button></div>`;
                 overlay.appendChild(modal);
                 document.body.appendChild(overlay);
 
@@ -4242,18 +3682,9 @@
                         showBanUserModal(username, userId);
                     });
                 });
-
-                document.getElementById('banUserSelectorClose').addEventListener('click', () => {
-                    overlay.remove();
-                });
-
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) overlay.remove();
-                });
-
-            } catch (err) {
-                showToast(`❌ ${err.message}`, 'error');
-            }
+                document.getElementById('banUserSelectorClose').addEventListener('click', () => { overlay.remove(); });
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
         }
 
         // ========================================================================
@@ -4263,32 +3694,21 @@
             try {
                 const currentUser = getCurrentUser();
                 const userId = getCurrentUserId();
-
-                if (userId) {
-                    currentUserBanned = await isUserBanned(userId);
-                } else {
-                    currentUserBanned = false;
-                }
+                if (userId) currentUserBanned = await isUserBanned(userId);
+                else currentUserBanned = false;
 
                 const files = await fetchFiles();
                 allFiles = Array.isArray(files) ? files : [];
                 renderFiles(allFiles);
-
                 await loadAnnouncements();
 
                 const usage = await getStorageUsage();
                 updateStorageUI(usage);
-
                 updateUI();
 
-                if (currentUser && isAdmin(currentUser)) {
-                    await loadAdminPanel();
-                }
-
-            } catch (err) {
-                console.error('刷新数据失败:', err);
-                showToast('刷新数据失败: ' + err.message, 'error');
-            }
+                if (currentUser && isAdmin(currentUser)) await loadAdminPanel();
+            } catch (err) { console.error('刷新数据失败:', err);
+                showToast('刷新数据失败: ' + err.message, 'error'); }
         }
 
         // ========================================================================
@@ -4297,7 +3717,6 @@
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
             const text = document.getElementById('storageText');
-
             if (!fill || !text) return;
 
             const usedMB = usage.used / (1024 * 1024);
@@ -4305,15 +3724,9 @@
             const percent = (usage.used / usage.total) * 100;
 
             fill.style.width = Math.min(percent, 100) + '%';
-
-            if (percent > 80) {
-                fill.className = 'fill danger';
-            } else if (percent > 60) {
-                fill.className = 'fill warning';
-            } else {
-                fill.className = 'fill';
-            }
-
+            if (percent > 80) fill.className = 'fill danger';
+            else if (percent > 60) fill.className = 'fill warning';
+            else fill.className = 'fill';
             text.textContent = `${formatSizeSimple(usage.used)} / ${formatSizeSimple(usage.total)}`;
         }
 
@@ -4336,7 +3749,6 @@
             if (loggedIn && username) {
                 if (guestButtons) guestButtons.classList.add('hidden');
                 if (userInfo) userInfo.classList.remove('hidden');
-
                 if (currentUserIdEl) currentUserIdEl.textContent = `ID: ${userId || '--'}`;
 
                 const role = getRole(username);
@@ -4344,52 +3756,29 @@
 
                 if (usernameDisplay) {
                     if (isBanned) {
-                        usernameDisplay.innerHTML = `
-                            <i class="fas fa-ban" style="color:var(--banned-color);"></i>
-                            <span class="banned-name">${username}</span>
-                            <span class="banned-tag">封禁用户</span>
-                            <span class="user-id">ID: ${userId || '--'}</span>
-                        `;
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-ban" style="color:var(--banned-color);"></i><span class="banned-name">${username}</span><span class="banned-tag">封禁用户</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     } else if (role === 'owner') {
-                        usernameDisplay.innerHTML = `
-                            <i class="fas fa-crown" style="color:var(--owner-color);"></i>
-                            <span class="owner-name">${username}</span>
-                            <span class="owner-tag">站长</span>
-                            <span class="user-id">ID: ${userId || '--'}</span>
-                        `;
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="owner-name">${username}</span><span class="owner-tag">站长</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     } else if (role === 'official') {
-                        usernameDisplay.innerHTML = `
-                            <i class="fas fa-badge-check" style="color:var(--official-color);"></i>
-                            <span class="official-name">${username}</span>
-                            <span class="official-tag">官方</span>
-                            <span class="user-id">ID: ${userId || '--'}</span>
-                        `;
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-badge-check" style="color:var(--official-color);"></i><span class="official-name">${username}</span><span class="official-tag">官方</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     } else if (role === 'admin') {
-                        usernameDisplay.innerHTML = `
-                            <i class="fas fa-user-shield" style="color:var(--admin-color);"></i>
-                            <span class="admin-name">${username}</span>
-                            <span class="admin-tag">管理员</span>
-                            <span class="user-id">ID: ${userId || '--'}</span>
-                        `;
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="admin-name">${username}</span><span class="admin-tag">管理员</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     } else {
-                        usernameDisplay.innerHTML = `
-                            <i class="fas fa-user-circle"></i>
-                            <span>${username}</span>
-                            <span class="user-id">ID: ${userId || '--'}</span>
-                        `;
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-user-circle"></i><span>${username}</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     }
                 }
 
-                // 显示管理菜单（官方账号也有管理权限）
                 if (adminWrapper) {
                     if (role === 'admin' || role === 'owner' || role === 'official') {
                         adminWrapper.style.display = 'inline-block';
                         setupAdminMenu();
-                    } else {
-                        adminWrapper.style.display = 'none';
-                    }
+                    } else { adminWrapper.style.display = 'none'; }
                 }
-
                 if (loginStatusText) loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
             } else {
                 if (guestButtons) guestButtons.classList.remove('hidden');
@@ -4397,7 +3786,6 @@
                 if (adminWrapper) adminWrapper.style.display = 'none';
                 if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
             }
-
             renderFiles(allFiles);
         }
 
@@ -4411,7 +3799,6 @@
             const modal = document.getElementById('authModal');
             const loginForm = document.getElementById('loginForm');
             const registerForm = document.getElementById('registerForm');
-
             if (!modal) return;
 
             if (mode === 'login') {
@@ -4423,7 +3810,6 @@
                 if (registerForm) registerForm.classList.remove('hidden');
                 document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
             }
-
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -4440,52 +3826,31 @@
         //  32. 文件上传（允许所有文件类型）
         // ========================================================================
         async function handleUploadFiles(fileList) {
-            if (!isLoggedIn()) {
-                showToast('⚠️ 请先登录再上传文件', 'error', 3000);
-                return;
-            }
-
-            if (currentUserBanned) {
-                showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
-                return;
-            }
+            if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
+            if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
 
             const currentUser = getCurrentUser();
             const container = document.getElementById('progressContainer');
             if (!container) return;
-
             container.classList.add('active');
 
             for (const file of Array.from(fileList)) {
-                // 只限制大小，不限制文件类型
-                if (file.size > 50 * 1024 * 1024) {
-                    showToast(`❌ ${file.name} 超过 50MB 限制`, 'error');
-                    continue;
-                }
+                if (file.size > 50 * 1024 * 1024) { showToast(`❌ ${file.name} 超过 50MB 限制`, 'error'); continue; }
 
                 const item = document.createElement('div');
                 item.className = 'upload-progress-item';
                 const ext = file.name.split('.').pop() || '';
                 const emoji = getFileEmoji(ext);
-                item.innerHTML = `
-                    <span class="file-icon">${emoji}</span>
-                    <div class="info">
-                        <div class="name text-ellipsis">${file.name}</div>
-                        <div class="size">${formatSize(file.size)}</div>
-                    </div>
-                    <div class="progress-track"><div class="fill" style="width:0%;"></div></div>
-                    <span class="status">0%</span>
-                `;
+                item.innerHTML =
+                    `<span class="file-icon">${emoji}</span><div class="info"><div class="name text-ellipsis">${file.name}</div><div class="size">${formatSize(file.size)}</div></div><div class="progress-track"><div class="fill" style="width:0%;"></div></div><span class="status">0%</span>`;
                 container.appendChild(item);
 
                 try {
                     let progress = 0;
                     const interval = setInterval(() => {
                         progress += Math.random() * 10 + 5;
-                        if (progress >= 90) {
-                            clearInterval(interval);
-                            progress = 90;
-                        }
+                        if (progress >= 90) { clearInterval(interval);
+                            progress = 90; }
                         const fill = item.querySelector('.fill');
                         const status = item.querySelector('.status');
                         fill.style.width = Math.min(progress, 90) + '%';
@@ -4494,7 +3859,6 @@
 
                     const fileName = file.name;
                     const uploadResult = await uploadFileToStorage(file, fileName);
-
                     clearInterval(interval);
 
                     const fileData = {
@@ -4506,7 +3870,6 @@
                         status: 'pending',
                         is_admin: isAdmin(currentUser)
                     };
-
                     await createFileRecord(fileData);
 
                     const fill = item.querySelector('.fill');
@@ -4514,7 +3877,6 @@
                     fill.style.width = '100%';
                     status.textContent = '⏳ 待审核';
                     status.style.color = '#D97706';
-
                     showToast(`✅ ${fileName} 上传成功，等待管理员审核`, 'success', 3000);
 
                     if (isAdmin(currentUser)) {
@@ -4525,7 +3887,6 @@
                             showToast(`✅ ${fileName} 已自动通过审核（管理员）`, 'success', 2000);
                         }
                     }
-
                 } catch (err) {
                     console.error(err);
                     const status = item.querySelector('.status');
@@ -4537,10 +3898,8 @@
 
             setTimeout(async () => {
                 await refreshAll();
-                setTimeout(() => {
-                    container.innerHTML = '';
-                    container.classList.remove('active');
-                }, 400);
+                setTimeout(() => { container.innerHTML = '';
+                    container.classList.remove('active'); }, 400);
             }, 600);
         }
 
@@ -4550,9 +3909,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
 
-            try {
-                await refreshAll();
-            } catch (err) {
+            try { await refreshAll(); } catch (err) {
                 console.error('初始化加载失败:', err);
                 showToast('加载失败: ' + err.message, 'error', 5000);
             }
@@ -4579,30 +3936,17 @@
             const switchToLogin = document.getElementById('switchToLogin');
             const authModalClose = document.getElementById('authModalClose');
 
-            if (switchToRegister) {
-                switchToRegister.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openAuthModal('register');
-                });
-            }
-            if (switchToLogin) {
-                switchToLogin.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openAuthModal('login');
-                });
-            }
+            if (switchToRegister) switchToRegister.addEventListener('click', (e) => { e.preventDefault();
+                openAuthModal('register'); });
+            if (switchToLogin) switchToLogin.addEventListener('click', (e) => { e.preventDefault();
+                openAuthModal('login'); });
             if (authModalClose) authModalClose.addEventListener('click', closeAuthModal);
 
             const authModal = document.getElementById('authModal');
-            if (authModal) {
-                authModal.addEventListener('click', (e) => {
-                    if (e.target === e.currentTarget) closeAuthModal();
-                });
-            }
+            if (authModal) authModal.addEventListener('click', (e) => { if (e.target === e.currentTarget)
+                    closeAuthModal(); });
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeAuthModal();
-            });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAuthModal(); });
 
             // ---- 登录 ----
             const loginSubmitBtn = document.getElementById('loginSubmitBtn');
@@ -4621,17 +3965,13 @@
                     if (passwordError) passwordError.classList.remove('show');
 
                     if (!username) {
-                        if (usernameError) {
-                            usernameError.textContent = '请输入用户名';
-                            usernameError.classList.add('show');
-                        }
+                        if (usernameError) { usernameError.textContent = '请输入用户名';
+                            usernameError.classList.add('show'); }
                         return;
                     }
                     if (!password) {
-                        if (passwordError) {
-                            passwordError.textContent = '请输入密码';
-                            passwordError.classList.add('show');
-                        }
+                        if (passwordError) { passwordError.textContent = '请输入密码';
+                            passwordError.classList.add('show'); }
                         return;
                     }
 
@@ -4650,33 +3990,21 @@
                     } catch (err) {
                         showToast(`❌ ${err.message}`, 'error', 3000);
                         if (err.message.includes('被封禁')) {
-                            if (passwordError) {
-                                passwordError.textContent = err.message;
-                                passwordError.classList.add('show');
-                            }
+                            if (passwordError) { passwordError.textContent = err.message;
+                                passwordError.classList.add('show'); }
                         } else if (err.message.includes('用户名或密码')) {
-                            if (passwordError) {
-                                passwordError.textContent = err.message;
-                                passwordError.classList.add('show');
-                            }
+                            if (passwordError) { passwordError.textContent = err.message;
+                                passwordError.classList.add('show'); }
                         }
-                    } finally {
-                        btn.disabled = false;
-                        btn.textContent = '登 录';
-                    }
+                    } finally { btn.disabled = false;
+                        btn.textContent = '登 录'; }
                 });
             }
 
-            if (loginPassword) {
-                loginPassword.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && loginSubmitBtn) loginSubmitBtn.click();
-                });
-            }
-            if (loginUsername) {
-                loginUsername.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && loginSubmitBtn) loginSubmitBtn.click();
-                });
-            }
+            if (loginPassword) loginPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter' && loginSubmitBtn)
+                    loginSubmitBtn.click(); });
+            if (loginUsername) loginUsername.addEventListener('keydown', (e) => { if (e.key === 'Enter' && loginSubmitBtn)
+                    loginSubmitBtn.click(); });
 
             // ---- 注册 ----
             const registerSubmitBtn = document.getElementById('registerSubmitBtn');
@@ -4699,24 +4027,18 @@
                     if (confirmError) confirmError.classList.remove('show');
 
                     if (!username || username.length < 3) {
-                        if (usernameError) {
-                            usernameError.textContent = '用户名至少 3 个字符';
-                            usernameError.classList.add('show');
-                        }
+                        if (usernameError) { usernameError.textContent = '用户名至少 3 个字符';
+                            usernameError.classList.add('show'); }
                         return;
                     }
                     if (!password || password.length < 6) {
-                        if (passwordError) {
-                            passwordError.textContent = '密码至少 6 位';
-                            passwordError.classList.add('show');
-                        }
+                        if (passwordError) { passwordError.textContent = '密码至少 6 位';
+                            passwordError.classList.add('show'); }
                         return;
                     }
                     if (password !== confirm) {
-                        if (confirmError) {
-                            confirmError.textContent = '两次输入密码不一致';
-                            confirmError.classList.add('show');
-                        }
+                        if (confirmError) { confirmError.textContent = '两次输入密码不一致';
+                            confirmError.classList.add('show'); }
                         return;
                     }
 
@@ -4733,23 +4055,16 @@
                     } catch (err) {
                         showToast(`❌ ${err.message}`, 'error', 3000);
                         if (err.message.includes('用户名')) {
-                            if (usernameError) {
-                                usernameError.textContent = err.message;
-                                usernameError.classList.add('show');
-                            }
+                            if (usernameError) { usernameError.textContent = err.message;
+                                usernameError.classList.add('show'); }
                         }
-                    } finally {
-                        btn.disabled = false;
-                        btn.textContent = '注 册';
-                    }
+                    } finally { btn.disabled = false;
+                        btn.textContent = '注 册'; }
                 });
             }
 
-            if (registerPasswordConfirm) {
-                registerPasswordConfirm.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && registerSubmitBtn) registerSubmitBtn.click();
-                });
-            }
+            if (registerPasswordConfirm) registerPasswordConfirm.addEventListener('keydown', (e) => { if (e.key ===
+                        'Enter' && registerSubmitBtn) registerSubmitBtn.click(); });
 
             // ---- 公告发布 ----
             const publishBtn = document.getElementById('publishAnnouncementBtn');
@@ -4763,26 +4078,14 @@
                     const content = contentInput ? contentInput.value.trim() : '';
                     const currentUser = getCurrentUser();
 
-                    if (!currentUser) {
-                        showToast('⚠️ 请先登录', 'error');
-                        return;
-                    }
-
-                    if (currentUserBanned) {
-                        showToast('⚠️ 您已被封禁，无法发布公告', 'error');
-                        return;
-                    }
+                    if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
+                    if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法发布公告', 'error'); return; }
 
                     const role = getRole(currentUser);
-                    if (role !== 'admin' && role !== 'owner' && role !== 'official') {
-                        showToast('⚠️ 只有管理员可以发布公告', 'error');
-                        return;
-                    }
+                    if (role !== 'admin' && role !== 'owner' && role !== 'official') { showToast(
+                            '⚠️ 只有管理员可以发布公告', 'error'); return; }
 
-                    if (!title || !content) {
-                        showToast('⚠️ 标题和内容不能为空', 'error');
-                        return;
-                    }
+                    if (!title || !content) { showToast('⚠️ 标题和内容不能为空', 'error'); return; }
 
                     const btn = publishBtn;
                     btn.disabled = true;
@@ -4794,12 +4097,8 @@
                         if (titleInput) titleInput.value = '';
                         if (contentInput) contentInput.value = '';
                         await loadAnnouncements();
-                    } catch (err) {
-                        showToast(`❌ ${err.message}`, 'error');
-                    } finally {
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布公告';
-                    }
+                    } catch (err) { showToast(`❌ ${err.message}`, 'error'); } finally { btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布公告'; }
                 });
             }
 
@@ -4832,14 +4131,8 @@
 
             if (uploadZone) {
                 uploadZone.addEventListener('click', () => {
-                    if (!isLoggedIn()) {
-                        showToast('⚠️ 请先登录再上传文件', 'error', 3000);
-                        return;
-                    }
-                    if (currentUserBanned) {
-                        showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
-                        return;
-                    }
+                    if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
+                    if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
                     if (fileInput) fileInput.click();
                 });
 
@@ -4851,17 +4144,9 @@
                 uploadZone.addEventListener('drop', (e) => {
                     e.preventDefault();
                     uploadZone.classList.remove('dragover');
-                    if (!isLoggedIn()) {
-                        showToast('⚠️ 请先登录再上传文件', 'error', 3000);
-                        return;
-                    }
-                    if (currentUserBanned) {
-                        showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000);
-                        return;
-                    }
-                    if (e.dataTransfer.files.length > 0 && fileInput) {
-                        handleUploadFiles(e.dataTransfer.files);
-                    }
+                    if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
+                    if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
+                    if (e.dataTransfer.files.length > 0 && fileInput) handleUploadFiles(e.dataTransfer.files);
                 });
             }
 
@@ -4876,12 +4161,8 @@
 
             // ---- 搜索 ----
             const searchInput = document.getElementById('searchInput');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    searchQuery = e.target.value;
-                    renderFiles(allFiles);
-                });
-            }
+            if (searchInput) searchInput.addEventListener('input', (e) => { searchQuery = e.target.value;
+                renderFiles(allFiles); });
 
             // ---- 筛选 ----
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -4914,11 +4195,8 @@
 
             if (modalCancelBtn) modalCancelBtn.addEventListener('click', hideDeleteFileModal);
             if (modalConfirmBtn) modalConfirmBtn.addEventListener('click', confirmDeleteFile);
-            if (deleteModal) {
-                deleteModal.addEventListener('click', (e) => {
-                    if (e.target === e.currentTarget) hideDeleteFileModal();
-                });
-            }
+            if (deleteModal) deleteModal.addEventListener('click', (e) => { if (e.target === e.currentTarget)
+                    hideDeleteFileModal(); });
 
             // ---- 公告删除模态框 ----
             const deleteAnnouncementCancelBtn = document.getElementById('deleteAnnouncementCancelBtn');
@@ -4927,11 +4205,8 @@
 
             if (deleteAnnouncementCancelBtn) deleteAnnouncementCancelBtn.addEventListener('click', hideDeleteAnnouncementModal);
             if (deleteAnnouncementConfirmBtn) deleteAnnouncementConfirmBtn.addEventListener('click', confirmDeleteAnnouncement);
-            if (deleteAnnouncementModal) {
-                deleteAnnouncementModal.addEventListener('click', (e) => {
-                    if (e.target === e.currentTarget) hideDeleteAnnouncementModal();
-                });
-            }
+            if (deleteAnnouncementModal) deleteAnnouncementModal.addEventListener('click', (e) => { if (e.target ===
+                    e.currentTarget) hideDeleteAnnouncementModal(); });
 
             // ---- 封禁用户模态框 ----
             const banUserModalClose = document.getElementById('banUserModalClose');
@@ -4942,11 +4217,8 @@
             if (banUserModalClose) banUserModalClose.addEventListener('click', hideBanUserModal);
             if (banUserCancelBtn) banUserCancelBtn.addEventListener('click', hideBanUserModal);
             if (banUserConfirmBtn) banUserConfirmBtn.addEventListener('click', confirmBanUser);
-            if (banUserModal) {
-                banUserModal.addEventListener('click', (e) => {
-                    if (e.target === e.currentTarget) hideBanUserModal();
-                });
-            }
+            if (banUserModal) banUserModal.addEventListener('click', (e) => { if (e.target === e.currentTarget)
+                    hideBanUserModal(); });
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
