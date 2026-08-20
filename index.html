@@ -2313,7 +2313,8 @@
                     <i class="fas fa-cloud"></i> 云端账号
                 </span>
                 <span class="feature-item">
-                    <i class="fas fa-laptop"></i> 多设备同步                </span>
+                    <i class="fas fa-laptop"></i> 多设备同步
+                </span>
                 <span class="feature-item">
                     <i class="fas fa-shield-alt"></i> 安全存储
                 </span>
@@ -2339,7 +2340,7 @@
         <div class="upload-zone" id="uploadZone">
             <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
             <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
-            <p id="uploadDesc">支持所有文件类型 · 单个文件最大 50MB</p>
+            <p id="uploadDesc">支持所有文件类型 · 单个文件最大 10MB</p>
             <div class="hint" id="uploadHint">⚠️ 请先登录后再上传文件</div>
             <input type="file" id="fileInput" multiple />
         </div>
@@ -2717,7 +2718,7 @@
         }
 
         // ========================================================================
-        //  10. 文件管理（Supabase Storage）- 修复中文文件名
+        //  10. 文件管理（Supabase Storage）- 修复中文文件名 + 超时
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -2749,29 +2750,46 @@
             } catch (err) { console.error('初始化 Storage 失败:', err); }
         }
 
+        // 【修复版】上传文件 - 使用安全文件名 + 30秒超时
         async function uploadFileToStorage(file, fileName) {
-            // 【修复】对文件名进行 URL 编码，避免中文和特殊字符报错
-            const encodedFileName = encodeURIComponent(fileName);
-            const filePath = `uploads/${Date.now()}_${encodedFileName}`;
+            // 使用安全文件名：时间戳 + 随机数 + 扩展名（完全避免中文和特殊字符）
+            const ext = fileName.split('.').pop() || '';
+            const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 6)}.${ext}`;
+            const filePath = `uploads/${safeName}`;
             const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
 
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'apikey': SUPABASE_ANON_KEY,
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'Content-Type': file.type || 'application/octet-stream'
-                },
-                body: file
-            });
+            // 30秒超时
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-            if (!response.ok) {
-                const error = await response.text();
-                throw new Error(`上传失败: ${error}`);
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': file.type || 'application/octet-stream'
+                    },
+                    body: file,
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(`上传失败: ${error}`);
+                }
+
+                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filePath}`;
+                return { filePath, publicUrl, safeName };
+            } catch (err) {
+                clearTimeout(timeoutId);
+                if (err.name === 'AbortError') {
+                    throw new Error('上传超时，文件可能过大，请压缩后重试（建议小于10MB）');
+                }
+                throw err;
             }
-
-            const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filePath}`;
-            return { filePath, publicUrl };
         }
 
         async function deleteFileFromStorage(filePath) {
@@ -3823,7 +3841,7 @@
         }
 
         // ========================================================================
-        //  32. 文件上传（允许所有文件类型）
+        //  32. 文件上传（修复版：限制10MB + 安全文件名 + 30秒超时）
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
@@ -3835,7 +3853,11 @@
             container.classList.add('active');
 
             for (const file of Array.from(fileList)) {
-                if (file.size > 50 * 1024 * 1024) { showToast(`❌ ${file.name} 超过 50MB 限制`, 'error'); continue; }
+                // 【修复】限制 10MB
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast(`❌ ${file.name} 超过 10MB 限制，请压缩后重试`, 'error');
+                    continue;
+                }
 
                 const item = document.createElement('div');
                 item.className = 'upload-progress-item';
@@ -4229,7 +4251,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整版）');
+            console.log('✅ 2510班资源站已启动！（完整修复版 - 10MB限制）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
