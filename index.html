@@ -534,6 +534,10 @@
             color: var(--official-color);
         }
 
+        .announcement-item .announcement-meta .author-name.banned {
+            color: var(--banned-color);
+        }
+
         .announcement-item .announcement-meta .tag {
             font-size: 10px;
             font-weight: 700;
@@ -553,6 +557,11 @@
 
         .announcement-item .announcement-meta .tag.official-tag {
             background: var(--official-color);
+            color: #fff;
+        }
+
+        .announcement-item .announcement-meta .tag.banned-tag {
+            background: var(--banned-color);
             color: #fff;
         }
 
@@ -2481,7 +2490,7 @@
             "U_BOTE",
             "TerryGao-FireFly",
             "王彦锦",
-            "2510班主任",
+            "2510班班主任",
             "陈韵如",
             "高正懿",
             "2510班资源站开发组",
@@ -2622,7 +2631,22 @@
         }
 
         // ========================================================================
-        //  6. 检查用户是否被封禁
+        //  6. 检查用户是否被封禁（通过用户名）
+        // ========================================================================
+        async function isUsernameBanned(username) {
+            try {
+                const users = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}&select=id`);
+                if (!users || users.length === 0) return false;
+                const userId = users[0].id;
+                const bans = await supabaseRequest(`/user_bans?user_id=eq.${userId}&is_banned=eq.true`);
+                return bans && bans.length > 0;
+            } catch {
+                return false;
+            }
+        }
+
+        // ========================================================================
+        //  7. 检查用户是否被封禁（通过 userId）
         // ========================================================================
         async function isUserBanned(userId) {
             try {
@@ -2632,7 +2656,7 @@
         }
 
         // ========================================================================
-        //  7. 封禁用户
+        //  8. 封禁用户
         // ========================================================================
         async function banUserById(userId, bannedBy) {
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
@@ -2652,7 +2676,7 @@
         }
 
         // ========================================================================
-        //  8. 公告管理
+        //  9. 公告管理
         // ========================================================================
         async function fetchAnnouncements() {
             try {
@@ -2701,7 +2725,7 @@
         }
 
         // ========================================================================
-        //  9. 置顶/取消置顶公告
+        //  10. 置顶/取消置顶公告
         // ========================================================================
         async function toggleAnnouncementPin(id, currentUser) {
             if (!isOwner(currentUser)) throw new Error('只有站长可以置顶公告');
@@ -2718,7 +2742,7 @@
         }
 
         // ========================================================================
-        //  10. 文件管理（Supabase Storage）- 【终极修复版】纯英文文件名
+        //  11. 文件管理（Supabase Storage）
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -2750,15 +2774,12 @@
             } catch (err) { console.error('初始化 Storage 失败:', err); }
         }
 
-        // 【终极修复版】上传文件 - 纯英文文件名，彻底避免中文
         async function uploadFileToStorage(file, fileName) {
-            // 只保留扩展名，文件名用时间戳+随机数（纯英文数字）
             const ext = fileName.split('.').pop() || '';
             const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
             const filePath = `uploads/${safeName}`;
             const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
 
-            // 30秒超时
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000);
 
@@ -2805,7 +2826,7 @@
         }
 
         // ========================================================================
-        //  11. 获取存储用量
+        //  12. 获取存储用量
         // ========================================================================
         async function getStorageUsage() {
             try {
@@ -2827,7 +2848,7 @@
         }
 
         // ========================================================================
-        //  12. 文件数据库操作
+        //  13. 文件数据库操作
         // ========================================================================
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
@@ -2863,7 +2884,7 @@
         }
 
         // ========================================================================
-        //  13. 举报功能
+        //  14. 举报功能
         // ========================================================================
         async function reportFile(fileId, reportedBy, reason) {
             if (!reason || reason.trim().length < 5) throw new Error('请详细描述举报原因（至少5个字）');
@@ -2876,7 +2897,7 @@
         }
 
         // ========================================================================
-        //  14. 举报审核
+        //  15. 举报审核
         // ========================================================================
         async function fetchReports(status = null) {
             try {
@@ -3023,7 +3044,7 @@
         }
 
         // ========================================================================
-        //  15. 工具函数
+        //  16. 工具函数
         // ========================================================================
         function formatSize(bytes) {
             if (bytes === 0) return '0 B';
@@ -3071,7 +3092,7 @@
         }
 
         // ========================================================================
-        //  16. Toast 通知
+        //  17. Toast 通知
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
@@ -3089,13 +3110,16 @@
         }
 
         // ========================================================================
-        //  17. 渲染公告
+        //  18. 渲染公告（含封禁检测）
         // ========================================================================
         let announcements = [];
         let announcementsExpanded = false;
         const MAX_VISIBLE_ANNOUNCEMENTS = 5;
 
-        function renderAnnouncements() {
+        // 存储公告作者的封禁状态缓存
+        let announcementAuthorBanCache = {};
+
+        async function renderAnnouncements() {
             const container = document.getElementById('announcementList');
             const countEl = document.getElementById('announcementCount');
             const currentUser = getCurrentUser();
@@ -3115,6 +3139,14 @@
                 return;
             }
 
+            // 批量检查作者封禁状态
+            const uniqueAuthors = [...new Set(announcements.map(a => a.author))];
+            const banPromises = uniqueAuthors.map(async (author) => {
+                const isBanned = await isUsernameBanned(author);
+                announcementAuthorBanCache[author] = isBanned;
+            });
+            await Promise.all(banPromises);
+
             const sorted = [...announcements].sort((a, b) => {
                 if (a.is_pinned && !b.is_pinned) return -1;
                 if (!a.is_pinned && b.is_pinned) return 1;
@@ -3128,6 +3160,7 @@
                 const isAuthorAdmin = isAdmin(item.author);
                 const isAuthorOwner = isOwner(item.author);
                 const isAuthorOfficial = isOfficial(item.author);
+                const isAuthorBanned = announcementAuthorBanCache[item.author] || false;
                 const isPinned = item.is_pinned || false;
                 const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && item.author ===
                     currentUser) || (isOfficial(currentUser) && item.author === currentUser)));
@@ -3136,12 +3169,19 @@
                 let authorDisplay = item.author;
                 let authorClass = '';
                 let tagHtml = '';
-                if (isAuthorOwner) { authorClass = 'owner';
-                    tagHtml = '<span class="tag owner-tag">站长</span>'; } else if (isAuthorOfficial) { authorClass =
-                        'official';
-                    tagHtml = '<span class="tag official-tag">官方</span>'; } else if (isAuthorAdmin) { authorClass =
-                        'admin';
-                    tagHtml = '<span class="tag admin-tag">管理员</span>'; }
+                if (isAuthorBanned) {
+                    authorClass = 'banned';
+                    tagHtml = '<span class="tag banned-tag">封禁用户</span>';
+                } else if (isAuthorOwner) {
+                    authorClass = 'owner';
+                    tagHtml = '<span class="tag owner-tag">站长</span>';
+                } else if (isAuthorOfficial) {
+                    authorClass = 'official';
+                    tagHtml = '<span class="tag official-tag">官方</span>';
+                } else if (isAuthorAdmin) {
+                    authorClass = 'admin';
+                    tagHtml = '<span class="tag admin-tag">管理员</span>';
+                }
 
                 let actionsHtml = '';
                 if (canDelete) actionsHtml +=
@@ -3198,14 +3238,15 @@
         }
 
         // ========================================================================
-        //  18. 渲染文件列表
+        //  19. 渲染文件列表（含封禁检测）
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
         let searchQuery = '';
         let currentUserBanned = false;
+        let fileUploaderBanCache = {};
 
-        function renderFiles(fileList) {
+        async function renderFiles(fileList) {
             let grid = document.getElementById('fileGrid');
             if (!grid) {
                 const container = document.getElementById('fileContent');
@@ -3255,6 +3296,14 @@
                 return;
             }
 
+            // 批量检查上传者封禁状态
+            const uniqueUploaders = [...new Set(filtered.map(f => f.uploaded_by).filter(Boolean))];
+            const banPromises = uniqueUploaders.map(async (uploader) => {
+                const isBanned = await isUsernameBanned(uploader);
+                fileUploaderBanCache[uploader] = isBanned;
+            });
+            await Promise.all(banPromises);
+
             const loggedIn = isLoggedIn();
             const currentUser = getCurrentUser();
 
@@ -3268,6 +3317,7 @@
                 const isUploaderOwner = isOwner(uploaderName);
                 const isUploaderOfficial = isOfficial(uploaderName);
                 const isUploaderAdmin = isAdmin(uploaderName);
+                const isUploaderBanned = fileUploaderBanCache[uploaderName] || false;
 
                 let canDelete = false;
                 if (loggedIn && currentUser) {
@@ -3278,7 +3328,10 @@
                 }
 
                 let uploaderHtml = '';
-                if (isUploaderOwner) {
+                if (isUploaderBanned) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-ban" style="color:var(--banned-color);"></i><span class="uploader-name banned">${uploaderName}</span><span class="banned-tag">封禁用户</span></div>`;
+                } else if (isUploaderOwner) {
                     uploaderHtml =
                         `<div class="file-uploader"><i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="uploader-name owner">${uploaderName}</span><span class="owner-tag">站长</span></div>`;
                 } else if (isUploaderOfficial) {
@@ -3353,7 +3406,7 @@
         }
 
         // ========================================================================
-        //  19. 举报弹窗
+        //  20. 举报弹窗
         // ========================================================================
         function showReportFileModal(fileId) {
             const reason = prompt('请输入举报原因（至少5个字）：');
@@ -3369,7 +3422,7 @@
         }
 
         // ========================================================================
-        //  20. 管理员审核面板
+        //  21. 管理员审核面板
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -3475,7 +3528,7 @@
         }
 
         // ========================================================================
-        //  21. 删除文件相关
+        //  22. 删除文件相关
         // ========================================================================
         let deleteFileTargetId = null;
 
@@ -3510,7 +3563,7 @@
         }
 
         // ========================================================================
-        //  22. 删除公告相关
+        //  23. 删除公告相关
         // ========================================================================
         let deleteAnnouncementTargetId = null;
 
@@ -3539,18 +3592,18 @@
         }
 
         // ========================================================================
-        //  23. 加载公告
+        //  24. 加载公告
         // ========================================================================
         async function loadAnnouncements() {
             try {
                 announcements = await fetchAnnouncements();
-                renderAnnouncements();
+                await renderAnnouncements();
             } catch (err) { console.error('加载公告失败:', err);
                 showToast('加载公告失败', 'error'); }
         }
 
         // ========================================================================
-        //  24. 封禁用户
+        //  25. 封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -3583,13 +3636,16 @@
                 await banUserById(banUserTarget.userId, currentUser);
                 showToast(`✅ 已封禁用户 ${banUserTarget.username}`, 'success', 3000);
                 hideBanUserModal();
+                // 清空缓存，重新加载
+                fileUploaderBanCache = {};
+                announcementAuthorBanCache = {};
                 await refreshAll();
             } catch (err) { showToast(`❌ ${err.message}`, 'error'); } finally { btn.disabled = false;
                 btn.textContent = '确认封禁'; }
         }
 
         // ========================================================================
-        //  25. 用户列表
+        //  26. 用户列表
         // ========================================================================
         async function getUserList() {
             try {
@@ -3600,7 +3656,7 @@
         }
 
         // ========================================================================
-        //  26. 管理员菜单
+        //  27. 管理员菜单
         // ========================================================================
         function setupAdminMenu() {
             const wrapper = document.getElementById('adminMenuWrapper');
@@ -3626,7 +3682,7 @@
         }
 
         // ========================================================================
-        //  27. 封禁用户选择器
+        //  28. 封禁用户选择器
         // ========================================================================
         async function showBanUserSelector() {
             try {
@@ -3668,7 +3724,7 @@
         }
 
         // ========================================================================
-        //  28. 刷新所有数据
+        //  29. 刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
@@ -3679,7 +3735,7 @@
 
                 const files = await fetchFiles();
                 allFiles = Array.isArray(files) ? files : [];
-                renderFiles(allFiles);
+                await renderFiles(allFiles);
                 await loadAnnouncements();
 
                 const usage = await getStorageUsage();
@@ -3692,7 +3748,7 @@
         }
 
         // ========================================================================
-        //  29. 更新存储用量 UI
+        //  30. 更新存储用量 UI
         // ========================================================================
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
@@ -3711,7 +3767,7 @@
         }
 
         // ========================================================================
-        //  30. UI 更新
+        //  31. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -3766,11 +3822,12 @@
                 if (adminWrapper) adminWrapper.style.display = 'none';
                 if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
             }
-            renderFiles(allFiles);
+            // 异步渲染文件（因为 renderFiles 现在是异步的）
+            // 但 updateUI 会被 refreshAll 调用，refreshAll 已经 await renderFiles 了
         }
 
         // ========================================================================
-        //  31. 认证模态框控制
+        //  32. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -3803,7 +3860,7 @@
         }
 
         // ========================================================================
-        //  32. 文件上传（限制10MB + 30秒超时）
+        //  33. 文件上传
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
@@ -3841,15 +3898,14 @@
                     }, 200);
 
                     const fileName = file.name;
-                    // 使用修复版上传函数（纯英文路径）
                     const uploadResult = await uploadFileToStorage(file, fileName);
                     clearInterval(interval);
 
                     const fileData = {
-                        file_name: fileName, // 数据库保存原始中文名
+                        file_name: fileName,
                         file_size: file.size,
                         file_type: ext || 'unknown',
-                        file_path: uploadResult.filePath, // 存储路径是纯英文
+                        file_path: uploadResult.filePath,
                         uploaded_by: currentUser,
                         status: 'pending',
                         is_admin: isAdmin(currentUser)
@@ -3888,7 +3944,7 @@
         }
 
         // ========================================================================
-        //  33. 初始化 & 事件绑定
+        //  34. 初始化 & 事件绑定
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
@@ -3910,6 +3966,8 @@
                 logoutBtn.addEventListener('click', () => {
                     clearSession();
                     currentUserBanned = false;
+                    fileUploaderBanCache = {};
+                    announcementAuthorBanCache = {};
                     showToast('👋 已登出', 'info', 1500);
                     refreshAll();
                 });
@@ -3970,6 +4028,9 @@
                         const roleText = role === 'owner' ? '👑 站长' : role === 'official' ? '🏛️ 官方' : role === 'admin' ?
                             '🔑 管理员' : '👤 用户';
                         showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
+                        // 清空缓存
+                        fileUploaderBanCache = {};
+                        announcementAuthorBanCache = {};
                         await refreshAll();
                     } catch (err) {
                         showToast(`❌ ${err.message}`, 'error', 3000);
@@ -4165,6 +4226,8 @@
                     const btn = refreshBtn;
                     btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> 刷新中...';
                     btn.disabled = true;
+                    fileUploaderBanCache = {};
+                    announcementAuthorBanCache = {};
                     await refreshAll();
                     btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                     btn.disabled = false;
@@ -4213,7 +4276,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（终极修复版）');
+            console.log('✅ 2510班资源站已启动！（封禁显示修复版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
