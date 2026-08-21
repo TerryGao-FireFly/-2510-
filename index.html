@@ -232,68 +232,56 @@
             background: rgba(239, 68, 68, 0.16);
         }
 
-        /* ========== 管理按钮 ========== */
-        .admin-menu-wrapper {
-            position: relative;
-            display: inline-block;
+        /* ========== 管理按钮（独立按钮，顶栏显示） ========== */
+        .admin-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .admin-menu-wrapper .admin-menu-btn {
-            padding: 6px 16px;
+        .admin-buttons .admin-action-btn {
+            padding: 6px 14px;
             border: none;
             border-radius: 8px;
-            background: rgba(91, 106, 240, 0.08);
-            color: var(--primary);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
+            transition: var(--transition);
             font-family: var(--font);
-            font-size: 13px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .admin-menu-wrapper .admin-menu-btn:hover {
-            background: rgba(91, 106, 240, 0.16);
+        .admin-buttons .admin-action-btn:hover {
+            transform: translateY(-1px);
         }
 
-        .admin-menu-wrapper .admin-dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            padding: 8px 0;
-            min-width: 160px;
-            z-index: 100;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            margin-top: 4px;
+        .admin-buttons .admin-action-btn.review-btn {
+            background: rgba(91, 106, 240, 0.10);
+            color: var(--primary);
         }
 
-        .admin-menu-wrapper .admin-dropdown.show {
-            display: block;
+        .admin-buttons .admin-action-btn.review-btn:hover {
+            background: rgba(91, 106, 240, 0.18);
         }
 
-        .admin-menu-wrapper .admin-dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 18px;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: var(--font);
-            transition: var(--transition);
-            color: var(--text-primary);
+        .admin-buttons .admin-action-btn.ban-btn {
+            background: rgba(239, 68, 68, 0.08);
+            color: #EF4444;
         }
 
-        .admin-menu-wrapper .admin-dropdown-item:hover {
-            background: rgba(0, 0, 0, 0.04);
+        .admin-buttons .admin-action-btn.ban-btn:hover {
+            background: rgba(239, 68, 68, 0.16);
+        }
+
+        .admin-buttons .admin-action-btn.reports-btn {
+            background: rgba(245, 158, 11, 0.08);
+            color: #D97706;
+        }
+
+        .admin-buttons .admin-action-btn.reports-btn:hover {
+            background: rgba(245, 158, 11, 0.16);
         }
 
         /* ========== 头部 ========== */
@@ -763,7 +751,7 @@
             margin-bottom: 8px;
         }
 
-        /* ========== Tab 切换（布局优化） ========== */
+        /* ========== Tab 切换 ========== */
         .tab-container {
             margin-bottom: 24px;
         }
@@ -2524,6 +2512,10 @@
                 flex-wrap: wrap;
             }
 
+            .admin-buttons {
+                justify-content: center;
+            }
+
             .header {
                 padding: 16px 18px;
                 flex-direction: column;
@@ -2669,11 +2661,6 @@
                 padding: 24px 16px 20px;
             }
 
-            .admin-menu-wrapper .admin-dropdown {
-                right: auto;
-                left: 0;
-            }
-
             .forum-section {
                 padding: 16px;
             }
@@ -2731,6 +2718,11 @@
                 font-size: 11px;
                 padding: 6px 10px;
             }
+
+            .admin-buttons .admin-action-btn {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
         }
 
         .hidden {
@@ -2787,23 +2779,18 @@
                         <span id="currentUsername">用户</span>
                         <span class="user-id" id="currentUserId">ID: --</span>
                     </span>
-                    <span class="admin-menu-wrapper" id="adminMenuWrapper" style="display:none;">
-                        <button class="admin-menu-btn" id="adminMenuBtn">
-                            <i class="fas fa-crown"></i> 管理
-                            <i class="fas fa-chevron-down" style="font-size:10px;"></i>
+                    <!-- 管理按钮（独立显示在顶栏） -->
+                    <div class="admin-buttons" id="adminButtons">
+                        <button class="admin-action-btn review-btn" id="adminReviewBtn">
+                            <i class="fas fa-clipboard-check"></i> 审核
                         </button>
-                        <div class="admin-dropdown" id="adminDropdown">
-                            <button class="admin-dropdown-item" data-action="review">
-                                <i class="fas fa-clipboard-check" style="color:var(--primary);"></i> 审核中心
-                            </button>
-                            <button class="admin-dropdown-item" data-action="ban">
-                                <i class="fas fa-gavel" style="color:#EF4444;"></i> 封禁用户
-                            </button>
-                            <button class="admin-dropdown-item" data-action="reports">
-                                <i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核
-                            </button>
-                        </div>
-                    </span>
+                        <button class="admin-action-btn ban-btn" id="adminBanBtn">
+                            <i class="fas fa-gavel"></i> 封禁
+                        </button>
+                        <button class="admin-action-btn reports-btn" id="adminReportsBtn">
+                            <i class="fas fa-flag"></i> 举报
+                        </button>
+                    </div>
                     <button class="btn btn-logout" id="logoutBtn">
                         <i class="fas fa-sign-out-alt"></i> 登出
                     </button>
@@ -3146,7 +3133,9 @@
         ];
 
         function isOwner(username) { return username === OWNER_USER; }
+
         function isOfficial(username) { return OFFICIAL_USERS.includes(username); }
+
         function isAdmin(username) { return ADMIN_USERS.includes(username); }
 
         function getRole(username) {
@@ -4051,14 +4040,13 @@
         }
 
         // ========================================================================
-        //  20. 讨论区功能
+        //  20. 讨论区功能（修复版）
         // ========================================================================
         let forumPosts = [];
         let forumExpanded = false;
         const MAX_FORUM_POSTS = 20;
         const MAX_VISIBLE_FORUM_POSTS = 5;
 
-        // 获取讨论区帖子
         async function fetchForumPosts() {
             try {
                 const result = await supabaseRequest('/forum_posts?order=created_at.desc');
@@ -4072,21 +4060,18 @@
             }
         }
 
-        // 发布帖子
         async function publishForumPost(title, content, author) {
             if (!title || !content) throw new Error('标题和内容不能为空');
             if (title.length > 100) throw new Error('标题不能超过100个字符');
 
-            // 先获取当前帖子数量，如果达到上限则删除最旧的
             const currentPosts = await fetchForumPosts();
             if (currentPosts.length >= MAX_FORUM_POSTS) {
-                // 按创建时间升序排列，删除最旧的
                 const sorted = [...currentPosts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
                 const oldest = sorted[0];
                 await supabaseRequest(`/forum_posts?id=eq.${oldest.id}`, { method: 'DELETE' });
             }
 
-            const result = await supabaseRequest('/forum_posts', {
+            await supabaseRequest('/forum_posts', {
                 method: 'POST',
                 headers: { 'Prefer': 'return=representation' },
                 body: JSON.stringify({
@@ -4100,9 +4085,11 @@
             return { success: true };
         }
 
-        // 删除帖子
         async function deleteForumPost(postId, currentUser) {
-            const posts = await supabaseRequest(`/forum_posts?id=eq.${postId}`);
+            const id = parseInt(postId);
+            if (isNaN(id)) throw new Error('无效的帖子ID');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${id}`);
             if (!posts || posts.length === 0) throw new Error('帖子不存在');
 
             const post = posts[0];
@@ -4114,15 +4101,17 @@
                 if (post.author !== currentUser) throw new Error('没有权限删除此帖子');
             }
 
-            await supabaseRequest(`/forum_posts?id=eq.${postId}`, { method: 'DELETE' });
+            await supabaseRequest(`/forum_posts?id=eq.${id}`, { method: 'DELETE' });
             return { success: true };
         }
 
-        // 回复帖子
         async function replyToPost(postId, content, author) {
             if (!content || content.trim().length < 1) throw new Error('回复内容不能为空');
 
-            const posts = await supabaseRequest(`/forum_posts?id=eq.${postId}`);
+            const id = parseInt(postId);
+            if (isNaN(id)) throw new Error('无效的帖子ID');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${id}`);
             if (!posts || posts.length === 0) throw new Error('帖子不存在');
 
             const post = posts[0];
@@ -4134,7 +4123,7 @@
                 created_at: new Date().toISOString()
             });
 
-            await supabaseRequest(`/forum_posts?id=eq.${postId}`, {
+            await supabaseRequest(`/forum_posts?id=eq.${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ replies: replies })
             });
@@ -4142,9 +4131,11 @@
             return { success: true };
         }
 
-        // 删除回复
         async function deleteReply(postId, replyId, currentUser) {
-            const posts = await supabaseRequest(`/forum_posts?id=eq.${postId}`);
+            const id = parseInt(postId);
+            if (isNaN(id)) throw new Error('无效的帖子ID');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${id}`);
             if (!posts || posts.length === 0) throw new Error('帖子不存在');
 
             const post = posts[0];
@@ -4166,7 +4157,7 @@
             }
 
             replies.splice(replyIndex, 1);
-            await supabaseRequest(`/forum_posts?id=eq.${postId}`, {
+            await supabaseRequest(`/forum_posts?id=eq.${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ replies: replies })
             });
@@ -4174,7 +4165,13 @@
             return { success: true };
         }
 
-        // 渲染讨论区
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         async function renderForum() {
             const container = document.getElementById('forumPostList');
             const badge = document.getElementById('forumBadge');
@@ -4191,7 +4188,6 @@
                     return;
                 }
 
-                // 批量检测作者封禁状态
                 const allAuthors = [...new Set(posts.flatMap(p => [p.author, ...(p.replies || []).map(r => r.author)]))];
                 const banCache = {};
                 for (const author of allAuthors) {
@@ -4229,7 +4225,6 @@
                         (isOfficial(currentUser) && post.author === currentUser)
                     );
 
-                    // 渲染回复
                     let repliesHtml = '';
                     const replies = post.replies || [];
                     if (replies.length > 0) {
@@ -4275,7 +4270,6 @@
                         repliesHtml += `</div>`;
                     }
 
-                    // 回复表单
                     const replyFormHtml = currentUser && !currentUserBanned ? `
                         <div class="reply-form" style="margin-top:8px;">
                             <textarea placeholder="写回复..." class="reply-textarea" data-post-id="${post.id}" rows="2"></textarea>
@@ -4319,6 +4313,7 @@
                 container.querySelectorAll('.delete-post-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
+                        if (isNaN(id)) { showToast('❌ 无效的帖子ID', 'error'); return; }
                         if (confirm('确定要删除此帖子吗？')) {
                             try {
                                 await deleteForumPost(id, getCurrentUser());
@@ -4333,7 +4328,8 @@
 
                 container.querySelectorAll('.reply-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        const postId = parseInt(btn.dataset.id);
+                        const postId = parseInt(btn.dataset.postId);
+                        if (isNaN(postId)) { showToast('❌ 无效的帖子ID', 'error'); return; }
                         const postEl = btn.closest('.forum-post');
                         const replyForm = postEl.querySelector('.reply-form');
                         if (replyForm) {
@@ -4347,7 +4343,11 @@
 
                 container.querySelectorAll('.submit-reply-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
-                        const postId = parseInt(btn.dataset.id);
+                        const postId = parseInt(btn.dataset.postId);
+                        if (isNaN(postId)) {
+                            showToast('❌ 无效的帖子ID', 'error');
+                            return;
+                        }
                         const postEl = btn.closest('.forum-post');
                         const textarea = postEl.querySelector('.reply-textarea');
                         const content = textarea.value.trim();
@@ -4367,6 +4367,7 @@
                     btn.addEventListener('click', async () => {
                         const postId = parseInt(btn.dataset.postId);
                         const replyId = btn.dataset.replyId;
+                        if (isNaN(postId)) { showToast('❌ 无效的帖子ID', 'error'); return; }
                         if (confirm('确定要删除此回复吗？')) {
                             try {
                                 await deleteReply(postId, replyId, getCurrentUser());
@@ -4389,7 +4390,6 @@
                     });
                 });
 
-                // 折叠按钮
                 const toggleBtn = document.getElementById('forumToggleBtn');
                 if (toggleBtn) {
                     toggleBtn.addEventListener('click', () => {
@@ -4403,14 +4403,6 @@
                 container.innerHTML =
                     `<div class="empty-forum"><i class="fas fa-exclamation-triangle" style="color:#EF4444;"></i>加载失败: ${err.message}</div>`;
             }
-        }
-
-        // 简单的防 XSS 转义
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
 
         // ========================================================================
@@ -4663,29 +4655,16 @@
         }
 
         // ========================================================================
-        //  28. 管理员菜单
+        //  28. 顶栏管理按钮事件
         // ========================================================================
-        function setupAdminMenu() {
-            const wrapper = document.getElementById('adminMenuWrapper');
-            const btn = document.getElementById('adminMenuBtn');
-            const dropdown = document.getElementById('adminDropdown');
-            if (!wrapper || !btn || !dropdown) return;
+        function setupAdminButtons() {
+            const reviewBtn = document.getElementById('adminReviewBtn');
+            const banBtn = document.getElementById('adminBanBtn');
+            const reportsBtn = document.getElementById('adminReportsBtn');
 
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdown.classList.toggle('show');
-            });
-            document.addEventListener('click', () => { dropdown.classList.remove('show'); });
-
-            dropdown.querySelectorAll('.admin-dropdown-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    dropdown.classList.remove('show');
-                    const action = item.dataset.action;
-                    if (action === 'review') openReviewModal();
-                    else if (action === 'ban') showBanUserSelector();
-                    else if (action === 'reports') openReportsReview();
-                });
-            });
+            if (reviewBtn) reviewBtn.addEventListener('click', () => { openReviewModal(); });
+            if (banBtn) banBtn.addEventListener('click', () => { showBanUserSelector(); });
+            if (reportsBtn) reportsBtn.addEventListener('click', () => { openReportsReview(); });
         }
 
         // ========================================================================
@@ -4775,7 +4754,7 @@
         }
 
         // ========================================================================
-        //  32. UI 更新
+        //  32. UI 更新（含管理按钮显示）
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -4788,7 +4767,7 @@
             const currentUserIdEl = document.getElementById('currentUserId');
             const usernameDisplay = document.getElementById('usernameDisplay');
             const loginStatusText = document.getElementById('loginStatusText');
-            const adminWrapper = document.getElementById('adminMenuWrapper');
+            const adminButtons = document.getElementById('adminButtons');
 
             if (loggedIn && username) {
                 if (guestButtons) guestButtons.classList.add('hidden');
@@ -4817,12 +4796,16 @@
                     }
                 }
 
-                if (adminWrapper) {
+                // 管理按钮：仅管理员/官方/站长可见
+                if (adminButtons) {
                     if (role === 'admin' || role === 'owner' || role === 'official') {
-                        adminWrapper.style.display = 'inline-block';
-                        setupAdminMenu();
-                    } else { adminWrapper.style.display = 'none'; }
+                        adminButtons.style.display = 'flex';
+                        setupAdminButtons();
+                    } else {
+                        adminButtons.style.display = 'none';
+                    }
                 }
+
                 if (loginStatusText) loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
 
                 // 显示发布帖子表单（登录用户）
@@ -4834,7 +4817,7 @@
             } else {
                 if (guestButtons) guestButtons.classList.remove('hidden');
                 if (userInfo) userInfo.classList.add('hidden');
-                if (adminWrapper) adminWrapper.style.display = 'none';
+                if (adminButtons) adminButtons.style.display = 'none';
                 if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
                 const forumForm = document.getElementById('forumPostForm');
                 if (forumForm) forumForm.style.display = 'none';
@@ -5272,7 +5255,6 @@
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                     document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList
                         .add('active');
-                    // 如果切换到讨论区，刷新讨论区
                     if (tab === 'forum') {
                         renderForum();
                     }
@@ -5336,7 +5318,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（讨论区 + Tab切换版）');
+            console.log('✅ 2510班资源站已启动！（管理按钮独立版 + 回复修复）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
