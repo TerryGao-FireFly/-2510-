@@ -6,6 +6,7 @@
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ========== CSS 变量与重置 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -64,6 +65,7 @@
             margin: 0 auto;
         }
 
+        /* ========== 顶栏 ========== */
         .topbar {
             display: flex;
             flex-wrap: wrap;
@@ -230,6 +232,7 @@
             background: rgba(239, 68, 68, 0.16);
         }
 
+        /* ========== 管理按钮 ========== */
         .admin-menu-wrapper {
             position: relative;
             display: inline-block;
@@ -293,6 +296,7 @@
             background: rgba(0, 0, 0, 0.04);
         }
 
+        /* ========== 头部 ========== */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -386,6 +390,7 @@
             font-size: 16px;
         }
 
+        /* ========== 存储用量 ========== */
         .storage-bar {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -440,6 +445,7 @@
             white-space: nowrap;
         }
 
+        /* ========== 公告区域 ========== */
         .announcement-section {
             margin-bottom: 24px;
         }
@@ -654,6 +660,7 @@
             background: rgba(91, 106, 240, 0.16);
         }
 
+        /* ========== 发布公告表单 ========== */
         .announcement-form {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -756,6 +763,512 @@
             margin-bottom: 8px;
         }
 
+        /* ========== Tab 切换（布局优化） ========== */
+        .tab-container {
+            margin-bottom: 24px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            padding: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--card-shadow);
+            overflow-x: auto;
+        }
+
+        .tab-nav .tab-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: transparent;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-nav .tab-btn:hover {
+            background: rgba(91, 106, 240, 0.06);
+            color: var(--text-primary);
+        }
+
+        .tab-nav .tab-btn.active {
+            background: var(--gradient);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(91, 106, 240, 0.30);
+        }
+
+        .tab-nav .tab-btn .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 0 8px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+
+        .tab-nav .tab-btn.active .badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .tab-content {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ========== 讨论区 ========== */
+        .forum-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--card-shadow);
+        }
+
+        .forum-section .forum-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .forum-section .forum-subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .forum-post-form {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .forum-post-form .form-row {
+            margin-bottom: 10px;
+        }
+
+        .forum-post-form .form-row input,
+        .forum-post-form .form-row textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: var(--font);
+            outline: none;
+            background: #f8fafc;
+        }
+
+        .forum-post-form .form-row input:focus,
+        .forum-post-form .form-row textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91, 106, 240, 0.12);
+            background: #fff;
+        }
+
+        .forum-post-form .form-row textarea {
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .forum-post-form .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .forum-post-form .form-actions button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .forum-post-form .form-actions .submit-btn {
+            background: var(--gradient);
+            color: #fff;
+        }
+
+        .forum-post-form .form-actions .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(91, 106, 240, 0.30);
+        }
+
+        .forum-post-form .form-actions .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forum-post-form .form-actions .cancel-btn {
+            background: #F1F3F5;
+            color: var(--text-secondary);
+        }
+
+        .forum-post-form .form-actions .cancel-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .forum-post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .forum-post {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--transition);
+        }
+
+        .forum-post:hover {
+            border-color: rgba(91, 106, 240, 0.10);
+        }
+
+        .forum-post .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .forum-post .post-author {
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .forum-post .post-author .author-name.admin {
+            color: var(--admin-color);
+        }
+
+        .forum-post .post-author .author-name.owner {
+            color: var(--owner-color);
+        }
+
+        .forum-post .post-author .author-name.official {
+            color: var(--official-color);
+        }
+
+        .forum-post .post-author .author-name.banned {
+            color: var(--banned-color);
+        }
+
+        .forum-post .post-author .tag {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 10px;
+        }
+
+        .forum-post .post-author .tag.owner-tag {
+            background: var(--owner-color);
+            color: #fff;
+        }
+
+        .forum-post .post-author .tag.official-tag {
+            background: var(--official-color);
+            color: #fff;
+        }
+
+        .forum-post .post-author .tag.admin-tag {
+            background: var(--admin-color);
+            color: #fff;
+        }
+
+        .forum-post .post-author .tag.banned-tag {
+            background: var(--banned-color);
+            color: #fff;
+        }
+
+        .forum-post .post-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .forum-post .post-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .forum-post .post-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .forum-post .post-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .forum-post .post-actions button {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: rgba(91, 106, 240, 0.06);
+            color: var(--primary);
+        }
+
+        .forum-post .post-actions button:hover {
+            background: rgba(91, 106, 240, 0.12);
+        }
+
+        .forum-post .post-actions .reply-btn {
+            background: rgba(91, 106, 240, 0.06);
+            color: var(--primary);
+        }
+
+        .forum-post .post-actions .reply-btn:hover {
+            background: rgba(91, 106, 240, 0.12);
+        }
+
+        .forum-post .post-actions .delete-post-btn {
+            background: rgba(239, 68, 68, 0.06);
+            color: #EF4444;
+        }
+
+        .forum-post .post-actions .delete-post-btn:hover {
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .forum-post .post-replies {
+            margin-top: 12px;
+            padding-left: 16px;
+            border-left: 2px solid rgba(91, 106, 240, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .forum-post .post-replies .reply-item {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .forum-post .post-replies .reply-item:last-child {
+            border-bottom: none;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author .tag {
+            font-size: 8px;
+            font-weight: 700;
+            padding: 0 6px;
+            border-radius: 8px;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author .tag.banned-tag {
+            background: var(--banned-color);
+            color: #fff;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author .tag.owner-tag {
+            background: var(--owner-color);
+            color: #fff;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author .tag.official-tag {
+            background: var(--official-color);
+            color: #fff;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author .tag.admin-tag {
+            background: var(--admin-color);
+            color: #fff;
+        }
+
+        .forum-post .post-replies .reply-item .reply-time {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-left: 8px;
+        }
+
+        .forum-post .post-replies .reply-item .reply-content {
+            margin-top: 2px;
+            line-height: 1.5;
+        }
+
+        .forum-post .post-replies .reply-item .reply-actions {
+            margin-top: 4px;
+        }
+
+        .forum-post .post-replies .reply-item .reply-actions button {
+            padding: 2px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: rgba(239, 68, 68, 0.06);
+            color: #EF4444;
+        }
+
+        .forum-post .post-replies .reply-item .reply-actions button:hover {
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .forum-post .post-replies .reply-form {
+            margin-top: 6px;
+        }
+
+        .forum-post .post-replies .reply-form textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: var(--font);
+            outline: none;
+            background: #f8fafc;
+            min-height: 50px;
+            resize: vertical;
+        }
+
+        .forum-post .post-replies .reply-form textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(91, 106, 240, 0.12);
+            background: #fff;
+        }
+
+        .forum-post .post-replies .reply-form .reply-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .forum-post .post-replies .reply-form .reply-actions button {
+            padding: 4px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .forum-post .post-replies .reply-form .reply-actions .submit-reply-btn {
+            background: var(--gradient);
+            color: #fff;
+        }
+
+        .forum-post .post-replies .reply-form .reply-actions .submit-reply-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(91, 106, 240, 0.25);
+        }
+
+        .forum-post .post-replies .reply-form .reply-actions .cancel-reply-btn {
+            background: #F1F3F5;
+            color: var(--text-secondary);
+        }
+
+        .forum-post .post-replies .reply-form .reply-actions .cancel-reply-btn:hover {
+            background: #E5E7EB;
+        }
+
+        .forum-post.forum-hidden {
+            display: none;
+        }
+
+        .forum-post.forum-hidden.show {
+            display: block;
+        }
+
+        .forum-toggle {
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .forum-toggle button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(91, 106, 240, 0.08);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .forum-toggle button:hover {
+            background: rgba(91, 106, 240, 0.16);
+        }
+
+        .empty-forum {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .empty-forum i {
+            font-size: 32px;
+            opacity: 0.3;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ========== 登录/注册模态框 ========== */
         .auth-modal-overlay {
             position: fixed;
             inset: 0;
@@ -915,6 +1428,7 @@
             transform: none;
         }
 
+        /* ========== 介绍横幅 ========== */
         .intro-banner {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -1001,6 +1515,7 @@
             color: var(--primary);
         }
 
+        /* ========== 工具栏 ========== */
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -1085,6 +1600,7 @@
             box-shadow: 0 4px 12px rgba(91, 106, 240, 0.30);
         }
 
+        /* ========== 上传区域 ========== */
         .upload-zone {
             position: relative;
             background: var(--card-bg);
@@ -1157,6 +1673,7 @@
             display: none;
         }
 
+        /* ========== 上传进度 ========== */
         .upload-progress-container {
             margin-bottom: 24px;
             display: none;
@@ -1243,6 +1760,7 @@
             text-align: right;
         }
 
+        /* ========== 资源列表 ========== */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -1274,6 +1792,7 @@
             margin-bottom: 24px;
         }
 
+        /* ========== 文件卡片 ========== */
         .file-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -1501,6 +2020,7 @@
             z-index: 3;
         }
 
+        /* ========== 空状态 ========== */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -1531,6 +2051,7 @@
             margin-top: 4px;
         }
 
+        /* ========== 底部 ========== */
         .footer {
             text-align: center;
             padding: 20px 0 8px;
@@ -1560,6 +2081,23 @@
             text-decoration: underline;
         }
 
+        .footer .dev-credit {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .footer .dev-credit a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer .dev-credit a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== Toast ========== */
         .toast-container {
             position: fixed;
             bottom: 24px;
@@ -1622,6 +2160,7 @@
             color: var(--primary);
         }
 
+        /* ========== 删除确认弹窗 ========== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1728,6 +2267,7 @@
             cursor: not-allowed;
         }
 
+        /* ========== 封禁用户模态框 ========== */
         .ban-user-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1884,6 +2424,7 @@
             transform: none;
         }
 
+        /* ========== 删除公告确认弹窗 ========== */
         .delete-announcement-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1966,6 +2507,7 @@
             transform: scale(1.02);
         }
 
+        /* ========== 响应式 ========== */
         @media (max-width: 768px) {
             body {
                 padding: 12px;
@@ -2131,6 +2673,15 @@
                 right: auto;
                 left: 0;
             }
+
+            .forum-section {
+                padding: 16px;
+            }
+
+            .tab-nav .tab-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -2166,6 +2717,19 @@
             .footer .footer-links {
                 gap: 12px;
                 font-size: 12px;
+            }
+
+            .forum-post {
+                padding: 12px;
+            }
+
+            .forum-post .post-replies {
+                padding-left: 8px;
+            }
+
+            .tab-nav .tab-btn {
+                font-size: 11px;
+                padding: 6px 10px;
             }
         }
 
@@ -2206,6 +2770,7 @@
 
     <div class="app-container">
 
+        <!-- ====== 顶栏 ====== -->
         <nav class="topbar">
             <div class="brand">
                 <i class="fas fa-graduation-cap"></i>
@@ -2246,6 +2811,7 @@
             </div>
         </nav>
 
+        <!-- ====== 头部 ====== -->
         <header class="header">
             <div class="header-left">
                 <div class="header-logo">📚</div>
@@ -2262,6 +2828,7 @@
             </div>
         </header>
 
+        <!-- ====== 存储用量 ====== -->
         <div class="storage-bar" id="storageBar">
             <div class="storage-label">
                 <i class="fas fa-database"></i> 存储用量
@@ -2272,6 +2839,7 @@
             <div class="storage-text" id="storageText">0 MB / 1 GB</div>
         </div>
 
+        <!-- ====== 📢 公告区域 ====== -->
         <div class="announcement-section">
             <div class="section-title">
                 <i class="fas fa-bullhorn"></i>
@@ -2282,6 +2850,7 @@
                 </button>
             </div>
 
+            <!-- 发布公告表单 -->
             <div class="announcement-form" id="announcementForm">
                 <div class="form-row">
                     <label>公告标题</label>
@@ -2299,9 +2868,13 @@
                 </div>
             </div>
 
-            <div class="announcement-list" id="announcementList"></div>
+            <!-- 公告列表 -->
+            <div class="announcement-list" id="announcementList">
+                <!-- 由 JS 动态渲染 -->
+            </div>
         </div>
 
+        <!-- ====== 介绍横幅 ====== -->
         <div class="intro-banner">
             <div class="intro-avatar">📖</div>
             <div class="intro-content">
@@ -2311,7 +2884,7 @@
                 </div>
                 <div class="intro-desc">
                     <i class="fas fa-arrow-right"></i> 这里是 2510 班的专属资源中心。
-                    登录后即可查看和下载班级共享的学习资料。
+                    登录后即可查看、下载和分享班级学习资料。
                     <span style="display:block;margin-top:4px;font-size:12px;color:var(--text-light);">
                         🔐 所有资源需登录后可见 · 账号云端同步
                     </span>
@@ -2330,66 +2903,127 @@
             </div>
         </div>
 
-        <div class="toolbar">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="搜索文件名称..." />
-            </div>
-            <div class="filter-group">
-                <button class="filter-btn active" data-filter="all">全部</button>
-                <button class="filter-btn" data-filter="pdf">PDF</button>
-                <button class="filter-btn" data-filter="doc">文档</button>
-                <button class="filter-btn" data-filter="image">图片</button>
-                <button class="filter-btn" data-filter="video">视频</button>
-                <button class="filter-btn" data-filter="zip">压缩包</button>
-                <button class="filter-btn" data-filter="other">其他</button>
-            </div>
-        </div>
-
-        <div class="upload-zone" id="uploadZone">
-            <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
-            <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
-            <p id="uploadDesc">支持所有文件类型 · 单个文件最大 10MB</p>
-            <div class="hint" id="uploadHint">⚠️ 请先登录后再上传文件</div>
-            <input type="file" id="fileInput" multiple />
-        </div>
-
-        <div class="upload-progress-container" id="progressContainer"></div>
-
-        <div class="section-header">
-            <h2>
-                📂 资源列表
-                <span id="resultCount">(0 个)</span>
-            </h2>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="refresh-btn" id="refreshBtn">
-                    <i class="fas fa-sync-alt"></i> 刷新
+        <!-- ====== Tab 切换 ====== -->
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="files">
+                    <i class="fas fa-folder"></i> 资源列表
+                    <span class="badge" id="fileBadge">0</span>
+                </button>
+                <button class="tab-btn" data-tab="forum">
+                    <i class="fas fa-comments"></i> 讨论区
+                    <span class="badge" id="forumBadge">0</span>
                 </button>
             </div>
+
+            <!-- ====== Tab 内容：资源列表 ====== -->
+            <div class="tab-content active" id="tabFiles">
+                <!-- ====== 工具栏 ====== -->
+                <div class="toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="搜索文件名称..." />
+                    </div>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">全部</button>
+                        <button class="filter-btn" data-filter="pdf">PDF</button>
+                        <button class="filter-btn" data-filter="doc">文档</button>
+                        <button class="filter-btn" data-filter="image">图片</button>
+                        <button class="filter-btn" data-filter="video">视频</button>
+                        <button class="filter-btn" data-filter="zip">压缩包</button>
+                        <button class="filter-btn" data-filter="other">其他</button>
+                    </div>
+                </div>
+
+                <!-- ====== 上传区域 ====== -->
+                <div class="upload-zone" id="uploadZone">
+                    <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
+                    <p id="uploadDesc">支持所有文件类型 · 单个文件最大 10MB</p>
+                    <div class="hint" id="uploadHint">⚠️ 请先登录后再上传文件</div>
+                    <input type="file" id="fileInput" multiple />
+                </div>
+
+                <!-- ====== 上传进度 ====== -->
+                <div class="upload-progress-container" id="progressContainer"></div>
+
+                <!-- ====== 资源列表 ====== -->
+                <div class="section-header">
+                    <h2>
+                        📂 资源列表
+                        <span id="resultCount">(0 个)</span>
+                    </h2>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="refresh-btn" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i> 刷新
+                        </button>
+                    </div>
+                </div>
+
+                <div id="fileContent">
+                    <div class="file-grid" id="fileGrid"></div>
+                </div>
+            </div>
+
+            <!-- ====== Tab 内容：讨论区 ====== -->
+            <div class="tab-content" id="tabForum">
+                <div class="forum-section">
+                    <div class="forum-title">
+                        <i class="fas fa-comments" style="color:var(--primary);"></i>
+                        班级讨论区
+                    </div>
+                    <div class="forum-subtitle">
+                        分享想法、提问、交流学习心得 · 最多保留20条帖子
+                    </div>
+
+                    <!-- 发布帖子表单 -->
+                    <div class="forum-post-form" id="forumPostForm">
+                        <div class="form-row">
+                            <input type="text" id="forumPostTitle" placeholder="帖子标题..." maxlength="100" />
+                        </div>
+                        <div class="form-row">
+                            <textarea id="forumPostContent" placeholder="帖子内容..." rows="2"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button class="submit-btn" id="publishForumPostBtn">
+                                <i class="fas fa-paper-plane"></i> 发布帖子
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 帖子列表 -->
+                    <div class="forum-post-list" id="forumPostList">
+                        <!-- 由 JS 动态渲染 -->
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="fileContent">
-            <div class="file-grid" id="fileGrid"></div>
-        </div>
-
+        <!-- ====== 底部 ====== -->
         <div class="footer">
             <div class="footer-links">
                 <span id="loginStatusText">🔒 未登录</span>
             </div>
-            <div style="font-size:12px;color:var(--text-light);opacity:0.7;">
+            <div class="dev-credit">
+                Developed by the <a href="https://github.com/TerryGao-FireFly/-2510-/" target="_blank">2510 Dev Team</a>
+            </div>
+            <div style="font-size:11px;color:var(--text-light);opacity:0.6;margin-top:2px;">
                 © 2026 2510班资源站
             </div>
         </div>
 
     </div>
 
-    <!-- ====== 模态框 ====== -->
+    <!-- ====== 登录/注册模态框 ====== -->
     <div class="auth-modal-overlay" id="authModal">
         <div class="auth-modal">
             <button class="close-btn" id="authModalClose">&times;</button>
+
             <div id="loginForm">
                 <div class="auth-title">🔐 登录</div>
-                <div class="auth-subtitle">还没有账号？<a id="switchToRegister">立即注册</a></div>
+                <div class="auth-subtitle">
+                    还没有账号？<a id="switchToRegister">立即注册</a>
+                </div>
                 <div class="form-group">
                     <label>用户名</label>
                     <input type="text" id="loginUsername" placeholder="请输入用户名" />
@@ -2402,9 +3036,12 @@
                 </div>
                 <button class="btn-submit" id="loginSubmitBtn">登 录</button>
             </div>
+
             <div id="registerForm" class="hidden">
                 <div class="auth-title">📝 注册</div>
-                <div class="auth-subtitle">已有账号？<a id="switchToLogin">去登录</a></div>
+                <div class="auth-subtitle">
+                    已有账号？<a id="switchToLogin">去登录</a>
+                </div>
                 <div class="form-group">
                     <label>用户名</label>
                     <input type="text" id="registerUsername" placeholder="请设置用户名（3-20个字符）" />
@@ -2425,16 +3062,24 @@
         </div>
     </div>
 
+    <!-- ====== 封禁用户模态框 ====== -->
     <div class="ban-user-modal-overlay" id="banUserModal">
         <div class="ban-user-modal">
             <button class="close-btn" id="banUserModalClose">&times;</button>
-            <div class="ban-user-title"><i class="fas fa-gavel"></i> 封禁用户</div>
-            <div class="ban-user-subtitle">确定要封禁用户 <strong id="banUserTargetName">--</strong> 吗？</div>
+            <div class="ban-user-title">
+                <i class="fas fa-gavel"></i> 封禁用户
+            </div>
+            <div class="ban-user-subtitle">
+                确定要封禁用户 <strong id="banUserTargetName">--</strong> 吗？
+            </div>
             <div class="form-group">
                 <label>封禁原因</label>
                 <textarea id="banUserReason" placeholder="请输入封禁原因..."></textarea>
             </div>
-            <div class="ban-warning"><i class="fas fa-exclamation-triangle"></i> 封禁后该用户将无法查看和上传任何文件</div>
+            <div class="ban-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                封禁后该用户将无法查看和上传任何文件
+            </div>
             <div class="ban-actions">
                 <button class="cancel-btn" id="banUserCancelBtn">取消</button>
                 <button class="confirm-btn" id="banUserConfirmBtn">确认封禁</button>
@@ -2442,6 +3087,7 @@
         </div>
     </div>
 
+    <!-- ====== 删除文件确认弹窗 ====== -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal-box">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -2454,6 +3100,7 @@
         </div>
     </div>
 
+    <!-- ====== 删除公告确认弹窗 ====== -->
     <div class="delete-announcement-modal-overlay" id="deleteAnnouncementModal">
         <div class="delete-announcement-modal">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -2466,6 +3113,7 @@
         </div>
     </div>
 
+    <!-- ====== Toast 容器 ====== -->
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
@@ -2498,9 +3146,7 @@
         ];
 
         function isOwner(username) { return username === OWNER_USER; }
-
         function isOfficial(username) { return OFFICIAL_USERS.includes(username); }
-
         function isAdmin(username) { return ADMIN_USERS.includes(username); }
 
         function getRole(username) {
@@ -3115,8 +3761,6 @@
         let announcements = [];
         let announcementsExpanded = false;
         const MAX_VISIBLE_ANNOUNCEMENTS = 5;
-
-        // 存储公告作者的封禁状态缓存
         let announcementAuthorBanCache = {};
 
         async function renderAnnouncements() {
@@ -3139,7 +3783,6 @@
                 return;
             }
 
-            // 批量检查作者封禁状态
             const uniqueAuthors = [...new Set(announcements.map(a => a.author))];
             const banPromises = uniqueAuthors.map(async (author) => {
                 const isBanned = await isUsernameBanned(author);
@@ -3296,7 +3939,6 @@
                 return;
             }
 
-            // 批量检查上传者封禁状态
             const uniqueUploaders = [...new Set(filtered.map(f => f.uploaded_by).filter(Boolean))];
             const banPromises = uniqueUploaders.map(async (uploader) => {
                 const isBanned = await isUsernameBanned(uploader);
@@ -3371,6 +4013,9 @@
                 `;
             }).join('');
 
+            // 更新文件数量徽标
+            document.getElementById('fileBadge').textContent = filtered.length;
+
             if (loggedIn) {
                 grid.querySelectorAll('.download-btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
@@ -3406,7 +4051,370 @@
         }
 
         // ========================================================================
-        //  20. 举报弹窗
+        //  20. 讨论区功能
+        // ========================================================================
+        let forumPosts = [];
+        let forumExpanded = false;
+        const MAX_FORUM_POSTS = 20;
+        const MAX_VISIBLE_FORUM_POSTS = 5;
+
+        // 获取讨论区帖子
+        async function fetchForumPosts() {
+            try {
+                const result = await supabaseRequest('/forum_posts?order=created_at.desc');
+                if (result && result.success !== true) {
+                    return Array.isArray(result) ? result : [];
+                }
+                return [];
+            } catch (err) {
+                console.error('获取讨论区帖子失败:', err);
+                return [];
+            }
+        }
+
+        // 发布帖子
+        async function publishForumPost(title, content, author) {
+            if (!title || !content) throw new Error('标题和内容不能为空');
+            if (title.length > 100) throw new Error('标题不能超过100个字符');
+
+            // 先获取当前帖子数量，如果达到上限则删除最旧的
+            const currentPosts = await fetchForumPosts();
+            if (currentPosts.length >= MAX_FORUM_POSTS) {
+                // 按创建时间升序排列，删除最旧的
+                const sorted = [...currentPosts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                const oldest = sorted[0];
+                await supabaseRequest(`/forum_posts?id=eq.${oldest.id}`, { method: 'DELETE' });
+            }
+
+            const result = await supabaseRequest('/forum_posts', {
+                method: 'POST',
+                headers: { 'Prefer': 'return=representation' },
+                body: JSON.stringify({
+                    title: title.trim(),
+                    content: content.trim(),
+                    author: author,
+                    replies: []
+                })
+            });
+
+            return { success: true };
+        }
+
+        // 删除帖子
+        async function deleteForumPost(postId, currentUser) {
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${postId}`);
+            if (!posts || posts.length === 0) throw new Error('帖子不存在');
+
+            const post = posts[0];
+            const role = getRole(currentUser);
+
+            if (role === 'owner') {} else if (role === 'admin' || role === 'official') {
+                if (post.author !== currentUser) throw new Error('你只能删除自己发布的帖子');
+            } else {
+                if (post.author !== currentUser) throw new Error('没有权限删除此帖子');
+            }
+
+            await supabaseRequest(`/forum_posts?id=eq.${postId}`, { method: 'DELETE' });
+            return { success: true };
+        }
+
+        // 回复帖子
+        async function replyToPost(postId, content, author) {
+            if (!content || content.trim().length < 1) throw new Error('回复内容不能为空');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${postId}`);
+            if (!posts || posts.length === 0) throw new Error('帖子不存在');
+
+            const post = posts[0];
+            const replies = post.replies || [];
+            replies.push({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                author: author,
+                content: content.trim(),
+                created_at: new Date().toISOString()
+            });
+
+            await supabaseRequest(`/forum_posts?id=eq.${postId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ replies: replies })
+            });
+
+            return { success: true };
+        }
+
+        // 删除回复
+        async function deleteReply(postId, replyId, currentUser) {
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${postId}`);
+            if (!posts || posts.length === 0) throw new Error('帖子不存在');
+
+            const post = posts[0];
+            const replies = post.replies || [];
+            const replyIndex = replies.findIndex(r => r.id === replyId);
+            if (replyIndex === -1) throw new Error('回复不存在');
+
+            const reply = replies[replyIndex];
+            const role = getRole(currentUser);
+
+            if (role === 'owner') {} else if (role === 'admin' || role === 'official') {
+                if (reply.author !== currentUser && post.author !== currentUser) {
+                    throw new Error('没有权限删除此回复');
+                }
+            } else {
+                if (reply.author !== currentUser && post.author !== currentUser) {
+                    throw new Error('没有权限删除此回复');
+                }
+            }
+
+            replies.splice(replyIndex, 1);
+            await supabaseRequest(`/forum_posts?id=eq.${postId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ replies: replies })
+            });
+
+            return { success: true };
+        }
+
+        // 渲染讨论区
+        async function renderForum() {
+            const container = document.getElementById('forumPostList');
+            const badge = document.getElementById('forumBadge');
+            const currentUser = getCurrentUser();
+
+            try {
+                const posts = await fetchForumPosts();
+                forumPosts = posts;
+                badge.textContent = posts.length;
+
+                if (posts.length === 0) {
+                    container.innerHTML =
+                        `<div class="empty-forum"><i class="fas fa-comment-slash"></i>暂无帖子，快来发布第一条吧！</div>`;
+                    return;
+                }
+
+                // 批量检测作者封禁状态
+                const allAuthors = [...new Set(posts.flatMap(p => [p.author, ...(p.replies || []).map(r => r.author)]))];
+                const banCache = {};
+                for (const author of allAuthors) {
+                    banCache[author] = await isUsernameBanned(author);
+                }
+
+                const visibleCount = forumExpanded ? posts.length : Math.min(posts.length, MAX_VISIBLE_FORUM_POSTS);
+
+                let html = '';
+                posts.forEach((post, index) => {
+                    const isHidden = index >= visibleCount;
+                    const authorRole = getRole(post.author);
+                    const isAuthorBanned = banCache[post.author] || false;
+
+                    let authorClass = '';
+                    let tagHtml = '';
+                    if (isAuthorBanned) {
+                        authorClass = 'banned';
+                        tagHtml = '<span class="tag banned-tag">封禁用户</span>';
+                    } else if (authorRole === 'owner') {
+                        authorClass = 'owner';
+                        tagHtml = '<span class="tag owner-tag">站长</span>';
+                    } else if (authorRole === 'official') {
+                        authorClass = 'official';
+                        tagHtml = '<span class="tag official-tag">官方</span>';
+                    } else if (authorRole === 'admin') {
+                        authorClass = 'admin';
+                        tagHtml = '<span class="tag admin-tag">管理员</span>';
+                    }
+
+                    const canDeletePost = currentUser && (
+                        isOwner(currentUser) ||
+                        post.author === currentUser ||
+                        (isAdmin(currentUser) && post.author === currentUser) ||
+                        (isOfficial(currentUser) && post.author === currentUser)
+                    );
+
+                    // 渲染回复
+                    let repliesHtml = '';
+                    const replies = post.replies || [];
+                    if (replies.length > 0) {
+                        repliesHtml = `<div class="post-replies">`;
+                        replies.forEach(reply => {
+                            const replyAuthorRole = getRole(reply.author);
+                            const isReplyAuthorBanned = banCache[reply.author] || false;
+
+                            let replyTag = '';
+                            if (isReplyAuthorBanned) {
+                                replyTag = '<span class="tag banned-tag">封禁用户</span>';
+                            } else if (replyAuthorRole === 'owner') {
+                                replyTag = '<span class="tag owner-tag">站长</span>';
+                            } else if (replyAuthorRole === 'official') {
+                                replyTag = '<span class="tag official-tag">官方</span>';
+                            } else if (replyAuthorRole === 'admin') {
+                                replyTag = '<span class="tag admin-tag">管理员</span>';
+                            }
+
+                            const canDeleteReply = currentUser && (
+                                isOwner(currentUser) ||
+                                reply.author === currentUser ||
+                                post.author === currentUser ||
+                                (isAdmin(currentUser) && reply.author === currentUser) ||
+                                (isOfficial(currentUser) && reply.author === currentUser)
+                            );
+
+                            repliesHtml += `
+                                <div class="reply-item" data-reply-id="${reply.id}">
+                                    <div class="reply-author">
+                                        ${reply.author} ${replyTag}
+                                        <span class="reply-time">${formatTime(reply.created_at)}</span>
+                                    </div>
+                                    <div class="reply-content">${escapeHtml(reply.content)}</div>
+                                    ${canDeleteReply ? `
+                                        <div class="reply-actions">
+                                            <button class="delete-reply-btn" data-post-id="${post.id}" data-reply-id="${reply.id}">删除</button>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                        });
+                        repliesHtml += `</div>`;
+                    }
+
+                    // 回复表单
+                    const replyFormHtml = currentUser && !currentUserBanned ? `
+                        <div class="reply-form" style="margin-top:8px;">
+                            <textarea placeholder="写回复..." class="reply-textarea" data-post-id="${post.id}" rows="2"></textarea>
+                            <div class="reply-actions">
+                                <button class="submit-reply-btn" data-post-id="${post.id}">回复</button>
+                                <button class="cancel-reply-btn" style="display:none;">取消</button>
+                            </div>
+                        </div>
+                    ` : '';
+
+                    html += `
+                        <div class="forum-post ${isHidden ? 'forum-hidden' : ''}" data-id="${post.id}">
+                            <div class="post-header">
+                                <div class="post-author">
+                                    <span class="author-name ${authorClass}">${post.author}</span>
+                                    ${tagHtml}
+                                </div>
+                                <span class="post-time">${formatTime(post.created_at)}</span>
+                            </div>
+                            <div class="post-title">${escapeHtml(post.title)}</div>
+                            <div class="post-content">${escapeHtml(post.content)}</div>
+                            <div class="post-actions">
+                                ${currentUser && !currentUserBanned ? `<button class="reply-btn" data-post-id="${post.id}"><i class="fas fa-reply"></i> 回复</button>` : ''}
+                                ${canDeletePost ? `<button class="delete-post-btn" data-id="${post.id}"><i class="fas fa-trash"></i> 删除</button>` : ''}
+                            </div>
+                            ${repliesHtml}
+                            ${replyFormHtml}
+                        </div>
+                    `;
+                });
+
+                if (posts.length > MAX_VISIBLE_FORUM_POSTS) {
+                    const toggleText = forumExpanded ? '收起 ↑' :
+                        `展开查看更多 (${posts.length - MAX_VISIBLE_FORUM_POSTS} 条) ↓`;
+                    html += `<div class="forum-toggle"><button id="forumToggleBtn">${toggleText}</button></div>`;
+                }
+
+                container.innerHTML = html;
+
+                // 绑定帖子事件
+                container.querySelectorAll('.delete-post-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('确定要删除此帖子吗？')) {
+                            try {
+                                await deleteForumPost(id, getCurrentUser());
+                                showToast('🗑️ 帖子已删除', 'success');
+                                await renderForum();
+                            } catch (err) {
+                                showToast(`❌ ${err.message}`, 'error');
+                            }
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.reply-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const postId = parseInt(btn.dataset.id);
+                        const postEl = btn.closest('.forum-post');
+                        const replyForm = postEl.querySelector('.reply-form');
+                        if (replyForm) {
+                            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+                            if (replyForm.style.display !== 'none') {
+                                replyForm.querySelector('.reply-textarea').focus();
+                            }
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.submit-reply-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const postId = parseInt(btn.dataset.id);
+                        const postEl = btn.closest('.forum-post');
+                        const textarea = postEl.querySelector('.reply-textarea');
+                        const content = textarea.value.trim();
+                        if (!content) { showToast('⚠️ 请输入回复内容', 'error'); return; }
+
+                        try {
+                            await replyToPost(postId, content, getCurrentUser());
+                            showToast('✅ 回复成功', 'success');
+                            await renderForum();
+                        } catch (err) {
+                            showToast(`❌ ${err.message}`, 'error');
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.delete-reply-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const postId = parseInt(btn.dataset.postId);
+                        const replyId = btn.dataset.replyId;
+                        if (confirm('确定要删除此回复吗？')) {
+                            try {
+                                await deleteReply(postId, replyId, getCurrentUser());
+                                showToast('🗑️ 回复已删除', 'success');
+                                await renderForum();
+                            } catch (err) {
+                                showToast(`❌ ${err.message}`, 'error');
+                            }
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.reply-textarea').forEach(textarea => {
+                    textarea.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && e.shiftKey) {
+                            e.preventDefault();
+                            const btn = textarea.closest('.reply-form').querySelector('.submit-reply-btn');
+                            if (btn) btn.click();
+                        }
+                    });
+                });
+
+                // 折叠按钮
+                const toggleBtn = document.getElementById('forumToggleBtn');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', () => {
+                        forumExpanded = !forumExpanded;
+                        renderForum();
+                    });
+                }
+
+            } catch (err) {
+                console.error('渲染讨论区失败:', err);
+                container.innerHTML =
+                    `<div class="empty-forum"><i class="fas fa-exclamation-triangle" style="color:#EF4444;"></i>加载失败: ${err.message}</div>`;
+            }
+        }
+
+        // 简单的防 XSS 转义
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ========================================================================
+        //  21. 举报弹窗
         // ========================================================================
         function showReportFileModal(fileId) {
             const reason = prompt('请输入举报原因（至少5个字）：');
@@ -3422,7 +4430,7 @@
         }
 
         // ========================================================================
-        //  21. 管理员审核面板
+        //  22. 管理员审核面板
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -3528,7 +4536,7 @@
         }
 
         // ========================================================================
-        //  22. 删除文件相关
+        //  23. 删除文件相关
         // ========================================================================
         let deleteFileTargetId = null;
 
@@ -3563,7 +4571,7 @@
         }
 
         // ========================================================================
-        //  23. 删除公告相关
+        //  24. 删除公告相关
         // ========================================================================
         let deleteAnnouncementTargetId = null;
 
@@ -3592,7 +4600,7 @@
         }
 
         // ========================================================================
-        //  24. 加载公告
+        //  25. 加载公告
         // ========================================================================
         async function loadAnnouncements() {
             try {
@@ -3603,7 +4611,7 @@
         }
 
         // ========================================================================
-        //  25. 封禁用户
+        //  26. 封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -3636,7 +4644,6 @@
                 await banUserById(banUserTarget.userId, currentUser);
                 showToast(`✅ 已封禁用户 ${banUserTarget.username}`, 'success', 3000);
                 hideBanUserModal();
-                // 清空缓存，重新加载
                 fileUploaderBanCache = {};
                 announcementAuthorBanCache = {};
                 await refreshAll();
@@ -3645,7 +4652,7 @@
         }
 
         // ========================================================================
-        //  26. 用户列表
+        //  27. 用户列表
         // ========================================================================
         async function getUserList() {
             try {
@@ -3656,7 +4663,7 @@
         }
 
         // ========================================================================
-        //  27. 管理员菜单
+        //  28. 管理员菜单
         // ========================================================================
         function setupAdminMenu() {
             const wrapper = document.getElementById('adminMenuWrapper');
@@ -3682,7 +4689,7 @@
         }
 
         // ========================================================================
-        //  28. 封禁用户选择器
+        //  29. 封禁用户选择器
         // ========================================================================
         async function showBanUserSelector() {
             try {
@@ -3724,7 +4731,7 @@
         }
 
         // ========================================================================
-        //  29. 刷新所有数据
+        //  30. 刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
@@ -3737,6 +4744,7 @@
                 allFiles = Array.isArray(files) ? files : [];
                 await renderFiles(allFiles);
                 await loadAnnouncements();
+                await renderForum();
 
                 const usage = await getStorageUsage();
                 updateStorageUI(usage);
@@ -3748,7 +4756,7 @@
         }
 
         // ========================================================================
-        //  30. 更新存储用量 UI
+        //  31. 更新存储用量 UI
         // ========================================================================
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
@@ -3767,7 +4775,7 @@
         }
 
         // ========================================================================
-        //  31. UI 更新
+        //  32. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -3816,18 +4824,25 @@
                     } else { adminWrapper.style.display = 'none'; }
                 }
                 if (loginStatusText) loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
+
+                // 显示发布帖子表单（登录用户）
+                const forumForm = document.getElementById('forumPostForm');
+                if (forumForm) {
+                    forumForm.style.display = isBanned ? 'none' : 'block';
+                }
+
             } else {
                 if (guestButtons) guestButtons.classList.remove('hidden');
                 if (userInfo) userInfo.classList.add('hidden');
                 if (adminWrapper) adminWrapper.style.display = 'none';
                 if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
+                const forumForm = document.getElementById('forumPostForm');
+                if (forumForm) forumForm.style.display = 'none';
             }
-            // 异步渲染文件（因为 renderFiles 现在是异步的）
-            // 但 updateUI 会被 refreshAll 调用，refreshAll 已经 await renderFiles 了
         }
 
         // ========================================================================
-        //  32. 认证模态框控制
+        //  33. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -3860,7 +4875,7 @@
         }
 
         // ========================================================================
-        //  33. 文件上传
+        //  34. 文件上传
         // ========================================================================
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
@@ -3944,7 +4959,7 @@
         }
 
         // ========================================================================
-        //  34. 初始化 & 事件绑定
+        //  35. 初始化 & 事件绑定
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
@@ -4028,7 +5043,6 @@
                         const roleText = role === 'owner' ? '👑 站长' : role === 'official' ? '🏛️ 官方' : role === 'admin' ?
                             '🔑 管理员' : '👤 用户';
                         showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
-                        // 清空缓存
                         fileUploaderBanCache = {};
                         announcementAuthorBanCache = {};
                         await refreshAll();
@@ -4170,6 +5184,36 @@
                 });
             }
 
+            // ---- 讨论区发布帖子 ----
+            const publishForumBtn = document.getElementById('publishForumPostBtn');
+            if (publishForumBtn) {
+                publishForumBtn.addEventListener('click', async () => {
+                    const titleInput = document.getElementById('forumPostTitle');
+                    const contentInput = document.getElementById('forumPostContent');
+                    const title = titleInput ? titleInput.value.trim() : '';
+                    const content = contentInput ? contentInput.value.trim() : '';
+                    const currentUser = getCurrentUser();
+
+                    if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
+                    if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法发布帖子', 'error'); return; }
+
+                    if (!title || !content) { showToast('⚠️ 标题和内容不能为空', 'error'); return; }
+
+                    const btn = publishForumBtn;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+
+                    try {
+                        await publishForumPost(title, content, currentUser);
+                        showToast('✅ 帖子发布成功！', 'success', 2000);
+                        if (titleInput) titleInput.value = '';
+                        if (contentInput) contentInput.value = '';
+                        await renderForum();
+                    } catch (err) { showToast(`❌ ${err.message}`, 'error'); } finally { btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布帖子'; }
+                });
+            }
+
             // ---- 上传 ----
             const uploadZone = document.getElementById('uploadZone');
             const fileInput = document.getElementById('fileInput');
@@ -4216,6 +5260,22 @@
                     btn.classList.add('active');
                     currentFilter = btn.dataset.filter;
                     renderFiles(allFiles);
+                });
+            });
+
+            // ---- Tab 切换 ----
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const tab = btn.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList
+                        .add('active');
+                    // 如果切换到讨论区，刷新讨论区
+                    if (tab === 'forum') {
+                        renderForum();
+                    }
                 });
             });
 
@@ -4276,7 +5336,7 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（封禁显示修复版）');
+            console.log('✅ 2510班资源站已启动！（讨论区 + Tab切换版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
