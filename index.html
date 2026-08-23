@@ -32,6 +32,7 @@
             --banned-color: #9CA3AF;
             --official-color: #059669;
             --teacher-color: #F59E0B;
+            --vip-color: #2563EB;
         }
 
         /* 分类颜色 */
@@ -136,6 +137,16 @@
             color: var(--primary);
         }
 
+        .topbar .user-section .username-display .vip-tag {
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--vip-color);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: 4px;
+        }
+
         .topbar .user-section .username-display .teacher-tag {
             font-size: 10px;
             font-weight: 700;
@@ -208,6 +219,11 @@
 
         .topbar .user-section .username-display .teacher-name {
             color: var(--teacher-color);
+            font-weight: 700;
+        }
+
+        .topbar .user-section .username-display .vip-name {
+            color: var(--vip-color);
             font-weight: 700;
         }
 
@@ -569,6 +585,10 @@
             color: var(--teacher-color);
         }
 
+        .announcement-item .announcement-meta .author-name.vip {
+            color: var(--vip-color);
+        }
+
         .announcement-item .announcement-meta .author-name.banned {
             color: var(--banned-color);
         }
@@ -597,6 +617,11 @@
 
         .announcement-item .announcement-meta .tag.teacher-tag {
             background: var(--teacher-color);
+            color: #fff;
+        }
+
+        .announcement-item .announcement-meta .tag.vip-tag {
+            background: var(--vip-color);
             color: #fff;
         }
 
@@ -1023,6 +1048,10 @@
             color: var(--teacher-color);
         }
 
+        .forum-post .post-author .author-name.vip {
+            color: var(--vip-color);
+        }
+
         .forum-post .post-author .author-name.banned {
             color: var(--banned-color);
         }
@@ -1051,6 +1080,11 @@
 
         .forum-post .post-author .tag.teacher-tag {
             background: var(--teacher-color);
+            color: #fff;
+        }
+
+        .forum-post .post-author .tag.vip-tag {
+            background: var(--vip-color);
             color: #fff;
         }
 
@@ -1189,6 +1223,11 @@
 
         .forum-post .post-replies .reply-item .reply-author .tag.teacher-tag {
             background: var(--teacher-color);
+            color: #fff;
+        }
+
+        .forum-post .post-replies .reply-item .reply-author .tag.vip-tag {
+            background: var(--vip-color);
             color: #fff;
         }
 
@@ -2066,6 +2105,10 @@
             color: var(--teacher-color);
         }
 
+        .file-card .file-uploader .uploader-name.vip {
+            color: var(--vip-color);
+        }
+
         .file-card .file-uploader .uploader-name.banned {
             color: var(--banned-color);
         }
@@ -2084,6 +2127,16 @@
             font-size: 9px;
             font-weight: 700;
             background: var(--teacher-color);
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 2px;
+        }
+
+        .file-card .file-uploader .vip-tag {
+            font-size: 9px;
+            font-weight: 700;
+            background: var(--vip-color);
             color: #fff;
             padding: 1px 8px;
             border-radius: 10px;
@@ -2853,6 +2906,186 @@
             transform: scale(1.02);
         }
 
+        /* ========== 通知横幅 ========== */
+        .notification-banner {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--card-shadow);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-banner:hover {
+            box-shadow: 0 8px 24px rgba(91, 106, 240, 0.12);
+        }
+
+        .notification-banner.active {
+            display: flex;
+        }
+
+        .notification-banner .notif-icon {
+            font-size: 20px;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .notification-banner .notif-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            flex: 1;
+        }
+
+        .notification-banner .notif-text strong {
+            color: var(--primary);
+        }
+
+        .notification-banner .notif-badge {
+            background: #EF4444;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .notification-banner .notif-arrow {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* ========== 通知下拉列表 ========== */
+        .notification-dropdown {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+            margin-bottom: 16px;
+            padding: 16px 20px;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        .notification-dropdown .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .notification-dropdown .notif-item {
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .notification-dropdown .notif-item .notif-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .notification-dropdown .notif-item .notif-item-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .notification-dropdown .notif-item .notif-item-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .notification-dropdown .notif-item .notif-item-content {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        .notification-dropdown .notif-item .notif-item-sender {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .notification-dropdown .notif-item .notif-item-actions {
+            margin-top: 6px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .notification-dropdown .notif-item .notif-item-actions button {
+            padding: 2px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: rgba(91, 106, 240, 0.06);
+            color: var(--primary);
+        }
+
+        .notification-dropdown .notif-item .notif-item-actions button:hover {
+            background: rgba(91, 106, 240, 0.12);
+        }
+
+        .notification-dropdown .notif-empty {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .notification-dropdown .notif-empty i {
+            font-size: 24px;
+            opacity: 0.3;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .notification-dropdown .notif-actions-all {
+            margin-top: 12px;
+            text-align: right;
+        }
+
+        .notification-dropdown .notif-actions-all button {
+            padding: 4px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: rgba(91, 106, 240, 0.06);
+            color: var(--primary);
+        }
+
+        .notification-dropdown .notif-actions-all button:hover {
+            background: rgba(91, 106, 240, 0.12);
+        }
+
         /* ========== 响应式 ========== */
         @media (max-width: 768px) {
             body {
@@ -3039,6 +3272,13 @@
                 padding: 8px 14px;
                 font-size: 12px;
             }
+
+            .notification-banner {
+                padding: 10px 14px;
+            }
+            .notification-banner .notif-text {
+                font-size: 13px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -3200,6 +3440,22 @@
                 <div class="fill" id="storageFill" style="width:0%;"></div>
             </div>
             <div class="storage-text" id="storageText">0 MB / 1 GB</div>
+        </div>
+
+        <!-- ====== 通知横幅 ====== -->
+        <div class="notification-banner" id="notificationBanner">
+            <span class="notif-icon"><i class="fas fa-bell"></i></span>
+            <span class="notif-text">您有 <strong id="notifCount">0</strong> 条未读通知</span>
+            <span class="notif-badge" id="notifBadge">0</span>
+            <span class="notif-arrow"><i class="fas fa-chevron-down"></i></span>
+        </div>
+
+        <!-- ====== 通知下拉列表 ====== -->
+        <div class="notification-dropdown" id="notificationDropdown">
+            <div class="notif-list" id="notifList"></div>
+            <div class="notif-actions-all">
+                <button id="markAllNotifReadBtn">全部标记已读</button>
+            </div>
         </div>
 
         <!-- ====== 📢 公告区域 ====== -->
@@ -3541,6 +3797,11 @@
             "2510班资源站管理组"
         ];
 
+        // ====== VIP 用户列表 ======
+        const VIP_USERS = [
+            "wenbo__"
+        ];
+
         const CATEGORIES = ['语文', '数学', '英语', '生物', '地理', '历史', '政治', '物理', '化学', '综合', '其他'];
 
         function isOwner(username) { return username === OWNER_USER; }
@@ -3551,10 +3812,13 @@
 
         function isAdmin(username) { return ADMIN_USERS.includes(username); }
 
+        function isVip(username) { return VIP_USERS.includes(username); }
+
         function getRole(username) {
             if (isOwner(username)) return 'owner';
             if (isOfficial(username)) return 'official';
             if (isTeacher(username)) return 'teacher';
+            if (isVip(username)) return 'vip';
             if (isAdmin(username)) return 'admin';
             return 'user';
         }
@@ -3676,8 +3940,8 @@
             if (bans && bans.length > 0 && bans[0].is_banned === true) throw new Error('您已被封禁，无法登录');
 
             setSession(username, user.id);
-            // 检查通知（异步）
-            checkNotifications();
+            // 检查通知（横幅方式）
+            await updateNotificationBanner();
             return { success: true, username, userId: user.id };
         }
 
@@ -3796,102 +4060,12 @@
             }
         }
 
-        async function showBanRecords() {
-            const modal = document.getElementById('banRecordsModal');
-            const list = document.getElementById('banRecordsList');
-            const count = document.getElementById('banRecordsCount');
-            const currentUser = getCurrentUser();
-            const role = currentUser ? getRole(currentUser) : 'user';
-            const canUnban = role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher';
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            list.innerHTML =
-                `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div>`;
-
-            try {
-                const banRecords = await fetchBanRecords();
-                const unbanRecords = await fetchUnbanRecords();
-
-                const allRecords = [
-                    ...banRecords.map(r => ({ ...r, type: 'ban' })),
-                    ...unbanRecords.map(r => ({ ...r, type: 'unban' }))
-                ].sort((a, b) => new Date(b.banned_at || b.unbanned_at) - new Date(a.banned_at || a.unbanned_at));
-
-                count.textContent = `(${allRecords.length} 条)`;
-
-                if (allRecords.length === 0) {
-                    list.innerHTML =
-                        `<div class="empty-records"><i class="fas fa-check-circle" style="color:#22C55E;"></i>暂无记录</div>`;
-                    return;
-                }
-
-                list.innerHTML = allRecords.map(record => {
-                    const isBan = record.type === 'ban';
-                    const user = isBan ? record.banned_user : record.unbanned_user;
-                    const by = isBan ? record.banned_by : record.unbanned_by;
-                    const reason = record.reason || '未说明';
-                    const time = isBan ? record.banned_at : record.unbanned_at;
-                    const icon = isBan ? '🚫' : '✅';
-                    const label = isBan ? '封禁' : '解禁';
-                    const color = isBan ? '#EF4444' : '#22C55E';
-
-                    let unbanBtn = '';
-                    if (isBan && canUnban) {
-                        unbanBtn =
-                            `<button class="unban-user-btn" data-username="${user}"><i class="fas fa-user-check"></i> 解禁</button>`;
-                    }
-
-                    return `
-                        <div class="ban-record-item" style="border-left-color:${color};">
-                            <div class="record-header">
-                                <span class="record-user">${icon} ${user}</span>
-                                <span class="record-admin">${label}者: <span>${by}</span></span>
-                            </div>
-                            <div class="record-reason">📝 ${reason}</div>
-                            <div class="record-time">${formatTime(time)}</div>
-                            ${unbanBtn ? `<div class="record-actions">${unbanBtn}</div>` : ''}
-                        </div>
-                    `;
-                }).join('');
-
-                list.querySelectorAll('.unban-user-btn').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const username = btn.dataset.username;
-                        const reason = prompt(`请输入解禁 "${username}" 的原因：`);
-                        if (reason === null) return;
-                        if (!reason.trim()) { showToast('⚠️ 请填写解禁原因', 'error'); return; }
-
-                        try {
-                            const users = await supabaseRequest(
-                                `/users?username=eq.${encodeURIComponent(username)}&select=id`);
-                            if (!users || users.length === 0) { showToast('❌ 用户不存在', 'error'); return; }
-                            const userId = users[0].id;
-                            await unbanUser(userId, getCurrentUser(), reason.trim());
-                            showToast(`✅ 已解禁用户 ${username}`, 'success');
-                            await showBanRecords();
-                            await refreshAll();
-                        } catch (err) {
-                            showToast(`❌ ${err.message}`, 'error');
-                        }
-                    });
-                });
-
-            } catch (err) {
-                list.innerHTML =
-                    `<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
-            }
-        }
-
-        function hideBanRecords() {
-            document.getElementById('banRecordsModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
         // ========================================================================
-        //  10. 通知功能
+        //  10. 通知功能（横幅版）
         // ========================================================================
+        let userNotifications = [];
+        let notificationDropdownOpen = false;
+
         async function sendNotification(targetUser, sentBy, title, content) {
             if (!targetUser || !title || !content) throw new Error('请填写完整信息');
 
@@ -3912,7 +4086,7 @@
         async function fetchUserNotifications(username) {
             try {
                 const result = await supabaseRequest(
-                    `/notifications?target_user=eq.${encodeURIComponent(username)}&is_read=eq.false&order=created_at.desc`);
+                    `/notifications?target_user=eq.${encodeURIComponent(username)}&order=created_at.desc`);
                 if (result && result.success !== true) return Array.isArray(result) ? result : [];
                 return [];
             } catch (err) {
@@ -3929,28 +4103,128 @@
             return { success: true };
         }
 
-        async function checkNotifications() {
+        async function markAllNotificationsAsRead(username) {
+            const notifications = await fetchUserNotifications(username);
+            const unread = notifications.filter(n => !n.is_read);
+            for (const n of unread) {
+                await markNotificationAsRead(n.id);
+            }
+            return { success: true };
+        }
+
+        // ====== 更新通知横幅 ======
+        async function updateNotificationBanner() {
             const currentUser = getCurrentUser();
-            if (!currentUser) return;
+            const banner = document.getElementById('notificationBanner');
+            const countEl = document.getElementById('notifCount');
+            const badgeEl = document.getElementById('notifBadge');
+            const dropdown = document.getElementById('notificationDropdown');
+
+            if (!currentUser) {
+                banner.classList.remove('active');
+                dropdown.classList.remove('active');
+                return;
+            }
 
             try {
                 const notifications = await fetchUserNotifications(currentUser);
-                if (notifications.length === 0) return;
+                userNotifications = notifications;
+                const unread = notifications.filter(n => !n.is_read);
 
-                const latest = notifications.slice(0, 5);
-                for (const notif of latest) {
-                    const confirmResult = confirm(
-                        `📢 ${notif.title}\n\n来自: ${notif.sent_by}\n时间: ${formatTime(notif.created_at)}\n\n${notif.content}\n\n点击「确定」标记为已读，不再显示`
-                    );
-                    if (confirmResult) {
-                        await markNotificationAsRead(notif.id);
+                if (unread.length > 0) {
+                    banner.classList.add('active');
+                    countEl.textContent = unread.length;
+                    badgeEl.textContent = unread.length;
+                } else {
+                    banner.classList.remove('active');
+                    // 如果有已读通知，也显示但提示已全部已读
+                    if (notifications.length > 0) {
+                        banner.classList.add('active');
+                        countEl.textContent = '0';
+                        badgeEl.textContent = '0';
+                        document.querySelector('.notif-text').innerHTML = '✅ 所有通知已读';
+                    } else {
+                        banner.classList.remove('active');
                     }
                 }
+                renderNotificationDropdown();
             } catch (err) {
-                console.error('检查通知失败:', err);
+                console.error('更新通知横幅失败:', err);
             }
         }
 
+        // ====== 渲染通知下拉列表 ======
+        function renderNotificationDropdown() {
+            const list = document.getElementById('notifList');
+            if (!list) return;
+
+            const unread = userNotifications.filter(n => !n.is_read);
+
+            if (userNotifications.length === 0) {
+                list.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i>暂无通知</div>`;
+                return;
+            }
+
+            list.innerHTML = userNotifications.map(notif => {
+                const isRead = notif.is_read || false;
+                return `
+                    <div class="notif-item" style="${isRead ? 'opacity:0.6;' : ''}">
+                        <div class="notif-item-header">
+                            <span class="notif-item-title">${isRead ? '📖' : '🔔'} ${notif.title}</span>
+                            <span class="notif-item-time">${formatTime(notif.created_at)}</span>
+                        </div>
+                        <div class="notif-item-content">${notif.content}</div>
+                        <div class="notif-item-sender">来自: ${notif.sent_by}</div>
+                        ${!isRead ? `
+                            <div class="notif-item-actions">
+                                <button class="mark-read-btn" data-id="${notif.id}">标记已读</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // 标记已读按钮事件
+            list.querySelectorAll('.mark-read-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = parseInt(btn.dataset.id);
+                    try {
+                        await markNotificationAsRead(id);
+                        showToast('✅ 已标记为已读', 'success', 1500);
+                        await updateNotificationBanner();
+                        renderNotificationDropdown();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
+                    }
+                });
+            });
+        }
+
+        // ====== 切换通知下拉 ======
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            notificationDropdownOpen = !notificationDropdownOpen;
+            dropdown.classList.toggle('active');
+        }
+
+        // ====== 全部标记已读 ======
+        document.getElementById('markAllNotifReadBtn').addEventListener('click', async () => {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+            try {
+                await markAllNotificationsAsRead(currentUser);
+                showToast('✅ 全部已标记为已读', 'success', 1500);
+                await updateNotificationBanner();
+                renderNotificationDropdown();
+            } catch (err) {
+                showToast(`❌ ${err.message}`, 'error');
+            }
+        });
+
+        // ====== 点击横幅切换下拉 ======
+        document.getElementById('notificationBanner').addEventListener('click', toggleNotificationDropdown);
+
+        // ====== 管理员发送通知 ======
         function showSendNotificationModal() {
             getUserList().then(users => {
                 const currentUser = getCurrentUser();
@@ -4623,6 +4897,7 @@
                 const isAuthorOwner = isOwner(item.author);
                 const isAuthorOfficial = isOfficial(item.author);
                 const isAuthorTeacher = isTeacher(item.author);
+                const isAuthorVip = isVip(item.author);
                 const isAuthorBanned = announcementAuthorBanCache[item.author] || false;
                 const isPinned = item.is_pinned || false;
                 const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && item.author ===
@@ -4645,6 +4920,9 @@
                 } else if (isAuthorTeacher) {
                     authorClass = 'teacher';
                     tagHtml = '<span class="tag teacher-tag">老师</span>';
+                } else if (isAuthorVip) {
+                    authorClass = 'vip';
+                    tagHtml = '<span class="tag vip-tag">VIP用户</span>';
                 } else if (isAuthorAdmin) {
                     authorClass = 'admin';
                     tagHtml = '<span class="tag admin-tag">管理员</span>';
@@ -4789,6 +5067,7 @@
                 const isUploaderOwner = isOwner(uploaderName);
                 const isUploaderOfficial = isOfficial(uploaderName);
                 const isUploaderTeacher = isTeacher(uploaderName);
+                const isUploaderVip = isVip(uploaderName);
                 const isUploaderAdmin = isAdmin(uploaderName);
                 const isUploaderBanned = fileUploaderBanCache[uploaderName] || false;
 
@@ -4814,6 +5093,9 @@
                 } else if (isUploaderTeacher) {
                     uploaderHtml =
                         `<div class="file-uploader"><i class="fas fa-chalkboard-teacher" style="color:var(--teacher-color);"></i><span class="uploader-name teacher">${uploaderName}</span><span class="teacher-tag">老师</span></div>`;
+                } else if (isUploaderVip) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-star" style="color:var(--vip-color);"></i><span class="uploader-name vip">${uploaderName}</span><span class="vip-tag">VIP用户</span></div>`;
                 } else if (isUploaderAdmin) {
                     uploaderHtml =
                         `<div class="file-uploader"><i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="uploader-name admin">${uploaderName}</span><span class="admin-tag">管理员</span></div>`;
@@ -5054,6 +5336,9 @@
                     } else if (authorRole === 'teacher') {
                         authorClass = 'teacher';
                         tagHtml = '<span class="tag teacher-tag">老师</span>';
+                    } else if (authorRole === 'vip') {
+                        authorClass = 'vip';
+                        tagHtml = '<span class="tag vip-tag">VIP用户</span>';
                     } else if (authorRole === 'admin') {
                         authorClass = 'admin';
                         tagHtml = '<span class="tag admin-tag">管理员</span>';
@@ -5086,6 +5371,8 @@
                                 replyTag = '<span class="tag official-tag">官方</span>';
                             } else if (replyAuthorRole === 'teacher') {
                                 replyTag = '<span class="tag teacher-tag">老师</span>';
+                            } else if (replyAuthorRole === 'vip') {
+                                replyTag = '<span class="tag vip-tag">VIP用户</span>';
                             } else if (replyAuthorRole === 'admin') {
                                 replyTag = '<span class="tag admin-tag">管理员</span>';
                             }
@@ -5626,6 +5913,7 @@
                 await renderFiles(allFiles);
                 await loadAnnouncements();
                 await renderForum();
+                await updateNotificationBanner();
 
                 const usage = await getStorageUsage();
                 updateStorageUI(usage);
@@ -5694,6 +5982,9 @@
                     } else if (role === 'teacher') {
                         usernameDisplay.innerHTML =
                             `<i class="fas fa-chalkboard-teacher" style="color:var(--teacher-color);"></i><span class="teacher-name">${username}</span><span class="teacher-tag">老师</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'vip') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-star" style="color:var(--vip-color);"></i><span class="vip-name">${username}</span><span class="vip-tag">VIP用户</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     } else if (role === 'admin') {
                         usernameDisplay.innerHTML =
                             `<i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="admin-name">${username}</span><span class="admin-tag">管理员</span><span class="user-id">ID: ${userId || '--'}</span>`;
@@ -5894,6 +6185,7 @@
                 currentUserBanned = false;
                 fileUploaderBanCache = {};
                 announcementAuthorBanCache = {};
+                userNotifications = [];
                 showToast('👋 已登出', 'info', 1500);
                 refreshAll();
             });
@@ -5947,7 +6239,7 @@
                     closeAuthModal();
                     const role = getRole(username);
                     const roleText = role === 'owner' ? '👑 站长' : role === 'official' ? '🏛️ 官方' : role === 'teacher' ?
-                        '👨‍🏫 老师' : role === 'admin' ? '🔑 管理员' : '👤 用户';
+                        '👨‍🏫 老师' : role === 'vip' ? '⭐ VIP用户' : role === 'admin' ? '🔑 管理员' : '👤 用户';
                     showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
                     fileUploaderBanCache = {};
                     announcementAuthorBanCache = {};
@@ -6203,11 +6495,12 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（分类+解禁记录+通知+预览版）');
+            console.log('✅ 2510班资源站已启动！（VIP用户+通知横幅版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
             console.log(`👨‍🏫 老师: ${TEACHER_USERS.join(', ')}`);
+            console.log(`⭐ VIP用户: ${VIP_USERS.join(', ')}`);
             console.log(`📂 分类: ${CATEGORIES.join(', ')}`);
         });
     </script>
