@@ -6,7 +6,6 @@
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ========== CSS 变量与重置 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -34,6 +33,19 @@
             --official-color: #059669;
             --teacher-color: #F59E0B;
         }
+
+        /* 分类颜色 */
+        .cat-语文 { color: #EF4444; background: rgba(239,68,68,0.10); }
+        .cat-数学 { color: #3B82F6; background: rgba(59,130,246,0.10); }
+        .cat-英语 { color: #22C55E; background: rgba(34,197,94,0.10); }
+        .cat-生物 { color: #8B5CF6; background: rgba(139,92,246,0.10); }
+        .cat-地理 { color: #F59E0B; background: rgba(245,158,11,0.10); }
+        .cat-历史 { color: #EC4899; background: rgba(236,72,153,0.10); }
+        .cat-政治 { color: #DC2626; background: rgba(220,38,38,0.10); }
+        .cat-物理 { color: #06B6D4; background: rgba(6,182,212,0.10); }
+        .cat-化学 { color: #8B5CF6; background: rgba(139,92,246,0.10); }
+        .cat-综合 { color: #6366F1; background: rgba(99,102,241,0.10); }
+        .cat-其他 { color: #6B7280; background: rgba(107,114,128,0.10); }
 
         body {
             font-family: var(--font);
@@ -298,6 +310,15 @@
 
         .admin-buttons .admin-action-btn.reports-btn:hover {
             background: rgba(245, 158, 11, 0.16);
+        }
+
+        .admin-buttons .admin-action-btn.notif-btn {
+            background: rgba(236, 72, 153, 0.08);
+            color: #EC4899;
+        }
+
+        .admin-buttons .admin-action-btn.notif-btn:hover {
+            background: rgba(236, 72, 153, 0.16);
         }
 
         /* ========== 头部 ========== */
@@ -1318,6 +1339,50 @@
             margin-bottom: 8px;
         }
 
+        /* ========== 分类筛选 ========== */
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            align-items: center;
+        }
+
+        .category-filter .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 6px;
+        }
+
+        .category-filter .cat-btn {
+            padding: 4px 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: #f1f3f5;
+            color: var(--text-secondary);
+        }
+
+        .category-filter .cat-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .category-filter .cat-btn.active {
+            color: #fff;
+            background: var(--primary);
+        }
+
         /* ========== 登录/注册模态框 ========== */
         .auth-modal-overlay {
             position: fixed;
@@ -1723,6 +1788,39 @@
             display: none;
         }
 
+        /* ========== 分类选择器 ========== */
+        .category-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin: 12px 0 8px;
+        }
+
+        .category-selector .cat-option {
+            padding: 4px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            background: #f8fafc;
+            color: var(--text-secondary);
+        }
+
+        .category-selector .cat-option:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .category-selector .cat-option.selected {
+            border-color: var(--primary);
+            background: rgba(91, 106, 240, 0.08);
+            color: var(--primary);
+        }
+
         /* ========== 上传进度 ========== */
         .upload-progress-container {
             margin-bottom: 24px;
@@ -1926,6 +2024,16 @@
             justify-content: space-between;
             margin-top: 2px;
             margin-bottom: 8px;
+        }
+
+        .file-card .file-category-tag {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 6px;
+            align-self: flex-start;
         }
 
         .file-card .file-uploader {
@@ -2886,6 +2994,14 @@
                 font-size: 12px;
             }
 
+            .category-filter {
+                padding: 10px 12px;
+            }
+            .category-filter .cat-btn {
+                font-size: 11px;
+                padding: 3px 10px;
+            }
+
             .upload-progress-item .progress-track {
                 width: 80px;
             }
@@ -3047,6 +3163,9 @@
                         <button class="admin-action-btn reports-btn" id="adminReportsBtn">
                             <i class="fas fa-flag"></i> 举报
                         </button>
+                        <button class="admin-action-btn notif-btn" id="adminNotifBtn">
+                            <i class="fas fa-bell"></i> 通知
+                        </button>
                     </div>
                     <button class="btn btn-logout" id="logoutBtn">
                         <i class="fas fa-sign-out-alt"></i> 登出
@@ -3174,10 +3293,45 @@
                     </div>
                 </div>
 
+                <!-- ====== 分类筛选 ====== -->
+                <div class="category-filter" id="categoryFilter">
+                    <span class="filter-label"><i class="fas fa-tags"></i> 分类:</span>
+                    <button class="cat-btn active" data-category="all">全部</button>
+                    <button class="cat-btn" data-category="语文">语文</button>
+                    <button class="cat-btn" data-category="数学">数学</button>
+                    <button class="cat-btn" data-category="英语">英语</button>
+                    <button class="cat-btn" data-category="生物">生物</button>
+                    <button class="cat-btn" data-category="地理">地理</button>
+                    <button class="cat-btn" data-category="历史">历史</button>
+                    <button class="cat-btn" data-category="政治">政治</button>
+                    <button class="cat-btn" data-category="物理">物理</button>
+                    <button class="cat-btn" data-category="化学">化学</button>
+                    <button class="cat-btn" data-category="综合">综合</button>
+                    <button class="cat-btn" data-category="其他">其他</button>
+                </div>
+
+                <!-- ====== 上传区域 ====== -->
                 <div class="upload-zone" id="uploadZone">
                     <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
                     <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
                     <p id="uploadDesc">支持所有文件类型 · 单个文件最大 10MB</p>
+                    <!-- 分类选择 -->
+                    <div class="category-selector" id="uploadCategorySelector">
+                        <span style="font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-bottom:4px;">
+                            <i class="fas fa-tag"></i> 选择文件分类：
+                        </span>
+                        <button class="cat-option selected" data-cat="语文">语文</button>
+                        <button class="cat-option" data-cat="数学">数学</button>
+                        <button class="cat-option" data-cat="英语">英语</button>
+                        <button class="cat-option" data-cat="生物">生物</button>
+                        <button class="cat-option" data-cat="地理">地理</button>
+                        <button class="cat-option" data-cat="历史">历史</button>
+                        <button class="cat-option" data-cat="政治">政治</button>
+                        <button class="cat-option" data-cat="物理">物理</button>
+                        <button class="cat-option" data-cat="化学">化学</button>
+                        <button class="cat-option" data-cat="综合">综合</button>
+                        <button class="cat-option" data-cat="其他">其他</button>
+                    </div>
                     <div class="hint" id="uploadHint">⚠️ 请先登录后再上传文件</div>
                     <input type="file" id="fileInput" multiple />
                 </div>
@@ -3387,6 +3541,8 @@
             "2510班资源站管理组"
         ];
 
+        const CATEGORIES = ['语文', '数学', '英语', '生物', '地理', '历史', '政治', '物理', '化学', '综合', '其他'];
+
         function isOwner(username) { return username === OWNER_USER; }
 
         function isOfficial(username) { return OFFICIAL_USERS.includes(username); }
@@ -3504,7 +3660,7 @@
         }
 
         // ========================================================================
-        //  5. 登录
+        //  5. 登录（含通知检查）
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) throw new Error('请输入用户名和密码');
@@ -3520,6 +3676,8 @@
             if (bans && bans.length > 0 && bans[0].is_banned === true) throw new Error('您已被封禁，无法登录');
 
             setSession(username, user.id);
+            // 检查通知（异步）
+            checkNotifications();
             return { success: true, username, userId: user.id };
         }
 
@@ -3564,23 +3722,34 @@
         }
 
         // ========================================================================
-        //  8. 解禁用户
+        //  8. 解禁用户（含解禁记录）
         // ========================================================================
-        async function unbanUser(userId) {
+        async function unbanUser(userId, unbannedBy, reason) {
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
             if (!existing || existing.length === 0) throw new Error('该用户未被封禁');
 
-            // 更新 is_banned = false
+            const users = await supabaseRequest(`/users?id=eq.${userId}&select=username`);
+            const username = users && users.length > 0 ? users[0].username : '未知用户';
+
             await supabaseRequest(`/user_bans?id=eq.${existing[0].id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({ is_banned: false })
+            });
+
+            await supabaseRequest('/unban_records', {
+                method: 'POST',
+                body: JSON.stringify({
+                    unbanned_user: username,
+                    unbanned_by: unbannedBy,
+                    reason: reason
+                })
             });
 
             return { success: true };
         }
 
         // ========================================================================
-        //  9. 封禁记录
+        //  9. 封禁记录 & 解禁记录
         // ========================================================================
         async function fetchBanRecords() {
             try {
@@ -3589,6 +3758,17 @@
                 return [];
             } catch (err) {
                 console.error('获取封禁记录失败:', err);
+                return [];
+            }
+        }
+
+        async function fetchUnbanRecords() {
+            try {
+                const result = await supabaseRequest('/unban_records?order=unbanned_at.desc');
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) {
+                console.error('获取解禁记录失败:', err);
                 return [];
             }
         }
@@ -3604,7 +3784,6 @@
             });
         }
 
-        // 获取当前被封禁的用户ID列表
         async function getBannedUserIds() {
             try {
                 const result = await supabaseRequest('/user_bans?is_banned=eq.true');
@@ -3632,63 +3811,69 @@
                 `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div>`;
 
             try {
-                const records = await fetchBanRecords();
-                const bannedIds = await getBannedUserIds();
-                const bannedIdSet = new Set(bannedIds);
+                const banRecords = await fetchBanRecords();
+                const unbanRecords = await fetchUnbanRecords();
 
-                count.textContent = `(${records.length} 条)`;
+                const allRecords = [
+                    ...banRecords.map(r => ({ ...r, type: 'ban' })),
+                    ...unbanRecords.map(r => ({ ...r, type: 'unban' }))
+                ].sort((a, b) => new Date(b.banned_at || b.unbanned_at) - new Date(a.banned_at || a.unbanned_at));
 
-                if (records.length === 0) {
+                count.textContent = `(${allRecords.length} 条)`;
+
+                if (allRecords.length === 0) {
                     list.innerHTML =
-                        `<div class="empty-records"><i class="fas fa-check-circle" style="color:#22C55E;"></i>暂无封禁记录</div>`;
+                        `<div class="empty-records"><i class="fas fa-check-circle" style="color:#22C55E;"></i>暂无记录</div>`;
                     return;
                 }
 
-                list.innerHTML = records.map(record => {
-                    // 检查该用户是否仍处于封禁状态（user_bans 表中 is_banned = true）
-                    // 需要获取该用户的 ID
-                    const isCurrentlyBanned = true; // 默认显示解禁按钮，实际通过查询判断
+                list.innerHTML = allRecords.map(record => {
+                    const isBan = record.type === 'ban';
+                    const user = isBan ? record.banned_user : record.unbanned_user;
+                    const by = isBan ? record.banned_by : record.unbanned_by;
+                    const reason = record.reason || '未说明';
+                    const time = isBan ? record.banned_at : record.unbanned_at;
+                    const icon = isBan ? '🚫' : '✅';
+                    const label = isBan ? '封禁' : '解禁';
+                    const color = isBan ? '#EF4444' : '#22C55E';
 
                     let unbanBtn = '';
-                    if (canUnban) {
+                    if (isBan && canUnban) {
                         unbanBtn =
-                            `<button class="unban-user-btn" data-username="${record.banned_user}"><i class="fas fa-user-check"></i> 解禁</button>`;
+                            `<button class="unban-user-btn" data-username="${user}"><i class="fas fa-user-check"></i> 解禁</button>`;
                     }
 
                     return `
-                        <div class="ban-record-item">
+                        <div class="ban-record-item" style="border-left-color:${color};">
                             <div class="record-header">
-                                <span class="record-user">🚫 ${record.banned_user}</span>
-                                <span class="record-admin">执行者: <span>${record.banned_by}</span></span>
+                                <span class="record-user">${icon} ${user}</span>
+                                <span class="record-admin">${label}者: <span>${by}</span></span>
                             </div>
-                            <div class="record-reason">📝 ${record.reason || '未说明原因'}</div>
-                            <div class="record-time">${formatTime(record.banned_at)}</div>
-                            ${canUnban ? `<div class="record-actions">${unbanBtn}</div>` : ''}
+                            <div class="record-reason">📝 ${reason}</div>
+                            <div class="record-time">${formatTime(time)}</div>
+                            ${unbanBtn ? `<div class="record-actions">${unbanBtn}</div>` : ''}
                         </div>
                     `;
                 }).join('');
 
-                // 绑定解禁事件
                 list.querySelectorAll('.unban-user-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const username = btn.dataset.username;
-                        if (confirm(`确定要解禁用户 "${username}" 吗？`)) {
-                            try {
-                                // 先获取用户 ID
-                                const users = await supabaseRequest(
-                                    `/users?username=eq.${encodeURIComponent(username)}&select=id`);
-                                if (!users || users.length === 0) {
-                                    showToast('❌ 用户不存在', 'error');
-                                    return;
-                                }
-                                const userId = users[0].id;
-                                await unbanUser(userId);
-                                showToast(`✅ 已解禁用户 ${username}`, 'success');
-                                await showBanRecords(); // 刷新列表
-                                await refreshAll();
-                            } catch (err) {
-                                showToast(`❌ ${err.message}`, 'error');
-                            }
+                        const reason = prompt(`请输入解禁 "${username}" 的原因：`);
+                        if (reason === null) return;
+                        if (!reason.trim()) { showToast('⚠️ 请填写解禁原因', 'error'); return; }
+
+                        try {
+                            const users = await supabaseRequest(
+                                `/users?username=eq.${encodeURIComponent(username)}&select=id`);
+                            if (!users || users.length === 0) { showToast('❌ 用户不存在', 'error'); return; }
+                            const userId = users[0].id;
+                            await unbanUser(userId, getCurrentUser(), reason.trim());
+                            showToast(`✅ 已解禁用户 ${username}`, 'success');
+                            await showBanRecords();
+                            await refreshAll();
+                        } catch (err) {
+                            showToast(`❌ ${err.message}`, 'error');
                         }
                     });
                 });
@@ -3705,7 +3890,157 @@
         }
 
         // ========================================================================
-        //  10. 举报功能
+        //  10. 通知功能
+        // ========================================================================
+        async function sendNotification(targetUser, sentBy, title, content) {
+            if (!targetUser || !title || !content) throw new Error('请填写完整信息');
+
+            await supabaseRequest('/notifications', {
+                method: 'POST',
+                body: JSON.stringify({
+                    target_user: targetUser,
+                    sent_by: sentBy,
+                    title: title.trim(),
+                    content: content.trim(),
+                    is_read: false
+                })
+            });
+
+            return { success: true };
+        }
+
+        async function fetchUserNotifications(username) {
+            try {
+                const result = await supabaseRequest(
+                    `/notifications?target_user=eq.${encodeURIComponent(username)}&is_read=eq.false&order=created_at.desc`);
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) {
+                console.error('获取通知失败:', err);
+                return [];
+            }
+        }
+
+        async function markNotificationAsRead(notificationId) {
+            await supabaseRequest(`/notifications?id=eq.${notificationId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ is_read: true })
+            });
+            return { success: true };
+        }
+
+        async function checkNotifications() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+
+            try {
+                const notifications = await fetchUserNotifications(currentUser);
+                if (notifications.length === 0) return;
+
+                const latest = notifications.slice(0, 5);
+                for (const notif of latest) {
+                    const confirmResult = confirm(
+                        `📢 ${notif.title}\n\n来自: ${notif.sent_by}\n时间: ${formatTime(notif.created_at)}\n\n${notif.content}\n\n点击「确定」标记为已读，不再显示`
+                    );
+                    if (confirmResult) {
+                        await markNotificationAsRead(notif.id);
+                    }
+                }
+            } catch (err) {
+                console.error('检查通知失败:', err);
+            }
+        }
+
+        function showSendNotificationModal() {
+            getUserList().then(users => {
+                const currentUser = getCurrentUser();
+                const availableUsers = users.filter(u => u.username !== currentUser);
+
+                if (availableUsers.length === 0) {
+                    showToast('没有其他用户可发送通知', 'info');
+                    return;
+                }
+
+                const overlay = document.createElement('div');
+                overlay.style.cssText =
+                    `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
+
+                const modal = document.createElement('div');
+                modal.style.cssText =
+                    `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;`;
+
+                const userOptions = availableUsers.map(u =>
+                    `<option value="${u.username}">${u.username}</option>`
+                ).join('');
+
+                modal.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3>
+                        <button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
+                    </div>
+                    <div style="flex:1;overflow-y:auto;">
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label>
+                            <select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
+                                ${userOptions}
+                            </select>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label>
+                            <input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label>
+                            <textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;">
+                        <button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button>
+                        <button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button>
+                    </div>
+                `;
+
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
+                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
+                    const targetUser = document.getElementById('notifTargetUser').value;
+                    const title = document.getElementById('notifTitle').value.trim();
+                    const content = document.getElementById('notifContent').value.trim();
+                    const currentUser = getCurrentUser();
+
+                    if (!title || !content) {
+                        showToast('⚠️ 请填写标题和内容', 'error');
+                        return;
+                    }
+
+                    const btn = document.getElementById('sendNotifBtn');
+                    btn.disabled = true;
+                    btn.textContent = '发送中...';
+
+                    try {
+                        await sendNotification(targetUser, currentUser, title, content);
+                        showToast(`✅ 通知已发送给 ${targetUser}`, 'success');
+                        overlay.remove();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
+                    } finally {
+                        btn.disabled = false;
+                        btn.textContent = '发送';
+                    }
+                });
+
+            }).catch(err => {
+                showToast(`❌ ${err.message}`, 'error');
+            });
+        }
+
+        // ========================================================================
+        //  11. 举报功能
         // ========================================================================
         async function reportContent(targetType, targetId, reportedBy, reason) {
             if (!reason || reason.trim().length < 5) throw new Error('请详细描述举报原因（至少5个字）');
@@ -3714,7 +4049,7 @@
                 method: 'POST',
                 body: JSON.stringify({
                     target_type: targetType,
-                    target_id: String(targetId), // 转为字符串，兼容回复的ID
+                    target_id: String(targetId),
                     reported_by: reportedBy,
                     reason: reason.trim(),
                     status: 'pending'
@@ -3742,7 +4077,7 @@
         }
 
         // ========================================================================
-        //  11. 公告管理
+        //  12. 公告管理
         // ========================================================================
         async function fetchAnnouncements() {
             try {
@@ -3791,7 +4126,7 @@
         }
 
         // ========================================================================
-        //  12. 置顶/取消置顶公告
+        //  13. 置顶/取消置顶公告
         // ========================================================================
         async function toggleAnnouncementPin(id, currentUser) {
             if (!isOwner(currentUser)) throw new Error('只有站长可以置顶公告');
@@ -3808,7 +4143,7 @@
         }
 
         // ========================================================================
-        //  13. 文件管理（Supabase Storage）
+        //  14. 文件管理（Supabase Storage）
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -3892,7 +4227,7 @@
         }
 
         // ========================================================================
-        //  14. 获取存储用量
+        //  15. 获取存储用量
         // ========================================================================
         async function getStorageUsage() {
             try {
@@ -3914,7 +4249,7 @@
         }
 
         // ========================================================================
-        //  15. 文件数据库操作
+        //  16. 文件数据库操作（含分类）
         // ========================================================================
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
@@ -3950,7 +4285,7 @@
         }
 
         // ========================================================================
-        //  16. 举报审核
+        //  17. 举报审核
         // ========================================================================
         async function fetchReports(status = null) {
             try {
@@ -4008,7 +4343,6 @@
                         `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无举报记录</div>`;
                     return;
                 }
-                // 获取文件、帖子信息用于显示
                 const fileIds = reports.filter(r => r.target_type === 'file').map(r => parseInt(r.target_id)).filter(id =>
                     !isNaN(id));
                 const postIds = reports.filter(r => r.target_type === 'forum_post').map(r => parseInt(r.target_id))
@@ -4103,7 +4437,6 @@
                     `;
                 }).join('');
 
-                // 绑定事件
                 list.querySelectorAll('.report-resolve-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -4175,7 +4508,7 @@
         }
 
         // ========================================================================
-        //  17. 工具函数
+        //  18. 工具函数
         // ========================================================================
         function formatSize(bytes) {
             if (bytes === 0) return '0 B';
@@ -4223,7 +4556,7 @@
         }
 
         // ========================================================================
-        //  18. Toast 通知
+        //  19. Toast 通知
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
@@ -4241,7 +4574,7 @@
         }
 
         // ========================================================================
-        //  19. 渲染公告
+        //  20. 渲染公告
         // ========================================================================
         let announcements = [];
         let announcementsExpanded = false;
@@ -4372,11 +4705,12 @@
         }
 
         // ========================================================================
-        //  20. 渲染文件列表
+        //  21. 渲染文件列表（含分类）
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
         let searchQuery = '';
+        let currentCategory = 'all';
         let currentUserBanned = false;
         let fileUploaderBanCache = {};
 
@@ -4414,6 +4748,7 @@
 
             if (currentFilter !== 'all') filtered = filtered.filter(f => getFileType(f.file_type || f.extension) ===
                 currentFilter);
+            if (currentCategory !== 'all') filtered = filtered.filter(f => (f.category || '其他') === currentCategory);
             if (searchQuery.trim()) {
                 const q = searchQuery.trim().toLowerCase();
                 filtered = filtered.filter(f => f.file_name.toLowerCase().includes(q));
@@ -4440,11 +4775,15 @@
             const loggedIn = isLoggedIn();
             const currentUser = getCurrentUser();
 
+            const categoryClass = (cat) => `cat-${cat}`;
+
             grid.innerHTML = filtered.map(file => {
                 const fileType = file.file_type || 'other';
                 const color = getFileColor(fileType);
                 const emoji = getFileEmoji(fileType);
                 const typeLabel = getFileType(fileType).toUpperCase();
+                const category = file.category || '其他';
+                const catColor = categoryClass(category);
 
                 const uploaderName = file.uploaded_by || '未知用户';
                 const isUploaderOwner = isOwner(uploaderName);
@@ -4501,6 +4840,7 @@
                         <span class="file-type-tag" style="background:${color}22; color:${color};">${typeLabel}</span>
                         <div class="file-icon-big" style="color:${color};">${emoji}</div>
                         <div class="file-name text-ellipsis" title="${file.file_name}">${file.file_name}</div>
+                        <span class="file-category-tag ${catColor}">📂 ${category}</span>
                         ${statusBadge ? `<span class="file-status-badge ${file.status}">${statusBadge}</span>` : ''}
                         <div class="file-meta"><span>${formatSize(file.file_size)}</span><span>${formatTime(file.created_at)}</span></div>
                         ${uploaderHtml}
@@ -4546,7 +4886,7 @@
         }
 
         // ========================================================================
-        //  21. 讨论区功能
+        //  22. 讨论区功能
         // ========================================================================
         let forumPosts = [];
         let forumExpanded = false;
@@ -4760,7 +5100,7 @@
                             );
 
                             const reportReplyBtn = canReport ?
-                                `<button class="report-reply-btn" data-post-id="${post.id}" data-reply-id="${reply.id}" style="padding:2px 10px;border:none;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;transition:var(--transition);font-family:var(--font);background:rgba(239,68,68,0.06);color:#EF4444;"><i class="fas fa-flag"></i></button>` :
+                                `<button class="report-reply-btn" data-post-id="${post.id}" data-reply-id="${reply.id}"><i class="fas fa-flag"></i></button>` :
                                 '';
 
                             repliesHtml += `
@@ -4929,7 +5269,7 @@
         }
 
         // ========================================================================
-        //  22. 管理员审核面板
+        //  23. 管理员审核面板（含预览功能）
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -4981,21 +5321,74 @@
                     return;
                 }
                 const currentUser = getCurrentUser();
-                list.innerHTML = pendingFiles.map(file =>
-                    `
+                list.innerHTML = pendingFiles.map(file => {
+                    const category = file.category || '其他';
+                    return `
                     <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;">
                         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
                             <div>
                                 <div style="font-weight:600;font-size:15px;">${file.file_name}</div>
-                                <div style="font-size:13px;color:var(--text-light);">${formatSize(file.file_size)} · 上传者: ${file.uploaded_by}<span style="margin-left:10px;">${formatTime(file.created_at)}</span></div>
+                                <div style="font-size:13px;color:var(--text-light);">
+                                    ${formatSize(file.file_size)} · 上传者: ${file.uploaded_by}
+                                    <span style="margin-left:10px;">📂 ${category}</span>
+                                    <span style="margin-left:10px;">${formatTime(file.created_at)}</span>
+                                </div>
                             </div>
                             <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                <button class="review-preview-btn" data-id="${file.id}" style="padding:4px 10px;border:none;border-radius:6px;background:rgba(91,106,240,0.08);color:var(--primary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:11px;">
+                                    <i class="fas fa-eye"></i> 预览
+                                </button>
                                 <button class="review-approve-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">✅ 通过</button>
                                 <button class="review-reject-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">❌ 拒绝</button>
                             </div>
                         </div>
                     </div>
-                `).join('');
+                `}).join('');
+
+                // 预览按钮事件
+                list.querySelectorAll('.review-preview-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        const file = allFiles.find(f => f.id === id);
+                        if (!file) { showToast('文件不存在', 'error'); return; }
+
+                        const ext = (file.file_name || '').split('.').pop().toLowerCase();
+                        const url =
+                            `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${file.file_path}`;
+
+                        if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(ext)) {
+                            window.open(url, '_blank');
+                            return;
+                        }
+                        if (ext === 'pdf') {
+                            window.open(url, '_blank');
+                            return;
+                        }
+                        if (['txt', 'md', 'json', 'xml', 'html', 'css', 'js', 'csv', 'log'].includes(ext)) {
+                            try {
+                                const response = await fetch(url, {
+                                    headers: {
+                                        'apikey': SUPABASE_ANON_KEY,
+                                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                                    }
+                                });
+                                const text = await response.text();
+                                const previewWindow = window.open('', '_blank');
+                                previewWindow.document.write(`
+                                    <html><head><title>预览 ${file.file_name}</title>
+                                    <style>body{font-family:monospace;padding:20px;white-space:pre-wrap;word-break:break-word;background:#f8fafc;}</style>
+                                    </head><body>${text}</body></html>
+                                `);
+                                previewWindow.document.close();
+                            } catch (err) {
+                                showToast('❌ 预览失败', 'error');
+                            }
+                            return;
+                        }
+                        showToast('📥 该类型不支持预览，请下载查看', 'info', 2000);
+                        window.open(url, '_blank');
+                    });
+                });
 
                 list.querySelectorAll('.review-approve-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
@@ -5035,7 +5428,7 @@
         }
 
         // ========================================================================
-        //  23. 删除文件相关
+        //  24. 删除文件相关
         // ========================================================================
         let deleteFileTargetId = null;
 
@@ -5070,7 +5463,7 @@
         }
 
         // ========================================================================
-        //  24. 删除公告相关
+        //  25. 删除公告相关
         // ========================================================================
         let deleteAnnouncementTargetId = null;
 
@@ -5099,7 +5492,7 @@
         }
 
         // ========================================================================
-        //  25. 加载公告
+        //  26. 加载公告
         // ========================================================================
         async function loadAnnouncements() {
             try {
@@ -5110,7 +5503,7 @@
         }
 
         // ========================================================================
-        //  26. 封禁用户
+        //  27. 封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -5156,7 +5549,7 @@
         }
 
         // ========================================================================
-        //  27. 用户列表
+        //  28. 用户列表
         // ========================================================================
         async function getUserList() {
             try {
@@ -5167,16 +5560,17 @@
         }
 
         // ========================================================================
-        //  28. 管理按钮事件
+        //  29. 管理按钮事件
         // ========================================================================
         function setupAdminButtons() {
             document.getElementById('adminReviewBtn').addEventListener('click', () => { openReviewModal(); });
             document.getElementById('adminBanBtn').addEventListener('click', () => { showBanUserSelector(); });
             document.getElementById('adminReportsBtn').addEventListener('click', () => { openReportsReview(); });
+            document.getElementById('adminNotifBtn').addEventListener('click', showSendNotificationModal);
         }
 
         // ========================================================================
-        //  29. 封禁用户选择器
+        //  30. 封禁用户选择器
         // ========================================================================
         async function showBanUserSelector() {
             try {
@@ -5218,7 +5612,7 @@
         }
 
         // ========================================================================
-        //  30. 刷新所有数据
+        //  31. 刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
@@ -5245,7 +5639,7 @@
         }
 
         // ========================================================================
-        //  31. 更新存储用量 UI
+        //  32. 更新存储用量 UI
         // ========================================================================
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
@@ -5264,7 +5658,7 @@
         }
 
         // ========================================================================
-        //  32. UI 更新
+        //  33. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -5336,7 +5730,7 @@
         }
 
         // ========================================================================
-        //  33. 认证模态框控制
+        //  34. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -5369,8 +5763,10 @@
         }
 
         // ========================================================================
-        //  34. 文件上传
+        //  35. 文件上传（含分类）
         // ========================================================================
+        let selectedCategory = '语文';
+
         async function handleUploadFiles(fileList) {
             if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
             if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
@@ -5379,6 +5775,10 @@
             const container = document.getElementById('progressContainer');
             if (!container) return;
             container.classList.add('active');
+
+            // 获取选中的分类
+            const selectedCatEl = document.querySelector('.category-selector .cat-option.selected');
+            const category = selectedCatEl ? selectedCatEl.dataset.cat : '其他';
 
             for (const file of Array.from(fileList)) {
                 if (file.size > 10 * 1024 * 1024) {
@@ -5417,7 +5817,8 @@
                         file_path: uploadResult.filePath,
                         uploaded_by: currentUser,
                         status: 'pending',
-                        is_admin: isAdmin(currentUser)
+                        is_admin: isAdmin(currentUser),
+                        category: category
                     };
                     await createFileRecord(fileData);
 
@@ -5426,7 +5827,7 @@
                     fill.style.width = '100%';
                     status.textContent = '⏳ 待审核';
                     status.style.color = '#D97706';
-                    showToast(`✅ ${fileName} 上传成功，等待管理员审核`, 'success', 3000);
+                    showToast(`✅ ${fileName} 已上传 (${category})，等待审核`, 'success', 3000);
 
                     if (isAdmin(currentUser)) {
                         const files = await fetchFiles();
@@ -5453,10 +5854,31 @@
         }
 
         // ========================================================================
-        //  35. 初始化
+        //  36. 初始化
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
+
+            // 分类选择器事件
+            document.querySelectorAll('.category-selector .cat-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.category-selector .cat-option').forEach(b => b.classList
+                        .remove('selected'));
+                    btn.classList.add('selected');
+                    selectedCategory = btn.dataset.cat;
+                });
+            });
+
+            // 分类筛选事件
+            document.querySelectorAll('#categoryFilter .cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#categoryFilter .cat-btn').forEach(b => b.classList.remove(
+                        'active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.dataset.category;
+                    renderFiles(allFiles);
+                });
+            });
 
             try { await refreshAll(); } catch (err) {
                 console.error('初始化加载失败:', err);
@@ -5781,13 +6203,12 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（解禁+老师身份版）');
+            console.log('✅ 2510班资源站已启动！（分类+解禁记录+通知+预览版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
             console.log(`👑 站长: ${OWNER_USER}`);
             console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
             console.log(`👨‍🏫 老师: ${TEACHER_USERS.join(', ')}`);
-            console.log(`🔑 管理员: ${ADMIN_USERS.filter(u => u !== OWNER_USER && !OFFICIAL_USERS.includes(u) && !TEACHER_USERS.includes(u)).join(', ')}`);
-            console.log(`📢 公告数: ${announcements.length}`);
+            console.log(`📂 分类: ${CATEGORIES.join(', ')}`);
         });
     </script>
 
