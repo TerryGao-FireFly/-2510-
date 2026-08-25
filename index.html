@@ -3442,8 +3442,398 @@
 </head>
 <body>
 
-    <!-- 由于消息长度限制，HTML 主体部分与之前相同，但所有用户名渲染都使用 getUserDisplayHtml() -->
-    <!-- 完整代码已在上面提供，此处省略重复的 HTML 主体 -->
+    <div class="app-container">
+
+        <!-- ====== 顶栏 ====== -->
+        <nav class="topbar">
+            <div class="brand">
+                <i class="fas fa-graduation-cap"></i>
+                2510班资源站
+            </div>
+            <div class="user-section" id="userSection">
+                <div id="guestButtons">
+                    <button class="btn btn-login" id="showLoginBtn">登录</button>
+                    <button class="btn btn-register" id="showRegisterBtn">注册</button>
+                </div>
+                <div id="userInfo" class="hidden">
+                    <span class="username-display" id="usernameDisplay">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="currentUsername">用户</span>
+                        <span class="user-id" id="currentUserId">ID: --</span>
+                    </span>
+                    <div class="admin-buttons" id="adminButtons">
+                        <button class="admin-action-btn review-btn" id="adminReviewBtn">
+                            <i class="fas fa-clipboard-check"></i> 审核
+                        </button>
+                        <button class="admin-action-btn ban-btn" id="adminBanBtn">
+                            <i class="fas fa-gavel"></i> 封禁
+                        </button>
+                        <button class="admin-action-btn reports-btn" id="adminReportsBtn">
+                            <i class="fas fa-flag"></i> 举报
+                        </button>
+                        <button class="admin-action-btn notif-btn" id="adminNotifBtn">
+                            <i class="fas fa-bell"></i> 通知
+                        </button>
+                    </div>
+                    <button class="btn btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> 登出
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ====== 头部 ====== -->
+        <header class="header">
+            <div class="header-left">
+                <div class="header-logo">📚</div>
+                <div>
+                    <span class="header-title">2510班资源站</span>
+                    <span class="header-badge">📚 班级共享</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-stats">
+                    <span><i class="fas fa-file"></i> 文件 <span class="num" id="fileCount">0</span></span>
+                    <span><i class="fas fa-hdd"></i> 总大小 <span class="num" id="totalSize">0 KB</span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ====== 存储用量 ====== -->
+        <div class="storage-bar" id="storageBar">
+            <div class="storage-label">
+                <i class="fas fa-database"></i> 存储用量
+            </div>
+            <div class="storage-track">
+                <div class="fill" id="storageFill" style="width:0%;"></div>
+            </div>
+            <div class="storage-text" id="storageText">0 MB / 1 GB</div>
+        </div>
+
+        <!-- ====== 通知横幅 ====== -->
+        <div class="notification-banner" id="notificationBanner">
+            <span class="notif-icon"><i class="fas fa-bell"></i></span>
+            <span class="notif-text">您有 <strong id="notifCount">0</strong> 条未读通知</span>
+            <span class="notif-badge" id="notifBadge">0</span>
+            <span class="notif-arrow"><i class="fas fa-chevron-down"></i></span>
+        </div>
+
+        <!-- ====== 通知下拉列表 ====== -->
+        <div class="notification-dropdown" id="notificationDropdown">
+            <div class="notif-list" id="notifList"></div>
+            <div class="notif-actions-all">
+                <button id="markAllNotifReadBtn">全部标记已读</button>
+            </div>
+        </div>
+
+        <!-- ====== 公告区域 ====== -->
+        <div class="announcement-section">
+            <div class="section-title">
+                <i class="fas fa-bullhorn"></i>
+                全站公告
+                <span style="font-size:13px;font-weight:400;color:var(--text-light);" id="announcementCount"></span>
+                <button class="refresh-btn" id="refreshAnnouncementsBtn" style="margin-left:auto;padding:4px 12px;font-size:12px;">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
+            </div>
+
+            <div class="announcement-form" id="announcementForm">
+                <div class="form-row">
+                    <label>公告标题</label>
+                    <input type="text" id="announcementTitle" placeholder="输入公告标题..." maxlength="100" />
+                </div>
+                <div class="form-row">
+                    <label>公告内容</label>
+                    <textarea id="announcementContent" placeholder="输入公告内容..." rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="submit-btn" id="publishAnnouncementBtn">
+                        <i class="fas fa-paper-plane"></i> 发布公告
+                    </button>
+                    <button class="cancel-btn" id="cancelAnnouncementBtn">取消</button>
+                </div>
+            </div>
+
+            <div class="announcement-list" id="announcementList"></div>
+        </div>
+
+        <!-- ====== 介绍横幅 ====== -->
+        <div class="intro-banner">
+            <div class="intro-avatar">📖</div>
+            <div class="intro-content">
+                <div class="intro-title">
+                    2510 班 · 学习资源共享站
+                    <span class="tag">📢 班级内部</span>
+                </div>
+                <div class="intro-desc">
+                    <i class="fas fa-arrow-right"></i> 这里是 2510 班的专属资源中心。
+                    登录后即可查看、下载和分享班级学习资料。
+                    <span style="display:block;margin-top:4px;font-size:12px;color:var(--text-light);">
+                        🔐 所有资源需登录后可见 · 账号云端同步
+                    </span>
+                </div>
+            </div>
+            <div class="intro-features">
+                <span class="feature-item">
+                    <i class="fas fa-cloud"></i> 云端账号
+                </span>
+                <span class="feature-item">
+                    <i class="fas fa-laptop"></i> 多设备同步
+                </span>
+                <span class="feature-item">
+                    <i class="fas fa-shield-alt"></i> 安全存储
+                </span>
+            </div>
+        </div>
+
+        <!-- ====== Tab 切换 ====== -->
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="files">
+                    <i class="fas fa-folder"></i> 资源列表
+                    <span class="badge" id="fileBadge">0</span>
+                </button>
+                <button class="tab-btn" data-tab="forum">
+                    <i class="fas fa-comments"></i> 讨论区
+                    <span class="badge" id="forumBadge">0</span>
+                </button>
+            </div>
+
+            <!-- Tab: 资源列表 -->
+            <div class="tab-content active" id="tabFiles">
+                <div class="toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="搜索文件名称..." />
+                    </div>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">全部</button>
+                        <button class="filter-btn" data-filter="pdf">PDF</button>
+                        <button class="filter-btn" data-filter="doc">文档</button>
+                        <button class="filter-btn" data-filter="image">图片</button>
+                        <button class="filter-btn" data-filter="video">视频</button>
+                        <button class="filter-btn" data-filter="zip">压缩包</button>
+                        <button class="filter-btn" data-filter="other">其他</button>
+                    </div>
+                </div>
+
+                <!-- ====== 分类筛选 ====== -->
+                <div class="category-filter" id="categoryFilter">
+                    <span class="filter-label"><i class="fas fa-tags"></i> 分类:</span>
+                    <button class="cat-btn active" data-category="all">全部</button>
+                    <button class="cat-btn" data-category="语文">语文</button>
+                    <button class="cat-btn" data-category="数学">数学</button>
+                    <button class="cat-btn" data-category="英语">英语</button>
+                    <button class="cat-btn" data-category="生物">生物</button>
+                    <button class="cat-btn" data-category="地理">地理</button>
+                    <button class="cat-btn" data-category="历史">历史</button>
+                    <button class="cat-btn" data-category="政治">政治</button>
+                    <button class="cat-btn" data-category="物理">物理</button>
+                    <button class="cat-btn" data-category="化学">化学</button>
+                    <button class="cat-btn" data-category="综合">综合</button>
+                    <button class="cat-btn" data-category="其他">其他</button>
+                </div>
+
+                <!-- ====== 上传区域 ====== -->
+                <div class="upload-zone" id="uploadZone">
+                    <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
+                    <p id="uploadDesc">支持所有文件类型 · 单个文件最大 10MB</p>
+                    <div class="category-selector" id="uploadCategorySelector">
+                        <span style="font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-bottom:4px;">
+                            <i class="fas fa-tag"></i> 选择文件分类：
+                        </span>
+                        <button class="cat-option selected" data-cat="语文">语文</button>
+                        <button class="cat-option" data-cat="数学">数学</button>
+                        <button class="cat-option" data-cat="英语">英语</button>
+                        <button class="cat-option" data-cat="生物">生物</button>
+                        <button class="cat-option" data-cat="地理">地理</button>
+                        <button class="cat-option" data-cat="历史">历史</button>
+                        <button class="cat-option" data-cat="政治">政治</button>
+                        <button class="cat-option" data-cat="物理">物理</button>
+                        <button class="cat-option" data-cat="化学">化学</button>
+                        <button class="cat-option" data-cat="综合">综合</button>
+                        <button class="cat-option" data-cat="其他">其他</button>
+                    </div>
+                    <div class="hint" id="uploadHint">⚠️ 请先登录后再上传文件</div>
+                    <input type="file" id="fileInput" multiple />
+                </div>
+
+                <div class="upload-progress-container" id="progressContainer"></div>
+
+                <div class="section-header">
+                    <h2>
+                        📂 资源列表
+                        <span id="resultCount">(0 个)</span>
+                    </h2>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="refresh-btn" id="refreshBtn">
+                            <i class="fas fa-sync-alt"></i> 刷新
+                        </button>
+                    </div>
+                </div>
+
+                <div id="fileContent">
+                    <div class="file-grid" id="fileGrid"></div>
+                </div>
+            </div>
+
+            <!-- Tab: 讨论区 -->
+            <div class="tab-content" id="tabForum">
+                <div class="forum-section">
+                    <div class="forum-title">
+                        <i class="fas fa-comments" style="color:var(--primary);"></i>
+                        班级讨论区
+                    </div>
+                    <div class="forum-subtitle">
+                        分享想法、提问、交流学习心得 · 最多保留20条帖子
+                    </div>
+
+                    <div class="forum-post-form" id="forumPostForm">
+                        <div class="form-row">
+                            <input type="text" id="forumPostTitle" placeholder="帖子标题..." maxlength="100" />
+                        </div>
+                        <div class="form-row">
+                            <textarea id="forumPostContent" placeholder="帖子内容..." rows="2"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button class="submit-btn" id="publishForumPostBtn">
+                                <i class="fas fa-paper-plane"></i> 发布帖子
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="forum-post-list" id="forumPostList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== 底部 ====== -->
+        <div class="footer">
+            <div class="footer-links">
+                <a id="showBanRecordsBtn"><i class="fas fa-ban"></i> 封禁记录</a>
+                <span style="color:var(--text-light);">·</span>
+                <span id="loginStatusText">🔒 未登录</span>
+            </div>
+            <div class="dev-credit">
+                Developed by the <a href="https://github.com/TerryGao_FireFly/-2510-/" target="_blank">2510 Dev Team</a>
+            </div>
+            <div style="font-size:11px;color:var(--text-light);opacity:0.6;margin-top:2px;">
+                © 2026 2510班资源站
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ====== 登录/注册模态框 ====== -->
+    <div class="auth-modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <button class="close-btn" id="authModalClose">&times;</button>
+            <div id="loginForm">
+                <div class="auth-title">🔐 登录</div>
+                <div class="auth-subtitle">还没有账号？<a id="switchToRegister">立即注册</a></div>
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="loginUsername" placeholder="请输入用户名" />
+                    <div class="error-text" id="loginUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码" />
+                    <div class="error-text" id="loginPasswordError"></div>
+                </div>
+                <button class="btn-submit" id="loginSubmitBtn">登 录</button>
+            </div>
+            <div id="registerForm" class="hidden">
+                <div class="auth-title">📝 注册</div>
+                <div class="auth-subtitle">已有账号？<a id="switchToLogin">去登录</a></div>
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="registerUsername" placeholder="请设置用户名（3-20个字符）" />
+                    <div class="error-text" id="registerUsernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="registerPassword" placeholder="请设置密码（至少6位）" />
+                    <div class="error-text" id="registerPasswordError"></div>
+                </div>
+                <div class="form-group">
+                    <label>再次输入密码</label>
+                    <input type="password" id="registerPasswordConfirm" placeholder="请再次输入密码" />
+                    <div class="error-text" id="registerPasswordConfirmError"></div>
+                </div>
+                <button class="btn-submit" id="registerSubmitBtn">注 册</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 封禁用户模态框 ====== -->
+    <div class="ban-user-modal-overlay" id="banUserModal">
+        <div class="ban-user-modal">
+            <button class="close-btn" id="banUserModalClose">&times;</button>
+            <div class="ban-user-title"><i class="fas fa-gavel"></i> 封禁用户</div>
+            <div class="ban-user-subtitle">确定要封禁用户 <strong id="banUserTargetName">--</strong> 吗？</div>
+            <div class="form-group">
+                <label>封禁原因</label>
+                <textarea id="banUserReason" placeholder="请输入封禁原因..."></textarea>
+            </div>
+            <div class="ban-warning"><i class="fas fa-exclamation-triangle"></i> 封禁后该用户将无法查看和上传任何文件</div>
+            <div class="ban-actions">
+                <button class="cancel-btn" id="banUserCancelBtn">取消</button>
+                <button class="confirm-btn" id="banUserConfirmBtn">确认封禁</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 封禁记录弹窗 ====== -->
+    <div class="ban-records-modal-overlay" id="banRecordsModal">
+        <div class="ban-records-modal">
+            <button class="close-btn" id="banRecordsModalClose">&times;</button>
+            <div class="modal-title">
+                <i class="fas fa-ban"></i> 封禁记录
+                <span style="font-size:14px;font-weight:400;color:var(--text-light);" id="banRecordsCount"></span>
+            </div>
+            <div class="ban-records-list" id="banRecordsList"></div>
+            <div class="modal-actions">
+                <button id="banRecordsModalCloseBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 删除文件确认弹窗 ====== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3>确认删除</h3>
+            <p id="deleteModalMsg">确定要删除此文件吗？</p>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="modalCancelBtn">取消</button>
+                <button class="confirm-btn" id="modalConfirmBtn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== 删除公告确认弹窗 ====== -->
+    <div class="delete-announcement-modal-overlay" id="deleteAnnouncementModal">
+        <div class="delete-announcement-modal">
+            <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3>确认删除公告</h3>
+            <p id="deleteAnnouncementMsg">确定要删除此公告吗？</p>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="deleteAnnouncementCancelBtn">取消</button>
+                <button class="confirm-btn" id="deleteAnnouncementConfirmBtn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== Toast 容器 ====== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ... 所有 JavaScript 代码
+    </script>
+
+</body>
 
     <script>
         // ========================================================================
