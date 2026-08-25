@@ -35,50 +35,6 @@
             --vip-color: #2563EB;
         }
 
-        /* ====== RGB 变色彩名动画 ====== */
-        @keyframes rgbText {
-            0% { color: #ff0000; }
-            16% { color: #ff8800; }
-            33% { color: #ffff00; }
-            50% { color: #00ff00; }
-            66% { color: #0088ff; }
-            83% { color: #8800ff; }
-            100% { color: #ff0000; }
-        }
-
-        .name-rgb {
-            animation: rgbText 3s linear infinite;
-            font-weight: 700 !important;
-        }
-
-        /* ====== 黄紫渐变 ====== */
-        .name-yellow-purple {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6, #FFD700);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700 !important;
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
-            color: #fff !important;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            margin-left: 4px;
-            display: inline-block;
-        }
-
         /* 分类颜色 */
         .cat-语文 { color: #EF4444; background: rgba(239,68,68,0.10); }
         .cat-数学 { color: #3B82F6; background: rgba(59,130,246,0.10); }
@@ -674,11 +630,6 @@
             color: #fff;
         }
 
-        .announcement-item .announcement-meta .tag.custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
-            color: #fff;
-        }
-
         .announcement-item .announcement-meta .tag.pinned-tag {
             background: #F59E0B;
             color: #fff;
@@ -1142,11 +1093,6 @@
             color: #fff;
         }
 
-        .forum-post .post-author .tag.custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
-            color: #fff;
-        }
-
         .forum-post .post-time {
             font-size: 12px;
             color: var(--text-light);
@@ -1282,11 +1228,6 @@
 
         .forum-post .post-replies .reply-item .reply-author .tag.vip-tag {
             background: var(--vip-color);
-            color: #fff;
-        }
-
-        .forum-post .post-replies .reply-item .reply-author .tag.custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
             color: #fff;
         }
 
@@ -2226,16 +2167,6 @@
             font-size: 9px;
             font-weight: 700;
             background: var(--banned-color);
-            color: #fff;
-            padding: 1px 8px;
-            border-radius: 10px;
-            margin-left: 2px;
-        }
-
-        .file-card .file-uploader .custom-tag {
-            font-size: 9px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
             color: #fff;
             padding: 1px 8px;
             border-radius: 10px;
@@ -3527,7 +3458,7 @@
             </div>
         </div>
 
-        <!-- ====== 公告区域 ====== -->
+        <!-- ====== 📢 公告区域 ====== -->
         <div class="announcement-section">
             <div class="section-title">
                 <i class="fas fa-bullhorn"></i>
@@ -3717,7 +3648,7 @@
                 <span id="loginStatusText">🔒 未登录</span>
             </div>
             <div class="dev-credit">
-                Developed by the <a href="https://github.com/TerryGao_FireFly/-2510-/" target="_blank">2510 Dev Team</a>
+                Developed by the <a href="https://github.com/TerryGao-FireFly/-2510-/" target="_blank">2510 Dev Team</a>
             </div>
             <div style="font-size:11px;color:var(--text-light);opacity:0.6;margin-top:2px;">
                 © 2026 2510班资源站
@@ -3839,7 +3770,7 @@
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjYXZkd3Rhbm9tcHV1Z3JhZXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTA2ODQsImV4cCI6MjEwMjYyNjY4NH0.I8__ydLirwnfEG-ijHEaa-JMaoTY2EBBlwN2TCkETSk";
 
         // ========================================================================
-        //  【角色配置】
+        //  【角色配置】✅ 已修正
         // ========================================================================
         const OWNER_USER = "U_BOTE";
 
@@ -3853,6 +3784,12 @@
             "wql"
         ];
 
+        // ✅ VIP用户: wenbo___（三个下划线）
+        const VIP_USERS = [
+            "wenbo___"
+        ];
+
+        // ✅ 管理员: TerryGao-FireFly → TerryGao_FireFly
         const ADMIN_USERS = [
             "U_BOTE",
             "TerryGao_FireFly",
@@ -3862,27 +3799,8 @@
             "高正懿",
             "wql",
             "2510班资源站开发组",
-            "2510班资源站管理组",
-            "TTT"
+            "2510班资源站管理组"
         ];
-
-        const VIP_USERS = [
-            "wenbo__"
-        ];
-
-        // ====== 只改名字颜色，不改 tag ======
-        const RGB_USERS = [
-            "U_BOTE",
-            "陈韵如"
-        ];
-
-        const YELLOW_PURPLE_USERS = [
-            "高正懿"
-        ];
-
-        const CUSTOM_TAG_USERS = {
-            "高正懿": "[33550336]"
-        };
 
         const CATEGORIES = ['语文', '数学', '英语', '生物', '地理', '历史', '政治', '物理', '化学', '综合', '其他'];
 
@@ -3896,12 +3814,6 @@
 
         function isVip(username) { return VIP_USERS.includes(username); }
 
-        function isRgbUser(username) { return RGB_USERS.includes(username); }
-
-        function isYellowPurpleUser(username) { return YELLOW_PURPLE_USERS.includes(username); }
-
-        function getCustomTag(username) { return CUSTOM_TAG_USERS[username] || null; }
-
         function getRole(username) {
             if (isOwner(username)) return 'owner';
             if (isOfficial(username)) return 'official';
@@ -3909,57 +3821,6 @@
             if (isVip(username)) return 'vip';
             if (isAdmin(username)) return 'admin';
             return 'user';
-        }
-
-        // ====== 核心：只改名字颜色，tag 保持身份标签 ======
-        function getUserDisplayHtml(username) {
-            if (!username) return '';
-
-            const isRgb = isRgbUser(username);
-            const isYp = isYellowPurpleUser(username);
-            const customTag = getCustomTag(username);
-            const role = getRole(username);
-
-            // 1. 名字样式（只改颜色）
-            let nameClass = '';
-            if (isRgb) {
-                nameClass = 'name-rgb';
-            } else if (isYp) {
-                nameClass = 'name-yellow-purple';
-            } else if (role === 'owner') {
-                nameClass = 'owner-name';
-            } else if (role === 'official') {
-                nameClass = 'official-name';
-            } else if (role === 'teacher') {
-                nameClass = 'teacher-name';
-            } else if (role === 'vip') {
-                nameClass = 'vip-name';
-            } else if (role === 'admin') {
-                nameClass = 'admin-name';
-            } else if (role === 'banned') {
-                nameClass = 'banned-name';
-            }
-
-            // 2. Tag（保持身份标签，只有高正懿特殊）
-            let tagHtml = '';
-            if (customTag && isYp) {
-                // 高正懿：自定义 tag
-                tagHtml = `<span class="custom-tag">${customTag}</span>`;
-            } else if (role === 'owner') {
-                tagHtml = `<span class="owner-tag">站长</span>`;
-            } else if (role === 'official') {
-                tagHtml = `<span class="official-tag">官方</span>`;
-            } else if (role === 'teacher') {
-                tagHtml = `<span class="teacher-tag">老师</span>`;
-            } else if (role === 'vip') {
-                tagHtml = `<span class="vip-tag">VIP用户</span>`;
-            } else if (role === 'admin') {
-                tagHtml = `<span class="admin-tag">管理员</span>`;
-            } else if (role === 'banned') {
-                tagHtml = `<span class="banned-tag">封禁用户</span>`;
-            }
-
-            return `<span class="${nameClass}">${username}</span>${tagHtml}`;
         }
 
         // ========================================================================
@@ -4063,7 +3924,7 @@
         }
 
         // ========================================================================
-        //  5. 登录
+        //  5. 登录（含通知检查）
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) throw new Error('请输入用户名和密码');
@@ -4124,7 +3985,7 @@
         }
 
         // ========================================================================
-        //  8. 解禁用户
+        //  8. 解禁用户（含解禁记录）
         // ========================================================================
         async function unbanUser(userId, unbannedBy, reason) {
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
@@ -4151,7 +4012,7 @@
         }
 
         // ========================================================================
-        //  9. 封禁记录
+        //  9. 封禁记录 & 解禁记录
         // ========================================================================
         async function fetchBanRecords() {
             try {
@@ -4186,8 +4047,113 @@
             });
         }
 
+        async function getBannedUserIds() {
+            try {
+                const result = await supabaseRequest('/user_bans?is_banned=eq.true');
+                if (result && result.success !== true) {
+                    return Array.isArray(result) ? result.map(b => b.user_id) : [];
+                }
+                return [];
+            } catch {
+                return [];
+            }
+        }
+
+        async function showBanRecords() {
+            const modal = document.getElementById('banRecordsModal');
+            const list = document.getElementById('banRecordsList');
+            const count = document.getElementById('banRecordsCount');
+            const currentUser = getCurrentUser();
+            const role = currentUser ? getRole(currentUser) : 'user';
+            const canUnban = role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher';
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            list.innerHTML =
+                `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div>`;
+
+            try {
+                const banRecords = await fetchBanRecords();
+                const unbanRecords = await fetchUnbanRecords();
+
+                const allRecords = [
+                    ...banRecords.map(r => ({ ...r, type: 'ban' })),
+                    ...unbanRecords.map(r => ({ ...r, type: 'unban' }))
+                ].sort((a, b) => new Date(b.banned_at || b.unbanned_at) - new Date(a.banned_at || a.unbanned_at));
+
+                count.textContent = `(${allRecords.length} 条)`;
+
+                if (allRecords.length === 0) {
+                    list.innerHTML =
+                        `<div class="empty-records"><i class="fas fa-check-circle" style="color:#22C55E;"></i>暂无记录</div>`;
+                    return;
+                }
+
+                list.innerHTML = allRecords.map(record => {
+                    const isBan = record.type === 'ban';
+                    const user = isBan ? record.banned_user : record.unbanned_user;
+                    const by = isBan ? record.banned_by : record.unbanned_by;
+                    const reason = record.reason || '未说明';
+                    const time = isBan ? record.banned_at : record.unbanned_at;
+                    const icon = isBan ? '🚫' : '✅';
+                    const label = isBan ? '封禁' : '解禁';
+                    const color = isBan ? '#EF4444' : '#22C55E';
+
+                    let unbanBtn = '';
+                    if (isBan && canUnban) {
+                        unbanBtn =
+                            `<button class="unban-user-btn" data-username="${user}"><i class="fas fa-user-check"></i> 解禁</button>`;
+                    }
+
+                    return `
+                        <div class="ban-record-item" style="border-left-color:${color};">
+                            <div class="record-header">
+                                <span class="record-user">${icon} ${user}</span>
+                                <span class="record-admin">${label}者: <span>${by}</span></span>
+                            </div>
+                            <div class="record-reason">📝 ${reason}</div>
+                            <div class="record-time">${formatTime(time)}</div>
+                            ${unbanBtn ? `<div class="record-actions">${unbanBtn}</div>` : ''}
+                        </div>
+                    `;
+                }).join('');
+
+                list.querySelectorAll('.unban-user-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const username = btn.dataset.username;
+                        const reason = prompt(`请输入解禁 "${username}" 的原因：`);
+                        if (reason === null) return;
+                        if (!reason.trim()) { showToast('⚠️ 请填写解禁原因', 'error'); return; }
+
+                        try {
+                            const users = await supabaseRequest(
+                                `/users?username=eq.${encodeURIComponent(username)}&select=id`);
+                            if (!users || users.length === 0) { showToast('❌ 用户不存在', 'error'); return; }
+                            const userId = users[0].id;
+                            await unbanUser(userId, getCurrentUser(), reason.trim());
+                            showToast(`✅ 已解禁用户 ${username}`, 'success');
+                            await showBanRecords();
+                            await refreshAll();
+                        } catch (err) {
+                            showToast(`❌ ${err.message}`, 'error');
+                        }
+                    });
+                });
+
+            } catch (err) {
+                list.innerHTML =
+                    `<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
+            }
+        }
+
+        function hideBanRecords() {
+            document.getElementById('banRecordsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         // ========================================================================
-        //  10. 通知功能
+        //  10. 通知功能（横幅版）
         // ========================================================================
         let userNotifications = [];
         let notificationDropdownOpen = false;
@@ -4243,10 +4209,11 @@
             const banner = document.getElementById('notificationBanner');
             const countEl = document.getElementById('notifCount');
             const badgeEl = document.getElementById('notifBadge');
+            const dropdown = document.getElementById('notificationDropdown');
 
             if (!currentUser) {
                 banner.classList.remove('active');
-                document.getElementById('notificationDropdown').classList.remove('active');
+                dropdown.classList.remove('active');
                 return;
             }
 
@@ -4260,15 +4227,13 @@
                     countEl.textContent = unread.length;
                     badgeEl.textContent = unread.length;
                     document.querySelector('.notif-text').innerHTML = `您有 <strong>${unread.length}</strong> 条未读通知`;
+                } else if (notifications.length > 0) {
+                    banner.classList.add('active');
+                    countEl.textContent = '0';
+                    badgeEl.textContent = '0';
+                    document.querySelector('.notif-text').textContent = '✅ 所有通知已读';
                 } else {
-                    if (notifications.length > 0) {
-                        banner.classList.add('active');
-                        countEl.textContent = '0';
-                        badgeEl.textContent = '0';
-                        document.querySelector('.notif-text').innerHTML = '✅ 所有通知已读';
-                    } else {
-                        banner.classList.remove('active');
-                    }
+                    banner.classList.remove('active');
                 }
                 renderNotificationDropdown();
             } catch (err) {
@@ -4279,6 +4244,8 @@
         function renderNotificationDropdown() {
             const list = document.getElementById('notifList');
             if (!list) return;
+
+            const unread = userNotifications.filter(n => !n.is_read);
 
             if (userNotifications.length === 0) {
                 list.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i>暂无通知</div>`;
@@ -4311,6 +4278,7 @@
                         await markNotificationAsRead(id);
                         showToast('✅ 已标记为已读', 'success', 1500);
                         await updateNotificationBanner();
+                        renderNotificationDropdown();
                     } catch (err) {
                         showToast(`❌ ${err.message}`, 'error');
                     }
@@ -4324,8 +4292,6 @@
             dropdown.classList.toggle('active');
         }
 
-        document.getElementById('notificationBanner').addEventListener('click', toggleNotificationDropdown);
-
         document.getElementById('markAllNotifReadBtn').addEventListener('click', async () => {
             const currentUser = getCurrentUser();
             if (!currentUser) return;
@@ -4333,10 +4299,101 @@
                 await markAllNotificationsAsRead(currentUser);
                 showToast('✅ 全部已标记为已读', 'success', 1500);
                 await updateNotificationBanner();
+                renderNotificationDropdown();
             } catch (err) {
                 showToast(`❌ ${err.message}`, 'error');
             }
         });
+
+        document.getElementById('notificationBanner').addEventListener('click', toggleNotificationDropdown);
+
+        function showSendNotificationModal() {
+            getUserList().then(users => {
+                const currentUser = getCurrentUser();
+                const availableUsers = users.filter(u => u.username !== currentUser);
+
+                if (availableUsers.length === 0) {
+                    showToast('没有其他用户可发送通知', 'info');
+                    return;
+                }
+
+                const overlay = document.createElement('div');
+                overlay.style.cssText =
+                    `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
+
+                const modal = document.createElement('div');
+                modal.style.cssText =
+                    `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;`;
+
+                const userOptions = availableUsers.map(u =>
+                    `<option value="${u.username}">${u.username}</option>`
+                ).join('');
+
+                modal.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3>
+                        <button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
+                    </div>
+                    <div style="flex:1;overflow-y:auto;">
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label>
+                            <select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
+                                ${userOptions}
+                            </select>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label>
+                            <input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label>
+                            <textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;">
+                        <button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button>
+                        <button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button>
+                    </div>
+                `;
+
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
+                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
+                    const targetUser = document.getElementById('notifTargetUser').value;
+                    const title = document.getElementById('notifTitle').value.trim();
+                    const content = document.getElementById('notifContent').value.trim();
+                    const currentUser = getCurrentUser();
+
+                    if (!title || !content) {
+                        showToast('⚠️ 请填写标题和内容', 'error');
+                        return;
+                    }
+
+                    const btn = document.getElementById('sendNotifBtn');
+                    btn.disabled = true;
+                    btn.textContent = '发送中...';
+
+                    try {
+                        await sendNotification(targetUser, currentUser, title, content);
+                        showToast(`✅ 通知已发送给 ${targetUser}`, 'success');
+                        overlay.remove();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
+                    } finally {
+                        btn.disabled = false;
+                        btn.textContent = '发送';
+                    }
+                });
+
+            }).catch(err => {
+                showToast(`❌ ${err.message}`, 'error');
+            });
+        }
 
         // ========================================================================
         //  11. 举报功能
@@ -4548,7 +4605,7 @@
         }
 
         // ========================================================================
-        //  16. 文件数据库操作
+        //  16. 文件数据库操作（含分类）
         // ========================================================================
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
@@ -4918,13 +4975,40 @@
             let html = '';
             sorted.forEach((item, index) => {
                 const isHidden = index >= visibleCount;
+                const isAuthorAdmin = isAdmin(item.author);
+                const isAuthorOwner = isOwner(item.author);
+                const isAuthorOfficial = isOfficial(item.author);
+                const isAuthorTeacher = isTeacher(item.author);
+                const isAuthorVip = isVip(item.author);
+                const isAuthorBanned = announcementAuthorBanCache[item.author] || false;
                 const isPinned = item.is_pinned || false;
                 const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && item.author ===
                     currentUser) || (isOfficial(currentUser) && item.author === currentUser) || (isTeacher(
                     currentUser) && item.author === currentUser)));
                 const canPin = currentUser && isOwner(currentUser);
 
-                const authorDisplay = getUserDisplayHtml(item.author);
+                let authorDisplay = item.author;
+                let authorClass = '';
+                let tagHtml = '';
+                if (isAuthorBanned) {
+                    authorClass = 'banned';
+                    tagHtml = '<span class="tag banned-tag">封禁用户</span>';
+                } else if (isAuthorOwner) {
+                    authorClass = 'owner';
+                    tagHtml = '<span class="tag owner-tag">站长</span>';
+                } else if (isAuthorOfficial) {
+                    authorClass = 'official';
+                    tagHtml = '<span class="tag official-tag">官方</span>';
+                } else if (isAuthorTeacher) {
+                    authorClass = 'teacher';
+                    tagHtml = '<span class="tag teacher-tag">老师</span>';
+                } else if (isAuthorVip) {
+                    authorClass = 'vip';
+                    tagHtml = '<span class="tag vip-tag">VIP用户</span>';
+                } else if (isAuthorAdmin) {
+                    authorClass = 'admin';
+                    tagHtml = '<span class="tag admin-tag">管理员</span>';
+                }
 
                 let actionsHtml = '';
                 if (canDelete) actionsHtml +=
@@ -4937,7 +5021,7 @@
                         <div class="announcement-header">
                             <div class="announcement-title">${isPinned ? '<i class="fas fa-thumbtack pin-icon"></i>' : ''}${item.title}${isPinned ? '<span class="tag pinned-tag">置顶</span>' : ''}</div>
                             <div class="announcement-meta">
-                                <span>${authorDisplay}</span>
+                                <span><span class="author-name ${authorClass}">${authorDisplay}</span>${tagHtml}</span>
                                 <span>${formatTime(item.created_at)}</span>
                             </div>
                         </div>
@@ -4980,16 +5064,8 @@
                 renderAnnouncements(); });
         }
 
-        async function loadAnnouncements() {
-            try {
-                announcements = await fetchAnnouncements();
-                await renderAnnouncements();
-            } catch (err) { console.error('加载公告失败:', err);
-                showToast('加载公告失败', 'error'); }
-        }
-
         // ========================================================================
-        //  21. 渲染文件列表
+        //  21. 渲染文件列表（含分类）
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
@@ -5070,9 +5146,12 @@
                 const catColor = categoryClass(category);
 
                 const uploaderName = file.uploaded_by || '未知用户';
+                const isUploaderOwner = isOwner(uploaderName);
+                const isUploaderOfficial = isOfficial(uploaderName);
+                const isUploaderTeacher = isTeacher(uploaderName);
+                const isUploaderVip = isVip(uploaderName);
+                const isUploaderAdmin = isAdmin(uploaderName);
                 const isUploaderBanned = fileUploaderBanCache[uploaderName] || false;
-
-                const uploaderDisplay = getUserDisplayHtml(uploaderName);
 
                 let canDelete = false;
                 if (loggedIn && currentUser) {
@@ -5086,9 +5165,25 @@
                 let uploaderHtml = '';
                 if (isUploaderBanned) {
                     uploaderHtml =
-                        `<div class="file-uploader"><i class="fas fa-ban" style="color:var(--banned-color);"></i> ${uploaderDisplay}</div>`;
+                        `<div class="file-uploader"><i class="fas fa-ban" style="color:var(--banned-color);"></i><span class="uploader-name banned">${uploaderName}</span><span class="banned-tag">封禁用户</span></div>`;
+                } else if (isUploaderOwner) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="uploader-name owner">${uploaderName}</span><span class="owner-tag">站长</span></div>`;
+                } else if (isUploaderOfficial) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-badge-check" style="color:var(--official-color);"></i><span class="uploader-name official">${uploaderName}</span><span class="official-tag">官方</span></div>`;
+                } else if (isUploaderTeacher) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-chalkboard-teacher" style="color:var(--teacher-color);"></i><span class="uploader-name teacher">${uploaderName}</span><span class="teacher-tag">老师</span></div>`;
+                } else if (isUploaderVip) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-star" style="color:var(--vip-color);"></i><span class="uploader-name vip">${uploaderName}</span><span class="vip-tag">VIP用户</span></div>`;
+                } else if (isUploaderAdmin) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="uploader-name admin">${uploaderName}</span><span class="admin-tag">管理员</span></div>`;
                 } else {
-                    uploaderHtml = `<div class="file-uploader"><i class="fas fa-user" style="color:#6B7280;"></i> ${uploaderDisplay}</div>`;
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-user" style="color:#6B7280;"></i><span class="uploader-name">${uploaderName}</span></div>`;
                 }
 
                 let actionHtml = '';
@@ -5306,9 +5401,30 @@
                 let html = '';
                 posts.forEach((post, index) => {
                     const isHidden = index >= visibleCount;
+                    const authorRole = getRole(post.author);
                     const isAuthorBanned = banCache[post.author] || false;
 
-                    const authorDisplay = getUserDisplayHtml(post.author);
+                    let authorClass = '';
+                    let tagHtml = '';
+                    if (isAuthorBanned) {
+                        authorClass = 'banned';
+                        tagHtml = '<span class="tag banned-tag">封禁用户</span>';
+                    } else if (authorRole === 'owner') {
+                        authorClass = 'owner';
+                        tagHtml = '<span class="tag owner-tag">站长</span>';
+                    } else if (authorRole === 'official') {
+                        authorClass = 'official';
+                        tagHtml = '<span class="tag official-tag">官方</span>';
+                    } else if (authorRole === 'teacher') {
+                        authorClass = 'teacher';
+                        tagHtml = '<span class="tag teacher-tag">老师</span>';
+                    } else if (authorRole === 'vip') {
+                        authorClass = 'vip';
+                        tagHtml = '<span class="tag vip-tag">VIP用户</span>';
+                    } else if (authorRole === 'admin') {
+                        authorClass = 'admin';
+                        tagHtml = '<span class="tag admin-tag">管理员</span>';
+                    }
 
                     const canDeletePost = currentUser && (
                         isOwner(currentUser) ||
@@ -5325,7 +5441,23 @@
                     if (replies.length > 0) {
                         repliesHtml = `<div class="post-replies">`;
                         replies.forEach(reply => {
-                            const replyDisplay = getUserDisplayHtml(reply.author);
+                            const replyAuthorRole = getRole(reply.author);
+                            const isReplyAuthorBanned = banCache[reply.author] || false;
+
+                            let replyTag = '';
+                            if (isReplyAuthorBanned) {
+                                replyTag = '<span class="tag banned-tag">封禁用户</span>';
+                            } else if (replyAuthorRole === 'owner') {
+                                replyTag = '<span class="tag owner-tag">站长</span>';
+                            } else if (replyAuthorRole === 'official') {
+                                replyTag = '<span class="tag official-tag">官方</span>';
+                            } else if (replyAuthorRole === 'teacher') {
+                                replyTag = '<span class="tag teacher-tag">老师</span>';
+                            } else if (replyAuthorRole === 'vip') {
+                                replyTag = '<span class="tag vip-tag">VIP用户</span>';
+                            } else if (replyAuthorRole === 'admin') {
+                                replyTag = '<span class="tag admin-tag">管理员</span>';
+                            }
 
                             const canDeleteReply = currentUser && (
                                 isOwner(currentUser) ||
@@ -5343,7 +5475,7 @@
                             repliesHtml += `
                                 <div class="reply-item" data-reply-id="${reply.id}">
                                     <div class="reply-author">
-                                        ${replyDisplay}
+                                        ${reply.author} ${replyTag}
                                         <span class="reply-time">${formatTime(reply.created_at)}</span>
                                     </div>
                                     <div class="reply-content">${escapeHtml(reply.content)}</div>
@@ -5375,7 +5507,8 @@
                         <div class="forum-post ${isHidden ? 'forum-hidden' : ''}" data-id="${post.id}">
                             <div class="post-header">
                                 <div class="post-author">
-                                    ${authorDisplay}
+                                    <span class="author-name ${authorClass}">${post.author}</span>
+                                    ${tagHtml}
                                 </div>
                                 <span class="post-time">${formatTime(post.created_at)}</span>
                             </div>
@@ -5400,7 +5533,6 @@
 
                 container.innerHTML = html;
 
-                // 绑定事件
                 container.querySelectorAll('.delete-post-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -5505,7 +5637,7 @@
         }
 
         // ========================================================================
-        //  23. 管理员审核面板
+        //  23. 管理员审核面板（含预览功能）
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -5556,6 +5688,7 @@
                         `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无待审核文件</div>`;
                     return;
                 }
+                const currentUser = getCurrentUser();
                 list.innerHTML = pendingFiles.map(file => {
                     const category = file.category || '其他';
                     return `
@@ -5726,7 +5859,18 @@
         }
 
         // ========================================================================
-        //  26. 封禁用户
+        //  26. 加载公告
+        // ========================================================================
+        async function loadAnnouncements() {
+            try {
+                announcements = await fetchAnnouncements();
+                await renderAnnouncements();
+            } catch (err) { console.error('加载公告失败:', err);
+                showToast('加载公告失败', 'error'); }
+        }
+
+        // ========================================================================
+        //  27. 封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -5772,7 +5916,7 @@
         }
 
         // ========================================================================
-        //  27. 用户列表
+        //  28. 用户列表
         // ========================================================================
         async function getUserList() {
             try {
@@ -5783,103 +5927,7 @@
         }
 
         // ========================================================================
-        //  28. 封禁记录弹窗
-        // ========================================================================
-        async function showBanRecords() {
-            const modal = document.getElementById('banRecordsModal');
-            const list = document.getElementById('banRecordsList');
-            const count = document.getElementById('banRecordsCount');
-            const currentUser = getCurrentUser();
-            const role = currentUser ? getRole(currentUser) : 'user';
-            const canUnban = role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher';
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            list.innerHTML =
-                `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div>`;
-
-            try {
-                const banRecords = await fetchBanRecords();
-                const unbanRecords = await fetchUnbanRecords();
-
-                const allRecords = [
-                    ...banRecords.map(r => ({ ...r, type: 'ban' })),
-                    ...unbanRecords.map(r => ({ ...r, type: 'unban' }))
-                ].sort((a, b) => new Date(b.banned_at || b.unbanned_at) - new Date(a.banned_at || a.unbanned_at));
-
-                count.textContent = `(${allRecords.length} 条)`;
-
-                if (allRecords.length === 0) {
-                    list.innerHTML =
-                        `<div class="empty-records"><i class="fas fa-check-circle" style="color:#22C55E;"></i>暂无记录</div>`;
-                    return;
-                }
-
-                list.innerHTML = allRecords.map(record => {
-                    const isBan = record.type === 'ban';
-                    const user = isBan ? record.banned_user : record.unbanned_user;
-                    const by = isBan ? record.banned_by : record.unbanned_by;
-                    const reason = record.reason || '未说明';
-                    const time = isBan ? record.banned_at : record.unbanned_at;
-                    const icon = isBan ? '🚫' : '✅';
-                    const label = isBan ? '封禁' : '解禁';
-                    const color = isBan ? '#EF4444' : '#22C55E';
-
-                    let unbanBtn = '';
-                    if (isBan && canUnban) {
-                        unbanBtn =
-                            `<button class="unban-user-btn" data-username="${user}"><i class="fas fa-user-check"></i> 解禁</button>`;
-                    }
-
-                    return `
-                        <div class="ban-record-item" style="border-left-color:${color};">
-                            <div class="record-header">
-                                <span class="record-user">${icon} ${user}</span>
-                                <span class="record-admin">${label}者: <span>${by}</span></span>
-                            </div>
-                            <div class="record-reason">📝 ${reason}</div>
-                            <div class="record-time">${formatTime(time)}</div>
-                            ${unbanBtn ? `<div class="record-actions">${unbanBtn}</div>` : ''}
-                        </div>
-                    `;
-                }).join('');
-
-                list.querySelectorAll('.unban-user-btn').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        const username = btn.dataset.username;
-                        const reason = prompt(`请输入解禁 "${username}" 的原因：`);
-                        if (reason === null) return;
-                        if (!reason.trim()) { showToast('⚠️ 请填写解禁原因', 'error'); return; }
-
-                        try {
-                            const users = await supabaseRequest(
-                                `/users?username=eq.${encodeURIComponent(username)}&select=id`);
-                            if (!users || users.length === 0) { showToast('❌ 用户不存在', 'error'); return; }
-                            const userId = users[0].id;
-                            await unbanUser(userId, getCurrentUser(), reason.trim());
-                            showToast(`✅ 已解禁用户 ${username}`, 'success');
-                            await showBanRecords();
-                            await refreshAll();
-                        } catch (err) {
-                            showToast(`❌ ${err.message}`, 'error');
-                        }
-                    });
-                });
-
-            } catch (err) {
-                list.innerHTML =
-                    `<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
-            }
-        }
-
-        function hideBanRecords() {
-            document.getElementById('banRecordsModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // ========================================================================
-        //  29. 管理员按钮
+        //  29. 管理按钮事件
         // ========================================================================
         function setupAdminButtons() {
             document.getElementById('adminReviewBtn').addEventListener('click', () => { openReviewModal(); });
@@ -5931,98 +5979,7 @@
         }
 
         // ========================================================================
-        //  31. 发送通知模态框
-        // ========================================================================
-        function showSendNotificationModal() {
-            getUserList().then(users => {
-                const currentUser = getCurrentUser();
-                const availableUsers = users.filter(u => u.username !== currentUser);
-
-                if (availableUsers.length === 0) {
-                    showToast('没有其他用户可发送通知', 'info');
-                    return;
-                }
-
-                const overlay = document.createElement('div');
-                overlay.style.cssText =
-                    `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
-
-                const modal = document.createElement('div');
-                modal.style.cssText =
-                    `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;`;
-
-                const userOptions = availableUsers.map(u =>
-                    `<option value="${u.username}">${u.username}</option>`
-                ).join('');
-
-                modal.innerHTML = `
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                        <h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3>
-                        <button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
-                    </div>
-                    <div style="flex:1;overflow-y:auto;">
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label>
-                            <select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
-                                ${userOptions}
-                            </select>
-                        </div>
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label>
-                            <input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
-                        </div>
-                        <div style="margin-bottom:12px;">
-                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label>
-                            <textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;">
-                        <button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button>
-                        <button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button>
-                    </div>
-                `;
-
-                overlay.appendChild(modal);
-                document.body.appendChild(overlay);
-
-                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
-                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
-                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-
-                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
-                    const targetUser = document.getElementById('notifTargetUser').value;
-                    const title = document.getElementById('notifTitle').value.trim();
-                    const content = document.getElementById('notifContent').value.trim();
-                    const currentUser = getCurrentUser();
-
-                    if (!title || !content) {
-                        showToast('⚠️ 请填写标题和内容', 'error');
-                        return;
-                    }
-
-                    const btn = document.getElementById('sendNotifBtn');
-                    btn.disabled = true;
-                    btn.textContent = '发送中...';
-
-                    try {
-                        await sendNotification(targetUser, currentUser, title, content);
-                        showToast(`✅ 通知已发送给 ${targetUser}`, 'success');
-                        overlay.remove();
-                    } catch (err) {
-                        showToast(`❌ ${err.message}`, 'error');
-                    } finally {
-                        btn.disabled = false;
-                        btn.textContent = '发送';
-                    }
-                });
-
-            }).catch(err => {
-                showToast(`❌ ${err.message}`, 'error');
-            });
-        }
-
-        // ========================================================================
-        //  32. 刷新所有数据
+        //  31. 刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
@@ -6050,7 +6007,7 @@
         }
 
         // ========================================================================
-        //  33. 更新存储用量 UI
+        //  32. 更新存储用量 UI
         // ========================================================================
         function updateStorageUI(usage) {
             const fill = document.getElementById('storageFill');
@@ -6069,7 +6026,7 @@
         }
 
         // ========================================================================
-        //  34. UI 更新
+        //  33. UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -6078,6 +6035,8 @@
 
             const guestButtons = document.getElementById('guestButtons');
             const userInfo = document.getElementById('userInfo');
+            const currentUsername = document.getElementById('currentUsername');
+            const currentUserIdEl = document.getElementById('currentUserId');
             const usernameDisplay = document.getElementById('usernameDisplay');
             const loginStatusText = document.getElementById('loginStatusText');
             const adminButtons = document.getElementById('adminButtons');
@@ -6085,6 +6044,7 @@
             if (loggedIn && username) {
                 if (guestButtons) guestButtons.classList.add('hidden');
                 if (userInfo) userInfo.classList.remove('hidden');
+                if (currentUserIdEl) currentUserIdEl.textContent = `ID: ${userId || '--'}`;
 
                 const role = getRole(username);
                 const isBanned = currentUserBanned;
@@ -6093,10 +6053,24 @@
                     if (isBanned) {
                         usernameDisplay.innerHTML =
                             `<i class="fas fa-ban" style="color:var(--banned-color);"></i><span class="banned-name">${username}</span><span class="banned-tag">封禁用户</span><span class="user-id">ID: ${userId || '--'}</span>`;
-                    } else {
-                        // 使用 getUserDisplayHtml 渲染
+                    } else if (role === 'owner') {
                         usernameDisplay.innerHTML =
-                            `<i class="fas fa-user-circle"></i> ${getUserDisplayHtml(username)}<span class="user-id">ID: ${userId || '--'}</span>`;
+                            `<i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="owner-name">${username}</span><span class="owner-tag">站长</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'official') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-badge-check" style="color:var(--official-color);"></i><span class="official-name">${username}</span><span class="official-tag">官方</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'teacher') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-chalkboard-teacher" style="color:var(--teacher-color);"></i><span class="teacher-name">${username}</span><span class="teacher-tag">老师</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'vip') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-star" style="color:var(--vip-color);"></i><span class="vip-name">${username}</span><span class="vip-tag">VIP用户</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'admin') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="admin-name">${username}</span><span class="admin-tag">管理员</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-user-circle"></i><span>${username}</span><span class="user-id">ID: ${userId || '--'}</span>`;
                     }
                 }
 
@@ -6127,7 +6101,7 @@
         }
 
         // ========================================================================
-        //  35. 认证模态框控制
+        //  34. 认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -6160,7 +6134,7 @@
         }
 
         // ========================================================================
-        //  36. 文件上传
+        //  35. 文件上传（含分类）
         // ========================================================================
         let selectedCategory = '语文';
 
@@ -6250,7 +6224,7 @@
         }
 
         // ========================================================================
-        //  37. 初始化
+        //  36. 初始化
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
@@ -6584,13 +6558,14 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整版）');
+            console.log('✅ 2510班资源站已启动！（VIP用户: wenbo___ + 通知横幅版）');
             console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
-            console.log(`👑 站长: ${OWNER_USER}（RGB变色，tag保持"站长"）`);
-            console.log(`🌈 RGB变色用户: ${RGB_USERS.join(', ')}（tag保持原身份）`);
-            console.log(`💜 黄紫渐变用户: ${YELLOW_PURPLE_USERS.join(', ')}（tag改为 [33550336]）`);
+            console.log(`👑 站长: ${OWNER_USER}`);
+            console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
+            console.log(`👨‍🏫 老师: ${TEACHER_USERS.join(', ')}`);
             console.log(`⭐ VIP用户: ${VIP_USERS.join(', ')}`);
-            console.log(`👨‍💼 管理员: ${ADMIN_USERS.join(', ')}`);
+            console.log(`📂 分类: ${CATEGORIES.join(', ')}`);
+            console.log(`🔑 管理员已修正: TerryGao_FireFly`);
         });
     </script>
 
