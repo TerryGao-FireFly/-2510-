@@ -35,39 +35,6 @@
             --vip-color: #2563EB;
         }
 
-        /* ====== RGB 变色彩名动画（只改名字颜色） ====== */
-        @keyframes rgbText {
-            0% { color: #ff0000; }
-            16% { color: #ff8800; }
-            33% { color: #ffff00; }
-            50% { color: #00ff00; }
-            66% { color: #0088ff; }
-            83% { color: #8800ff; }
-            100% { color: #ff0000; }
-        }
-
-        .name-rgb {
-            animation: rgbText 3s linear infinite;
-            font-weight: 700 !important;
-        }
-
-        /* ====== 黄紫渐变（只改名字颜色） ====== */
-        .name-yellow-purple {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6, #FFD700);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700 !important;
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         /* 分类颜色 */
         .cat-语文 { color: #EF4444; background: rgba(239,68,68,0.10); }
         .cat-数学 { color: #3B82F6; background: rgba(59,130,246,0.10); }
@@ -224,16 +191,6 @@
             font-size: 10px;
             font-weight: 700;
             background: var(--banned-color);
-            color: #fff;
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin-left: 4px;
-        }
-
-        .topbar .user-section .username-display .custom-tag {
-            font-size: 10px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
             color: #fff;
             padding: 2px 10px;
             border-radius: 12px;
@@ -670,11 +627,6 @@
 
         .announcement-item .announcement-meta .tag.banned-tag {
             background: var(--banned-color);
-            color: #fff;
-        }
-
-        .announcement-item .announcement-meta .tag.custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
             color: #fff;
         }
 
@@ -1141,11 +1093,6 @@
             color: #fff;
         }
 
-        .forum-post .post-author .tag.custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
-            color: #fff;
-        }
-
         .forum-post .post-time {
             font-size: 12px;
             color: var(--text-light);
@@ -1281,11 +1228,6 @@
 
         .forum-post .post-replies .reply-item .reply-author .tag.vip-tag {
             background: var(--vip-color);
-            color: #fff;
-        }
-
-        .forum-post .post-replies .reply-item .reply-author .tag.custom-tag {
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
             color: #fff;
         }
 
@@ -2225,16 +2167,6 @@
             font-size: 9px;
             font-weight: 700;
             background: var(--banned-color);
-            color: #fff;
-            padding: 1px 8px;
-            border-radius: 10px;
-            margin-left: 2px;
-        }
-
-        .file-card .file-uploader .custom-tag {
-            font-size: 9px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #FFD700, #8B5CF6);
             color: #fff;
             padding: 1px 8px;
             border-radius: 10px;
@@ -3526,7 +3458,7 @@
             </div>
         </div>
 
-        <!-- ====== 公告区域 ====== -->
+        <!-- ====== 📢 公告区域 ====== -->
         <div class="announcement-section">
             <div class="section-title">
                 <i class="fas fa-bullhorn"></i>
@@ -3639,6 +3571,7 @@
                     <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
                     <h3 id="uploadTitle">拖拽文件到此处，或点击上传</h3>
                     <p id="uploadDesc">支持所有文件类型 · 单个文件最大 10MB</p>
+                    <!-- 分类选择 -->
                     <div class="category-selector" id="uploadCategorySelector">
                         <span style="font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-bottom:4px;">
                             <i class="fas fa-tag"></i> 选择文件分类：
@@ -3716,7 +3649,7 @@
                 <span id="loginStatusText">🔒 未登录</span>
             </div>
             <div class="dev-credit">
-                Developed by the <a href="https://github.com/TerryGao_FireFly/-2510-/" target="_blank">2510 Dev Team</a>
+                Developed by the <a href="https://github.com/TerryGao-FireFly/-2510-/" target="_blank">2510 Dev Team</a>
             </div>
             <div style="font-size:11px;color:var(--text-light);opacity:0.6;margin-top:2px;">
                 © 2026 2510班资源站
@@ -3830,12 +3763,6 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ... 所有 JavaScript 代码
-    </script>
-
-</body>
-
-    <script>
         // ========================================================================
         //  【Supabase 配置】
         // ========================================================================
@@ -3860,45 +3787,32 @@
 
         const ADMIN_USERS = [
             "U_BOTE",
-            "TerryGao_FireFly",
+            "TerryGao-FireFly",
             "王彦锦",
             "2510班主任",
             "陈韵如",
             "高正懿",
             "wql",
             "2510班资源站开发组",
-            "2510班资源站管理组",
-            "TTT"
+            "2510班资源站管理组"
         ];
 
+        // ====== VIP 用户列表 ======
         const VIP_USERS = [
             "wenbo__"
         ];
 
-        // ====== 只改名字颜色，不改 tag ======
-        const RGB_USERS = [
-            "U_BOTE",
-            "陈韵如"
-        ];
-
-        const YELLOW_PURPLE_USERS = [
-            "高正懿"
-        ];
-
-        const CUSTOM_TAG_USERS = {
-            "高正懿": "[33550336]"
-        };
-
         const CATEGORIES = ['语文', '数学', '英语', '生物', '地理', '历史', '政治', '物理', '化学', '综合', '其他'];
 
         function isOwner(username) { return username === OWNER_USER; }
+
         function isOfficial(username) { return OFFICIAL_USERS.includes(username); }
+
         function isTeacher(username) { return TEACHER_USERS.includes(username); }
+
         function isAdmin(username) { return ADMIN_USERS.includes(username); }
+
         function isVip(username) { return VIP_USERS.includes(username); }
-        function isRgbUser(username) { return RGB_USERS.includes(username); }
-        function isYellowPurpleUser(username) { return YELLOW_PURPLE_USERS.includes(username); }
-        function getCustomTag(username) { return CUSTOM_TAG_USERS[username] || null; }
 
         function getRole(username) {
             if (isOwner(username)) return 'owner';
@@ -3909,68 +3823,2686 @@
             return 'user';
         }
 
-        // ====== 核心：只改名字颜色，tag 保持身份标签 ======
-        function getUserDisplayHtml(username, tagClass = '') {
-            if (!username) return '';
+        // ========================================================================
+        //  1. Supabase 客户端
+        // ========================================================================
+        async function supabaseRequest(path, options = {}) {
+            const cleanPath = path.startsWith('/') ? path : '/' + path;
+            const url = `${SUPABASE_URL}/rest/v1${cleanPath}`;
 
-            const isRgb = isRgbUser(username);
-            const isYp = isYellowPurpleUser(username);
-            const customTag = getCustomTag(username);
-            const role = getRole(username);
+            const headers = {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
 
-            // 1. 名字样式（只改颜色）
-            let nameClass = '';
-            if (isRgb) {
-                nameClass = 'name-rgb';
-            } else if (isYp) {
-                nameClass = 'name-yellow-purple';
-            } else if (role === 'owner') {
-                nameClass = 'owner-name';
-            } else if (role === 'official') {
-                nameClass = 'official-name';
-            } else if (role === 'teacher') {
-                nameClass = 'teacher-name';
-            } else if (role === 'vip') {
-                nameClass = 'vip-name';
-            } else if (role === 'admin') {
-                nameClass = 'admin-name';
-            } else if (role === 'banned') {
-                nameClass = 'banned-name';
+            if (options.method === 'POST' || options.method === 'PATCH') {
+                headers['Prefer'] = 'return=representation';
             }
 
-            // 2. Tag（保持身份标签，只有高正懿特殊）
-            let tagHtml = '';
-            if (customTag && isYp) {
-                // 高正懿：自定义 tag
-                tagHtml = `<span class="custom-tag">${customTag}</span>`;
-            } else if (role === 'owner') {
-                tagHtml = `<span class="owner-tag">站长</span>`;
-            } else if (role === 'official') {
-                tagHtml = `<span class="official-tag">官方</span>`;
-            } else if (role === 'teacher') {
-                tagHtml = `<span class="teacher-tag">老师</span>`;
-            } else if (role === 'vip') {
-                tagHtml = `<span class="vip-tag">VIP用户</span>`;
-            } else if (role === 'admin') {
-                tagHtml = `<span class="admin-tag">管理员</span>`;
-            } else if (role === 'banned') {
-                tagHtml = `<span class="banned-tag">封禁用户</span>`;
-            }
+            const fetchOptions = { method: options.method || 'GET', headers: headers };
+            if (options.body) fetchOptions.body = options.body;
 
-            return `<span class="${nameClass}">${username}</span>${tagHtml}`;
+            try {
+                const response = await fetch(url, fetchOptions);
+                if (response.status === 204) return { success: true };
+                const contentLength = response.headers.get('content-length');
+                if (contentLength === '0') return { success: true };
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    try { const error = JSON.parse(errorText);
+                        throw new Error(error.message || `请求失败 (${response.status})`); } catch { throw new Error(
+                            `请求失败 (${response.status}): ${errorText || '未知错误'}`); }
+                }
+                const text = await response.text();
+                if (!text || text.trim() === '') return { success: true };
+                try { return JSON.parse(text); } catch { return { success: true, raw: text }; }
+            } catch (err) { console.error('Supabase 请求失败:', err);
+                throw err; }
         }
 
         // ========================================================================
-        //  其余 JavaScript 代码与之前相同（Supabase 请求、登录、注册、公告、文件、讨论区等）
-        //  所有显示用户名的地方都改用 getUserDisplayHtml()
+        //  2. 密码工具
         // ========================================================================
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
-        console.log('✅ 2510班资源站已启动！（RGB名字变色 + 黄紫渐变 + 自定义tag版）');
-        console.log(`👑 站长: ${OWNER_USER}（RGB变色，tag保持"站长"）`);
-        console.log(`🌈 RGB变色用户: ${RGB_USERS.join(', ')}（tag保持原身份）`);
-        console.log(`💜 黄紫渐变用户: ${YELLOW_PURPLE_USERS.join(', ')}（tag改为 [33550336]）`);
-        console.log(`⭐ VIP用户: ${VIP_USERS.join(', ')}`);
-        console.log(`👨‍💼 管理员: ${ADMIN_USERS.join(', ')}`);
+        // ========================================================================
+        //  3. 用户管理
+        // ========================================================================
+        const SESSION_KEY = 'class_resource_session';
+
+        function getSession() {
+            try { const data = localStorage.getItem(SESSION_KEY); return data ? JSON.parse(data) : null; } catch { return null; }
+        }
+
+        function setSession(username, userId) {
+            localStorage.setItem(SESSION_KEY, JSON.stringify({ username, userId, loginTime: Date.now() }));
+        }
+
+        function clearSession() { localStorage.removeItem(SESSION_KEY); }
+
+        function isLoggedIn() { return !!getSession(); }
+
+        function getCurrentUser() { const session = getSession(); return session ? session.username : null; }
+
+        function getCurrentUserId() { const session = getSession(); return session ? session.userId : null; }
+
+        // ========================================================================
+        //  4. 注册
+        // ========================================================================
+        async function register(username, password, passwordConfirm) {
+            if (!username || username.length < 3 || username.length > 20) throw new Error('用户名必须是 3-20 个字符');
+            if (!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(username)) throw new Error('用户名只能包含字母、数字、下划线和中文');
+            if (!password || password.length < 6) throw new Error('密码至少 6 位');
+            if (password !== passwordConfirm) throw new Error('两次输入的密码不一致');
+
+            const passwordHash = await hashPassword(password);
+            const existing = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
+            if (existing && existing.length > 0 && existing.success !== true) throw new Error('用户名已被占用');
+
+            const result = await supabaseRequest('/users', {
+                method: 'POST',
+                headers: { 'Prefer': 'return=representation' },
+                body: JSON.stringify({ username, password_hash: passwordHash })
+            });
+
+            if (Array.isArray(result) && result.length > 0) return { success: true, user: result[0] };
+            if (result && result.id) return { success: true, user: result };
+            if (result && result.success === true) {
+                const newUser = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
+                if (newUser && newUser.length > 0) return { success: true, user: newUser[0] };
+                return { success: true };
+            }
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  5. 登录（含通知检查）
+        // ========================================================================
+        async function login(username, password) {
+            if (!username || !password) throw new Error('请输入用户名和密码');
+
+            const passwordHash = await hashPassword(password);
+            const users = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}`);
+            if (!users || users.length === 0) throw new Error('用户名或密码错误');
+
+            const user = users[0];
+            if (user.password_hash !== passwordHash) throw new Error('用户名或密码错误');
+
+            const bans = await supabaseRequest(`/user_bans?user_id=eq.${user.id}`);
+            if (bans && bans.length > 0 && bans[0].is_banned === true) throw new Error('您已被封禁，无法登录');
+
+            setSession(username, user.id);
+            // 检查通知（横幅方式）
+            await updateNotificationBanner();
+            return { success: true, username, userId: user.id };
+        }
+
+        // ========================================================================
+        //  6. 检查用户是否被封禁
+        // ========================================================================
+        async function isUserBanned(userId) {
+            try {
+                const bans = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
+                return bans && bans.length > 0 && bans[0].is_banned === true;
+            } catch { return false; }
+        }
+
+        async function isUsernameBanned(username) {
+            try {
+                const users = await supabaseRequest(`/users?username=eq.${encodeURIComponent(username)}&select=id`);
+                if (!users || users.length === 0) return false;
+                const userId = users[0].id;
+                const bans = await supabaseRequest(`/user_bans?user_id=eq.${userId}&is_banned=eq.true`);
+                return bans && bans.length > 0;
+            } catch { return false; }
+        }
+
+        // ========================================================================
+        //  7. 封禁用户
+        // ========================================================================
+        async function banUserById(userId, bannedBy) {
+            const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
+            if (existing && existing.length > 0) {
+                if (existing[0].is_banned === true) throw new Error('该用户已被封禁');
+                await supabaseRequest(`/user_bans?id=eq.${existing[0].id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ is_banned: true })
+                });
+                return { success: true };
+            }
+            await supabaseRequest('/user_bans', {
+                method: 'POST',
+                body: JSON.stringify({ user_id: userId, is_banned: true })
+            });
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  8. 解禁用户（含解禁记录）
+        // ========================================================================
+        async function unbanUser(userId, unbannedBy, reason) {
+            const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
+            if (!existing || existing.length === 0) throw new Error('该用户未被封禁');
+
+            const users = await supabaseRequest(`/users?id=eq.${userId}&select=username`);
+            const username = users && users.length > 0 ? users[0].username : '未知用户';
+
+            await supabaseRequest(`/user_bans?id=eq.${existing[0].id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ is_banned: false })
+            });
+
+            await supabaseRequest('/unban_records', {
+                method: 'POST',
+                body: JSON.stringify({
+                    unbanned_user: username,
+                    unbanned_by: unbannedBy,
+                    reason: reason
+                })
+            });
+
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  9. 封禁记录 & 解禁记录
+        // ========================================================================
+        async function fetchBanRecords() {
+            try {
+                const result = await supabaseRequest('/ban_records?order=banned_at.desc');
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) {
+                console.error('获取封禁记录失败:', err);
+                return [];
+            }
+        }
+
+        async function fetchUnbanRecords() {
+            try {
+                const result = await supabaseRequest('/unban_records?order=unbanned_at.desc');
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) {
+                console.error('获取解禁记录失败:', err);
+                return [];
+            }
+        }
+
+        async function addBanRecord(bannedUser, bannedBy, reason) {
+            await supabaseRequest('/ban_records', {
+                method: 'POST',
+                body: JSON.stringify({
+                    banned_user: bannedUser,
+                    banned_by: bannedBy,
+                    reason: reason
+                })
+            });
+        }
+
+        async function getBannedUserIds() {
+            try {
+                const result = await supabaseRequest('/user_bans?is_banned=eq.true');
+                if (result && result.success !== true) {
+                    return Array.isArray(result) ? result.map(b => b.user_id) : [];
+                }
+                return [];
+            } catch {
+                return [];
+            }
+        }
+
+        // ========================================================================
+        //  10. 通知功能（横幅版）
+        // ========================================================================
+        let userNotifications = [];
+        let notificationDropdownOpen = false;
+
+        async function sendNotification(targetUser, sentBy, title, content) {
+            if (!targetUser || !title || !content) throw new Error('请填写完整信息');
+
+            await supabaseRequest('/notifications', {
+                method: 'POST',
+                body: JSON.stringify({
+                    target_user: targetUser,
+                    sent_by: sentBy,
+                    title: title.trim(),
+                    content: content.trim(),
+                    is_read: false
+                })
+            });
+
+            return { success: true };
+        }
+
+        async function fetchUserNotifications(username) {
+            try {
+                const result = await supabaseRequest(
+                    `/notifications?target_user=eq.${encodeURIComponent(username)}&order=created_at.desc`);
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) {
+                console.error('获取通知失败:', err);
+                return [];
+            }
+        }
+
+        async function markNotificationAsRead(notificationId) {
+            await supabaseRequest(`/notifications?id=eq.${notificationId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ is_read: true })
+            });
+            return { success: true };
+        }
+
+        async function markAllNotificationsAsRead(username) {
+            const notifications = await fetchUserNotifications(username);
+            const unread = notifications.filter(n => !n.is_read);
+            for (const n of unread) {
+                await markNotificationAsRead(n.id);
+            }
+            return { success: true };
+        }
+
+        // ====== 更新通知横幅 ======
+        async function updateNotificationBanner() {
+            const currentUser = getCurrentUser();
+            const banner = document.getElementById('notificationBanner');
+            const countEl = document.getElementById('notifCount');
+            const badgeEl = document.getElementById('notifBadge');
+            const dropdown = document.getElementById('notificationDropdown');
+
+            if (!currentUser) {
+                banner.classList.remove('active');
+                dropdown.classList.remove('active');
+                return;
+            }
+
+            try {
+                const notifications = await fetchUserNotifications(currentUser);
+                userNotifications = notifications;
+                const unread = notifications.filter(n => !n.is_read);
+
+                if (unread.length > 0) {
+                    banner.classList.add('active');
+                    countEl.textContent = unread.length;
+                    badgeEl.textContent = unread.length;
+                } else {
+                    banner.classList.remove('active');
+                    // 如果有已读通知，也显示但提示已全部已读
+                    if (notifications.length > 0) {
+                        banner.classList.add('active');
+                        countEl.textContent = '0';
+                        badgeEl.textContent = '0';
+                        document.querySelector('.notif-text').innerHTML = '✅ 所有通知已读';
+                    } else {
+                        banner.classList.remove('active');
+                    }
+                }
+                renderNotificationDropdown();
+            } catch (err) {
+                console.error('更新通知横幅失败:', err);
+            }
+        }
+
+        // ====== 渲染通知下拉列表 ======
+        function renderNotificationDropdown() {
+            const list = document.getElementById('notifList');
+            if (!list) return;
+
+            const unread = userNotifications.filter(n => !n.is_read);
+
+            if (userNotifications.length === 0) {
+                list.innerHTML = `<div class="notif-empty"><i class="fas fa-bell-slash"></i>暂无通知</div>`;
+                return;
+            }
+
+            list.innerHTML = userNotifications.map(notif => {
+                const isRead = notif.is_read || false;
+                return `
+                    <div class="notif-item" style="${isRead ? 'opacity:0.6;' : ''}">
+                        <div class="notif-item-header">
+                            <span class="notif-item-title">${isRead ? '📖' : '🔔'} ${notif.title}</span>
+                            <span class="notif-item-time">${formatTime(notif.created_at)}</span>
+                        </div>
+                        <div class="notif-item-content">${notif.content}</div>
+                        <div class="notif-item-sender">来自: ${notif.sent_by}</div>
+                        ${!isRead ? `
+                            <div class="notif-item-actions">
+                                <button class="mark-read-btn" data-id="${notif.id}">标记已读</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // 标记已读按钮事件
+            list.querySelectorAll('.mark-read-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = parseInt(btn.dataset.id);
+                    try {
+                        await markNotificationAsRead(id);
+                        showToast('✅ 已标记为已读', 'success', 1500);
+                        await updateNotificationBanner();
+                        renderNotificationDropdown();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
+                    }
+                });
+            });
+        }
+
+        // ====== 切换通知下拉 ======
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            notificationDropdownOpen = !notificationDropdownOpen;
+            dropdown.classList.toggle('active');
+        }
+
+        // ====== 全部标记已读 ======
+        document.getElementById('markAllNotifReadBtn').addEventListener('click', async () => {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+            try {
+                await markAllNotificationsAsRead(currentUser);
+                showToast('✅ 全部已标记为已读', 'success', 1500);
+                await updateNotificationBanner();
+                renderNotificationDropdown();
+            } catch (err) {
+                showToast(`❌ ${err.message}`, 'error');
+            }
+        });
+
+        // ====== 点击横幅切换下拉 ======
+        document.getElementById('notificationBanner').addEventListener('click', toggleNotificationDropdown);
+
+        // ====== 管理员发送通知 ======
+        function showSendNotificationModal() {
+            getUserList().then(users => {
+                const currentUser = getCurrentUser();
+                const availableUsers = users.filter(u => u.username !== currentUser);
+
+                if (availableUsers.length === 0) {
+                    showToast('没有其他用户可发送通知', 'info');
+                    return;
+                }
+
+                const overlay = document.createElement('div');
+                overlay.style.cssText =
+                    `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
+
+                const modal = document.createElement('div');
+                modal.style.cssText =
+                    `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;`;
+
+                const userOptions = availableUsers.map(u =>
+                    `<option value="${u.username}">${u.username}</option>`
+                ).join('');
+
+                modal.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3>
+                        <button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button>
+                    </div>
+                    <div style="flex:1;overflow-y:auto;">
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label>
+                            <select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
+                                ${userOptions}
+                            </select>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label>
+                            <input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label>
+                            <textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;">
+                        <button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button>
+                        <button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button>
+                    </div>
+                `;
+
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
+                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
+                    const targetUser = document.getElementById('notifTargetUser').value;
+                    const title = document.getElementById('notifTitle').value.trim();
+                    const content = document.getElementById('notifContent').value.trim();
+                    const currentUser = getCurrentUser();
+
+                    if (!title || !content) {
+                        showToast('⚠️ 请填写标题和内容', 'error');
+                        return;
+                    }
+
+                    const btn = document.getElementById('sendNotifBtn');
+                    btn.disabled = true;
+                    btn.textContent = '发送中...';
+
+                    try {
+                        await sendNotification(targetUser, currentUser, title, content);
+                        showToast(`✅ 通知已发送给 ${targetUser}`, 'success');
+                        overlay.remove();
+                    } catch (err) {
+                        showToast(`❌ ${err.message}`, 'error');
+                    } finally {
+                        btn.disabled = false;
+                        btn.textContent = '发送';
+                    }
+                });
+
+            }).catch(err => {
+                showToast(`❌ ${err.message}`, 'error');
+            });
+        }
+
+        // ========================================================================
+        //  11. 举报功能
+        // ========================================================================
+        async function reportContent(targetType, targetId, reportedBy, reason) {
+            if (!reason || reason.trim().length < 5) throw new Error('请详细描述举报原因（至少5个字）');
+
+            await supabaseRequest('/reports', {
+                method: 'POST',
+                body: JSON.stringify({
+                    target_type: targetType,
+                    target_id: String(targetId),
+                    reported_by: reportedBy,
+                    reason: reason.trim(),
+                    status: 'pending'
+                })
+            });
+
+            return { success: true };
+        }
+
+        function showReportContentModal(targetType, targetId) {
+            const reason = prompt('请输入举报原因（至少5个字）：');
+            if (reason === null) return;
+            if (reason.trim().length < 5) { showToast('❌ 举报原因至少5个字', 'error'); return; }
+
+            const currentUser = getCurrentUser();
+            if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
+
+            reportContent(targetType, targetId, currentUser, reason.trim())
+                .then(() => {
+                    showToast('✅ 举报已提交，管理员将尽快处理', 'success', 3000);
+                })
+                .catch(err => {
+                    showToast(`❌ 举报失败: ${err.message}`, 'error');
+                });
+        }
+
+        // ========================================================================
+        //  12. 公告管理
+        // ========================================================================
+        async function fetchAnnouncements() {
+            try {
+                const result = await supabaseRequest('/announcements?order=is_pinned.desc,created_at.desc');
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) { console.error('获取公告失败:', err); return []; }
+        }
+
+        async function publishAnnouncement(title, content, author) {
+            if (!title || !content) throw new Error('标题和内容不能为空');
+            if (title.length > 100) throw new Error('标题不能超过100个字符');
+
+            const role = getRole(author);
+            const isAdminUser = role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher';
+
+            await supabaseRequest('/announcements', {
+                method: 'POST',
+                headers: { 'Prefer': 'return=representation' },
+                body: JSON.stringify({
+                    title: title.trim(),
+                    content: content.trim(),
+                    author: author,
+                    is_admin: isAdminUser,
+                    is_pinned: false
+                })
+            });
+            return { success: true };
+        }
+
+        async function deleteAnnouncement(id, currentUser) {
+            const announcements = await supabaseRequest(`/announcements?id=eq.${id}`);
+            if (!announcements || announcements.length === 0) throw new Error('公告不存在');
+
+            const announcement = announcements[0];
+            const role = getRole(currentUser);
+
+            if (role === 'owner') {} else if (role === 'admin' || role === 'official' || role === 'teacher') {
+                if (announcement.author !== currentUser) throw new Error('你只能删除自己发布的公告');
+            } else {
+                throw new Error('没有权限删除公告');
+            }
+
+            await supabaseRequest(`/announcements?id=eq.${id}`, { method: 'DELETE' });
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  13. 置顶/取消置顶公告
+        // ========================================================================
+        async function toggleAnnouncementPin(id, currentUser) {
+            if (!isOwner(currentUser)) throw new Error('只有站长可以置顶公告');
+
+            const announcements = await supabaseRequest(`/announcements?id=eq.${id}`);
+            if (!announcements || announcements.length === 0) throw new Error('公告不存在');
+
+            const currentPin = announcements[0].is_pinned || false;
+            await supabaseRequest(`/announcements?id=eq.${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ is_pinned: !currentPin })
+            });
+            return { success: true, is_pinned: !currentPin };
+        }
+
+        // ========================================================================
+        //  14. 文件管理（Supabase Storage）
+        // ========================================================================
+        const STORAGE_BUCKET = 'class-files';
+
+        async function initStorage() {
+            try {
+                const url = `${SUPABASE_URL}/storage/v1/bucket/${STORAGE_BUCKET}`;
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+
+                if (response.status === 404) {
+                    const createRes = await fetch(`${SUPABASE_URL}/storage/v1/bucket`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ id: STORAGE_BUCKET, name: STORAGE_BUCKET, public: true })
+                    });
+                    if (createRes.ok) console.log('✅ Storage bucket 已创建');
+                    else console.error('创建 bucket 失败:', await createRes.text());
+                } else if (response.ok) {
+                    console.log('✅ Storage bucket 已存在');
+                }
+            } catch (err) { console.error('初始化 Storage 失败:', err); }
+        }
+
+        async function uploadFileToStorage(file, fileName) {
+            const ext = fileName.split('.').pop() || '';
+            const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+            const filePath = `uploads/${safeName}`;
+            const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': file.type || 'application/octet-stream'
+                    },
+                    body: file,
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(`上传失败: ${error}`);
+                }
+
+                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${filePath}`;
+                return { filePath, publicUrl, safeName };
+            } catch (err) {
+                clearTimeout(timeoutId);
+                if (err.name === 'AbortError') {
+                    throw new Error('上传超时，请重试');
+                }
+                throw err;
+            }
+        }
+
+        async function deleteFileFromStorage(filePath) {
+            const url = `${SUPABASE_URL}/storage/v1/object/${STORAGE_BUCKET}/${filePath}`;
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                }
+            });
+            if (!response.ok && response.status !== 404) console.error('删除 Storage 文件失败:', await response.text());
+        }
+
+        // ========================================================================
+        //  15. 获取存储用量
+        // ========================================================================
+        async function getStorageUsage() {
+            try {
+                const url = `${SUPABASE_URL}/storage/v1/bucket/${STORAGE_BUCKET}/objects`;
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                if (response.status === 404) return { used: 0, total: 1024 * 1024 * 1024 };
+                if (!response.ok) { console.warn('获取存储用量失败:', await response.text()); return { used: 0,
+                        total: 1024 * 1024 * 1024 }; }
+                const objects = await response.json();
+                let totalSize = 0;
+                if (Array.isArray(objects)) totalSize = objects.reduce((sum, obj) => sum + (obj.metadata?.size || 0), 0);
+                return { used: totalSize, total: 1024 * 1024 * 1024 };
+            } catch (err) { console.error('获取存储用量失败:', err); return { used: 0, total: 1024 * 1024 * 1024 }; }
+        }
+
+        // ========================================================================
+        //  16. 文件数据库操作（含分类）
+        // ========================================================================
+        async function createFileRecord(fileData) {
+            const result = await supabaseRequest('/files', {
+                method: 'POST',
+                headers: { 'Prefer': 'return=representation' },
+                body: JSON.stringify(fileData)
+            });
+            if (Array.isArray(result) && result.length > 0) return result[0];
+            if (result && result.id) return result;
+            return result;
+        }
+
+        async function fetchFiles(status = null) {
+            try {
+                let url = '/files?order=created_at.desc';
+                if (status) url += `&status=eq.${status}`;
+                const result = await supabaseRequest(url);
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) { console.error('获取文件列表失败:', err); return []; }
+        }
+
+        async function updateFileStatus(fileId, status, reviewedBy, rejectReason = null) {
+            const data = { status, reviewed_by: reviewedBy, reviewed_at: new Date().toISOString() };
+            if (rejectReason) data.reject_reason = rejectReason;
+            await supabaseRequest(`/files?id=eq.${fileId}`, { method: 'PATCH', body: JSON.stringify(data) });
+            return { success: true };
+        }
+
+        async function deleteFileRecord(fileId) {
+            await supabaseRequest(`/files?id=eq.${fileId}`, { method: 'DELETE' });
+            return { success: true };
+        }
+
+        // ========================================================================
+        //  17. 举报审核
+        // ========================================================================
+        async function fetchReports(status = null) {
+            try {
+                let url = '/reports?order=created_at.desc';
+                if (status) url += `&status=eq.${status}`;
+                const result = await supabaseRequest(url);
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) { console.error('获取举报列表失败:', err); return []; }
+        }
+
+        async function updateReportStatus(reportId, status) {
+            await supabaseRequest(`/reports?id=eq.${reportId}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+            return { success: true };
+        }
+
+        async function openReportsReview() {
+            const overlay = document.createElement('div');
+            overlay.id = 'reportsReviewModal';
+            overlay.style.cssText =
+                `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
+            const modal = document.createElement('div');
+            modal.style.cssText =
+                `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 750px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); display: flex; flex-direction: column; animation: scaleIn 0.3s ease; position: relative;`;
+            modal.innerHTML =
+                `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:20px;font-weight:700;"><i class="fas fa-flag" style="color:#EF4444;"></i> 举报审核中心<span id="reportsCount" style="font-size:14px;font-weight:400;color:var(--text-light);"></span></h3><button id="closeReportsBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;"><button class="reports-filter-btn active" data-filter="all" style="padding:4px 14px;border:none;border-radius:8px;background:var(--primary);color:#fff;font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">全部</button><button class="reports-filter-btn" data-filter="pending" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">待处理</button><button class="reports-filter-btn" data-filter="resolved" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已处理</button><button class="reports-filter-btn" data-filter="dismissed" style="padding:4px 14px;border:none;border-radius:8px;background:#f1f3f5;color:var(--text-secondary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:13px;">已驳回</button></div><div id="reportsList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;"><div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div></div>`;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            document.getElementById('closeReportsBtn').addEventListener('click', () => overlay.remove());
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+            document.querySelectorAll('.reports-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.reports-filter-btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = '#f1f3f5';
+                        b.style.color = 'var(--text-secondary)';
+                    });
+                    btn.classList.add('active');
+                    btn.style.background = 'var(--primary)';
+                    btn.style.color = '#fff';
+                    loadReports(btn.dataset.filter);
+                });
+            });
+            await loadReports('all');
+        }
+
+        async function loadReports(filter) {
+            const list = document.getElementById('reportsList');
+            const countEl = document.getElementById('reportsCount');
+            try {
+                const reports = await fetchReports(filter === 'all' ? null : filter);
+                countEl.textContent = `(${reports.length} 条)`;
+                if (reports.length === 0) {
+                    list.innerHTML =
+                        `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无举报记录</div>`;
+                    return;
+                }
+                const fileIds = reports.filter(r => r.target_type === 'file').map(r => parseInt(r.target_id)).filter(id =>
+                    !isNaN(id));
+                const postIds = reports.filter(r => r.target_type === 'forum_post').map(r => parseInt(r.target_id))
+                .filter(id => !isNaN(id));
+                const replyIds = reports.filter(r => r.target_type === 'forum_reply').map(r => r.target_id).filter(id =>
+                    id);
+
+                let filesMap = {};
+                let postsMap = {};
+                let repliesMap = {};
+
+                if (fileIds.length > 0) {
+                    try {
+                        const files = await supabaseRequest(`/files?id=in.(${fileIds.join(',')})`);
+                        if (files && files.length > 0) files.forEach(f => { filesMap[f.id] = f; });
+                    } catch (e) { console.warn('获取文件信息失败:', e); }
+                }
+                if (postIds.length > 0) {
+                    try {
+                        const posts = await supabaseRequest(`/forum_posts?id=in.(${postIds.join(',')})`);
+                        if (posts && posts.length > 0) posts.forEach(p => { postsMap[p.id] = p; });
+                    } catch (e) { console.warn('获取帖子信息失败:', e); }
+                }
+                if (replyIds.length > 0) {
+                    try {
+                        const posts = await supabaseRequest(`/forum_posts`);
+                        if (posts && posts.length > 0) {
+                            posts.forEach(p => {
+                                (p.replies || []).forEach(r => {
+                                    repliesMap[r.id] = { ...r, post_title: p.title,
+                                    post_id: p.id };
+                                });
+                            });
+                        }
+                    } catch (e) { console.warn('获取回复信息失败:', e); }
+                }
+
+                const typeLabels = {
+                    file: '📁 文件',
+                    forum_post: '💬 帖子',
+                    forum_reply: '↩️ 回复'
+                };
+
+                const statusMap = {
+                    pending: { label: '⏳ 待处理', color: '#D97706', bg: '#FEF3C7' },
+                    resolved: { label: '✅ 已处理', color: '#059669', bg: '#D1FAE5' },
+                    dismissed: { label: '❌ 已驳回', color: '#DC2626', bg: '#FEE2E2' }
+                };
+
+                list.innerHTML = reports.map(report => {
+                    let targetName = '已删除';
+                    let extraInfo = '';
+                    if (report.target_type === 'file' && filesMap[report.target_id]) {
+                        targetName = filesMap[report.target_id].file_name;
+                    } else if (report.target_type === 'forum_post' && postsMap[report.target_id]) {
+                        targetName = postsMap[report.target_id].title;
+                        extraInfo = ` 作者: ${postsMap[report.target_id].author}`;
+                    } else if (report.target_type === 'forum_reply' && repliesMap[report.target_id]) {
+                        const r = repliesMap[report.target_id];
+                        targetName = `回复于 "${r.post_title}"`;
+                        extraInfo = ` 作者: ${r.author}`;
+                    }
+
+                    const statusInfo = statusMap[report.status] || statusMap.pending;
+
+                    return `
+                        <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+                                <div style="flex:1;min-width:150px;">
+                                    <div style="font-weight:600;font-size:14px;">
+                                        ${typeLabels[report.target_type] || '📌'} ${targetName}
+                                        ${extraInfo}
+                                    </div>
+                                    <div style="font-size:13px;color:var(--text-secondary);">📝 ${report.reason || '未说明原因'}</div>
+                                    <div style="font-size:12px;color:var(--text-light);margin-top:4px;">
+                                        🚨 举报人: ${report.reported_by} · ${formatTime(report.created_at)}
+                                    </div>
+                                </div>
+                                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+                                    <span style="font-size:12px;font-weight:600;padding:2px 12px;border-radius:10px;background:${statusInfo.bg};color:${statusInfo.color};">${statusInfo.label}</span>
+                                    ${report.status === 'pending' ? `
+                                        <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
+                                            <button class="report-resolve-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">✅ 处理</button>
+                                            <button class="report-dismiss-btn" data-id="${report.id}" style="padding:4px 12px;border:none;border-radius:6px;background:#6B7280;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">❌ 驳回</button>
+                                            ${report.target_type === 'file' && filesMap[report.target_id] ? `<button class="report-delete-file-btn" data-id="${report.id}" data-file-id="${report.target_id}" style="padding:4px 12px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">🗑️ 删除</button>` : ''}
+                                            ${report.target_type === 'forum_post' && postsMap[report.target_id] ? `<button class="report-delete-post-btn" data-id="${report.id}" data-post-id="${report.target_id}" style="padding:4px 12px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">🗑️ 删帖</button>` : ''}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                list.querySelectorAll('.report-resolve-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('确认已处理此举报？')) {
+                            try {
+                                await updateReportStatus(id, 'resolved');
+                                showToast('✅ 举报已标记为已处理', 'success');
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.report-dismiss-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('确认驳回此举报？')) {
+                            try {
+                                await updateReportStatus(id, 'dismissed');
+                                showToast('✅ 举报已驳回', 'success');
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.report-delete-file-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const reportId = parseInt(btn.dataset.id);
+                        const fileId = parseInt(btn.dataset.fileId);
+                        if (confirm('⚠️ 确定要删除此文件并处理举报吗？')) {
+                            try {
+                                const file = allFiles.find(f => f.id === fileId);
+                                if (file && file.file_path) await deleteFileFromStorage(file.file_path);
+                                await deleteFileRecord(fileId);
+                                await updateReportStatus(reportId, 'resolved');
+                                showToast('🗑️ 文件已删除，举报已处理', 'success');
+                                await refreshAll();
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.report-delete-post-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const reportId = parseInt(btn.dataset.id);
+                        const postId = parseInt(btn.dataset.postId);
+                        if (confirm('⚠️ 确定要删除此帖子并处理举报吗？')) {
+                            try {
+                                await deleteForumPost(postId, getCurrentUser());
+                                await updateReportStatus(reportId, 'resolved');
+                                showToast('🗑️ 帖子已删除，举报已处理', 'success');
+                                await refreshAll();
+                                await loadReports(document.querySelector('.reports-filter-btn.active')?.dataset
+                                    .filter || 'all');
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+            } catch (err) {
+                list.innerHTML =
+                    `<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
+            }
+        }
+
+        // ========================================================================
+        //  18. 工具函数
+        // ========================================================================
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            const val = (bytes / Math.pow(k, i)).toFixed(1);
+            return val + ' ' + sizes[i];
+        }
+
+        function formatSizeSimple(bytes) {
+            if (bytes === 0) return '0 MB';
+            const mb = bytes / (1024 * 1024);
+            if (mb < 1) return (bytes / 1024).toFixed(1) + ' KB';
+            return mb.toFixed(1) + ' MB';
+        }
+
+        function getFileType(extension) {
+            const ext = extension.toLowerCase();
+            if (['pdf'].includes(ext)) return 'pdf';
+            if (['doc', 'docx', 'txt', 'md', 'rtf'].includes(ext)) return 'doc';
+            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'ico'].includes(ext)) return 'image';
+            if (['mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm'].includes(ext)) return 'video';
+            if (['zip', 'rar', '7z', 'tar', 'gz', 'bz2'].includes(ext)) return 'zip';
+            return 'other';
+        }
+
+        function getFileEmoji(extension) {
+            const type = getFileType(extension);
+            const map = { pdf: '📄', doc: '📝', image: '🖼️', video: '🎬', zip: '📦', other: '📁' };
+            return map[type] || '📁';
+        }
+
+        function getFileColor(extension) {
+            const type = getFileType(extension);
+            const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B',
+                other: '#6B7280' };
+            return map[type] || '#6B7280';
+        }
+
+        function formatTime(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return d.toLocaleString('zh-CN', { hour12: false });
+        }
+
+        // ========================================================================
+        //  19. Toast 通知
+        // ========================================================================
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML =
+                `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(30px)';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ========================================================================
+        //  20. 渲染公告
+        // ========================================================================
+        let announcements = [];
+        let announcementsExpanded = false;
+        const MAX_VISIBLE_ANNOUNCEMENTS = 5;
+        let announcementAuthorBanCache = {};
+
+        async function renderAnnouncements() {
+            const container = document.getElementById('announcementList');
+            const countEl = document.getElementById('announcementCount');
+            const currentUser = getCurrentUser();
+            const role = currentUser ? getRole(currentUser) : 'user';
+            if (!container) return;
+            countEl.textContent = `(${announcements.length} 条)`;
+
+            const form = document.getElementById('announcementForm');
+            if (form) {
+                if (role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher') form.classList.add(
+                    'active');
+                else form.classList.remove('active');
+            }
+
+            if (announcements.length === 0) {
+                container.innerHTML =
+                    `<div class="empty-announcement"><i class="fas fa-inbox"></i>暂无公告${role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher' ? '<br><span style="font-size:12px;">点击上方表单发布第一条公告！</span>' : ''}</div>`;
+                return;
+            }
+
+            const uniqueAuthors = [...new Set(announcements.map(a => a.author))];
+            const banPromises = uniqueAuthors.map(async (author) => {
+                const isBanned = await isUsernameBanned(author);
+                announcementAuthorBanCache[author] = isBanned;
+            });
+            await Promise.all(banPromises);
+
+            const sorted = [...announcements].sort((a, b) => {
+                if (a.is_pinned && !b.is_pinned) return -1;
+                if (!a.is_pinned && b.is_pinned) return 1;
+                return 0;
+            });
+            const visibleCount = announcementsExpanded ? sorted.length : Math.min(sorted.length, MAX_VISIBLE_ANNOUNCEMENTS);
+
+            let html = '';
+            sorted.forEach((item, index) => {
+                const isHidden = index >= visibleCount;
+                const isAuthorAdmin = isAdmin(item.author);
+                const isAuthorOwner = isOwner(item.author);
+                const isAuthorOfficial = isOfficial(item.author);
+                const isAuthorTeacher = isTeacher(item.author);
+                const isAuthorVip = isVip(item.author);
+                const isAuthorBanned = announcementAuthorBanCache[item.author] || false;
+                const isPinned = item.is_pinned || false;
+                const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && item.author ===
+                    currentUser) || (isOfficial(currentUser) && item.author === currentUser) || (isTeacher(
+                    currentUser) && item.author === currentUser)));
+                const canPin = currentUser && isOwner(currentUser);
+
+                let authorDisplay = item.author;
+                let authorClass = '';
+                let tagHtml = '';
+                if (isAuthorBanned) {
+                    authorClass = 'banned';
+                    tagHtml = '<span class="tag banned-tag">封禁用户</span>';
+                } else if (isAuthorOwner) {
+                    authorClass = 'owner';
+                    tagHtml = '<span class="tag owner-tag">站长</span>';
+                } else if (isAuthorOfficial) {
+                    authorClass = 'official';
+                    tagHtml = '<span class="tag official-tag">官方</span>';
+                } else if (isAuthorTeacher) {
+                    authorClass = 'teacher';
+                    tagHtml = '<span class="tag teacher-tag">老师</span>';
+                } else if (isAuthorVip) {
+                    authorClass = 'vip';
+                    tagHtml = '<span class="tag vip-tag">VIP用户</span>';
+                } else if (isAuthorAdmin) {
+                    authorClass = 'admin';
+                    tagHtml = '<span class="tag admin-tag">管理员</span>';
+                }
+
+                let actionsHtml = '';
+                if (canDelete) actionsHtml +=
+                    `<button class="delete-announce-btn" data-id="${item.id}"><i class="fas fa-trash"></i> 删除</button>`;
+                if (canPin) actionsHtml +=
+                    `<button class="pin-announce-btn ${isPinned ? 'pinned' : ''}" data-id="${item.id}" data-pinned="${isPinned}"><i class="fas fa-thumbtack"></i> ${isPinned ? '取消置顶' : '置顶'}</button>`;
+
+                html += `
+                    <div class="announcement-item ${isPinned ? 'pinned' : ''} ${isHidden ? 'announcement-hidden' : ''}" data-id="${item.id}">
+                        <div class="announcement-header">
+                            <div class="announcement-title">${isPinned ? '<i class="fas fa-thumbtack pin-icon"></i>' : ''}${item.title}${isPinned ? '<span class="tag pinned-tag">置顶</span>' : ''}</div>
+                            <div class="announcement-meta">
+                                <span><span class="author-name ${authorClass}">${authorDisplay}</span>${tagHtml}</span>
+                                <span>${formatTime(item.created_at)}</span>
+                            </div>
+                        </div>
+                        <div class="announcement-content">${item.content}</div>
+                        ${actionsHtml ? `<div class="announcement-actions">${actionsHtml}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            if (sorted.length > MAX_VISIBLE_ANNOUNCEMENTS) {
+                const toggleText = announcementsExpanded ? '收起 ↑' :
+                    `展开查看更多 (${sorted.length - MAX_VISIBLE_ANNOUNCEMENTS} 条) ↓`;
+                html += `<div class="announcement-toggle"><button id="announcementToggleBtn">${toggleText}</button></div>`;
+            }
+
+            container.innerHTML = html;
+
+            container.querySelectorAll('.delete-announce-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = parseInt(btn.dataset.id);
+                    const item = announcements.find(a => a.id === id);
+                    if (item) showDeleteAnnouncementModal(id, item.title, item.author);
+                });
+            });
+
+            container.querySelectorAll('.pin-announce-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = parseInt(btn.dataset.id);
+                    const currentUser = getCurrentUser();
+                    try {
+                        const result = await toggleAnnouncementPin(id, currentUser);
+                        showToast(result.is_pinned ? '✅ 已置顶' : '✅ 已取消置顶', 'success');
+                        await loadAnnouncements();
+                    } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                });
+            });
+
+            const toggleBtn = document.getElementById('announcementToggleBtn');
+            if (toggleBtn) toggleBtn.addEventListener('click', () => { announcementsExpanded = !announcementsExpanded;
+                renderAnnouncements(); });
+        }
+
+        // ========================================================================
+        //  21. 渲染文件列表（含分类）
+        // ========================================================================
+        let allFiles = [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let currentCategory = 'all';
+        let currentUserBanned = false;
+        let fileUploaderBanCache = {};
+
+        async function renderFiles(fileList) {
+            let grid = document.getElementById('fileGrid');
+            if (!grid) {
+                const container = document.getElementById('fileContent');
+                if (!container) return;
+                grid = document.createElement('div');
+                grid.className = 'file-grid';
+                grid.id = 'fileGrid';
+                container.appendChild(grid);
+            }
+
+            const countEl = document.getElementById('resultCount');
+            const fileCountEl = document.getElementById('fileCount');
+            const totalSizeEl = document.getElementById('totalSize');
+
+            if (!countEl || !fileCountEl || !totalSizeEl) { console.warn('统计元素缺失'); return; }
+
+            if (currentUserBanned) {
+                const container = document.getElementById('fileContent');
+                if (container) {
+                    container.innerHTML =
+                        `<div class="banned-overlay"><i class="fas fa-ban"></i><h3>⚠️ 您已被封禁</h3><p>您无法查看和上传任何文件。如有疑问，请联系管理员。</p></div>`;
+                }
+                countEl.textContent = '(0 个)';
+                fileCountEl.textContent = '0';
+                totalSizeEl.textContent = '0 B';
+                return;
+            }
+
+            let filtered = [...fileList];
+            filtered = filtered.filter(f => f.status === 'approved');
+
+            if (currentFilter !== 'all') filtered = filtered.filter(f => getFileType(f.file_type || f.extension) ===
+                currentFilter);
+            if (currentCategory !== 'all') filtered = filtered.filter(f => (f.category || '其他') === currentCategory);
+            if (searchQuery.trim()) {
+                const q = searchQuery.trim().toLowerCase();
+                filtered = filtered.filter(f => f.file_name.toLowerCase().includes(q));
+            }
+
+            countEl.textContent = `(${filtered.length} 个)`;
+            fileCountEl.textContent = fileList.length;
+            const totalBytes = fileList.reduce((sum, f) => sum + (f.file_size || 0), 0);
+            totalSizeEl.textContent = formatSize(totalBytes);
+
+            if (filtered.length === 0) {
+                grid.innerHTML =
+                    `<div class="empty-state"><div class="empty-icon"><i class="fas fa-inbox"></i></div><h3>${fileList.length === 0 ? '还没有任何资源' : '没有匹配的文件'}</h3><p>${fileList.length === 0 ? '等待管理员上传文件' : '试试其他关键词或筛选条件'}</p></div>`;
+                return;
+            }
+
+            const uniqueUploaders = [...new Set(filtered.map(f => f.uploaded_by).filter(Boolean))];
+            const banPromises = uniqueUploaders.map(async (uploader) => {
+                const isBanned = await isUsernameBanned(uploader);
+                fileUploaderBanCache[uploader] = isBanned;
+            });
+            await Promise.all(banPromises);
+
+            const loggedIn = isLoggedIn();
+            const currentUser = getCurrentUser();
+
+            const categoryClass = (cat) => `cat-${cat}`;
+
+            grid.innerHTML = filtered.map(file => {
+                const fileType = file.file_type || 'other';
+                const color = getFileColor(fileType);
+                const emoji = getFileEmoji(fileType);
+                const typeLabel = getFileType(fileType).toUpperCase();
+                const category = file.category || '其他';
+                const catColor = categoryClass(category);
+
+                const uploaderName = file.uploaded_by || '未知用户';
+                const isUploaderOwner = isOwner(uploaderName);
+                const isUploaderOfficial = isOfficial(uploaderName);
+                const isUploaderTeacher = isTeacher(uploaderName);
+                const isUploaderVip = isVip(uploaderName);
+                const isUploaderAdmin = isAdmin(uploaderName);
+                const isUploaderBanned = fileUploaderBanCache[uploaderName] || false;
+
+                let canDelete = false;
+                if (loggedIn && currentUser) {
+                    if (isOwner(currentUser)) canDelete = true;
+                    else if (isAdmin(currentUser) && file.uploaded_by === currentUser) canDelete = true;
+                    else if (isOfficial(currentUser) && file.uploaded_by === currentUser) canDelete = true;
+                    else if (isTeacher(currentUser) && file.uploaded_by === currentUser) canDelete = true;
+                    else if (file.uploaded_by === currentUser) canDelete = true;
+                }
+
+                let uploaderHtml = '';
+                if (isUploaderBanned) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-ban" style="color:var(--banned-color);"></i><span class="uploader-name banned">${uploaderName}</span><span class="banned-tag">封禁用户</span></div>`;
+                } else if (isUploaderOwner) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="uploader-name owner">${uploaderName}</span><span class="owner-tag">站长</span></div>`;
+                } else if (isUploaderOfficial) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-badge-check" style="color:var(--official-color);"></i><span class="uploader-name official">${uploaderName}</span><span class="official-tag">官方</span></div>`;
+                } else if (isUploaderTeacher) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-chalkboard-teacher" style="color:var(--teacher-color);"></i><span class="uploader-name teacher">${uploaderName}</span><span class="teacher-tag">老师</span></div>`;
+                } else if (isUploaderVip) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-star" style="color:var(--vip-color);"></i><span class="uploader-name vip">${uploaderName}</span><span class="vip-tag">VIP用户</span></div>`;
+                } else if (isUploaderAdmin) {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="uploader-name admin">${uploaderName}</span><span class="admin-tag">管理员</span></div>`;
+                } else {
+                    uploaderHtml =
+                        `<div class="file-uploader"><i class="fas fa-user" style="color:#6B7280;"></i><span class="uploader-name">${uploaderName}</span></div>`;
+                }
+
+                let actionHtml = '';
+                if (loggedIn) {
+                    let deleteBtnHtml = '';
+                    if (canDelete) deleteBtnHtml =
+                        `<button class="delete-btn" data-id="${file.id}"><i class="fas fa-trash"></i> 删除</button>`;
+                    actionHtml =
+                        `<div class="file-actions"><button class="download-btn" data-id="${file.id}"><i class="fas fa-download"></i> 下载</button>${deleteBtnHtml}<button class="report-btn" data-id="${file.id}"><i class="fas fa-flag"></i> 举报</button></div>`;
+                }
+
+                const statusBadge = file.status === 'pending' ? '⏳ 审核中' :
+                    file.status === 'approved' ? '✅ 已通过' :
+                    file.status === 'rejected' ? '❌ 已拒绝' : '';
+
+                return `
+                    <div class="file-card" data-id="${file.id}">
+                        <span class="file-type-tag" style="background:${color}22; color:${color};">${typeLabel}</span>
+                        <div class="file-icon-big" style="color:${color};">${emoji}</div>
+                        <div class="file-name text-ellipsis" title="${file.file_name}">${file.file_name}</div>
+                        <span class="file-category-tag ${catColor}">📂 ${category}</span>
+                        ${statusBadge ? `<span class="file-status-badge ${file.status}">${statusBadge}</span>` : ''}
+                        <div class="file-meta"><span>${formatSize(file.file_size)}</span><span>${formatTime(file.created_at)}</span></div>
+                        ${uploaderHtml}
+                        ${actionHtml}
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('fileBadge').textContent = filtered.length;
+
+            if (loggedIn) {
+                grid.querySelectorAll('.download-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.dataset.id);
+                        const file = allFiles.find(f => f.id === id);
+                        if (file && file.file_path) {
+                            window.open(
+                                `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${file.file_path}`,
+                            '_blank');
+                            showToast(`📥 下载: ${file.file_name}`, 'info', 1500);
+                        }
+                    });
+                });
+
+                grid.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.dataset.id);
+                        const file = allFiles.find(f => f.id === id);
+                        if (file) showDeleteFileModal(id, file.file_name, file.uploaded_by);
+                    });
+                });
+
+                grid.querySelectorAll('.report-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.dataset.id);
+                        showReportContentModal('file', id);
+                    });
+                });
+            }
+        }
+
+        // ========================================================================
+        //  22. 讨论区功能
+        // ========================================================================
+        let forumPosts = [];
+        let forumExpanded = false;
+        const MAX_FORUM_POSTS = 20;
+        const MAX_VISIBLE_FORUM_POSTS = 5;
+
+        async function fetchForumPosts() {
+            try {
+                const result = await supabaseRequest('/forum_posts?order=created_at.desc');
+                if (result && result.success !== true) return Array.isArray(result) ? result : [];
+                return [];
+            } catch (err) { console.error('获取讨论区帖子失败:', err); return []; }
+        }
+
+        async function publishForumPost(title, content, author) {
+            if (!title || !content) throw new Error('标题和内容不能为空');
+            if (title.length > 100) throw new Error('标题不能超过100个字符');
+
+            const currentPosts = await fetchForumPosts();
+            if (currentPosts.length >= MAX_FORUM_POSTS) {
+                const sorted = [...currentPosts].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                const oldest = sorted[0];
+                await supabaseRequest(`/forum_posts?id=eq.${oldest.id}`, { method: 'DELETE' });
+            }
+
+            await supabaseRequest('/forum_posts', {
+                method: 'POST',
+                headers: { 'Prefer': 'return=representation' },
+                body: JSON.stringify({
+                    title: title.trim(),
+                    content: content.trim(),
+                    author: author,
+                    replies: []
+                })
+            });
+            return { success: true };
+        }
+
+        async function deleteForumPost(postId, currentUser) {
+            const id = parseInt(postId);
+            if (isNaN(id)) throw new Error('无效的帖子ID');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${id}`);
+            if (!posts || posts.length === 0) throw new Error('帖子不存在');
+
+            const post = posts[0];
+            const role = getRole(currentUser);
+
+            if (role === 'owner') {} else if (role === 'admin' || role === 'official' || role === 'teacher') {
+                if (post.author !== currentUser) throw new Error('你只能删除自己发布的帖子');
+            } else {
+                if (post.author !== currentUser) throw new Error('没有权限删除此帖子');
+            }
+
+            await supabaseRequest(`/forum_posts?id=eq.${id}`, { method: 'DELETE' });
+            return { success: true };
+        }
+
+        async function replyToPost(postId, content, author) {
+            if (!content || content.trim().length < 1) throw new Error('回复内容不能为空');
+
+            const id = parseInt(postId);
+            if (isNaN(id)) throw new Error('无效的帖子ID');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${id}`);
+            if (!posts || posts.length === 0) throw new Error('帖子不存在');
+
+            const post = posts[0];
+            const replies = post.replies || [];
+            replies.push({
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                author: author,
+                content: content.trim(),
+                created_at: new Date().toISOString()
+            });
+
+            await supabaseRequest(`/forum_posts?id=eq.${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ replies: replies })
+            });
+            return { success: true };
+        }
+
+        async function deleteReply(postId, replyId, currentUser) {
+            const id = parseInt(postId);
+            if (isNaN(id)) throw new Error('无效的帖子ID');
+
+            const posts = await supabaseRequest(`/forum_posts?id=eq.${id}`);
+            if (!posts || posts.length === 0) throw new Error('帖子不存在');
+
+            const post = posts[0];
+            const replies = post.replies || [];
+            const replyIndex = replies.findIndex(r => r.id === replyId);
+            if (replyIndex === -1) throw new Error('回复不存在');
+
+            const reply = replies[replyIndex];
+            const role = getRole(currentUser);
+
+            if (role === 'owner') {} else if (role === 'admin' || role === 'official' || role === 'teacher') {
+                if (reply.author !== currentUser && post.author !== currentUser) {
+                    throw new Error('没有权限删除此回复');
+                }
+            } else {
+                if (reply.author !== currentUser && post.author !== currentUser) {
+                    throw new Error('没有权限删除此回复');
+                }
+            }
+
+            replies.splice(replyIndex, 1);
+            await supabaseRequest(`/forum_posts?id=eq.${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ replies: replies })
+            });
+            return { success: true };
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function renderForum() {
+            const container = document.getElementById('forumPostList');
+            const badge = document.getElementById('forumBadge');
+            const currentUser = getCurrentUser();
+
+            try {
+                const posts = await fetchForumPosts();
+                forumPosts = posts;
+                badge.textContent = posts.length;
+
+                if (posts.length === 0) {
+                    container.innerHTML =
+                        `<div class="empty-forum"><i class="fas fa-comment-slash"></i>暂无帖子，快来发布第一条吧！</div>`;
+                    return;
+                }
+
+                const allAuthors = [...new Set(posts.flatMap(p => [p.author, ...(p.replies || []).map(r => r.author)]))];
+                const banCache = {};
+                for (const author of allAuthors) {
+                    banCache[author] = await isUsernameBanned(author);
+                }
+
+                const visibleCount = forumExpanded ? posts.length : Math.min(posts.length, MAX_VISIBLE_FORUM_POSTS);
+
+                let html = '';
+                posts.forEach((post, index) => {
+                    const isHidden = index >= visibleCount;
+                    const authorRole = getRole(post.author);
+                    const isAuthorBanned = banCache[post.author] || false;
+
+                    let authorClass = '';
+                    let tagHtml = '';
+                    if (isAuthorBanned) {
+                        authorClass = 'banned';
+                        tagHtml = '<span class="tag banned-tag">封禁用户</span>';
+                    } else if (authorRole === 'owner') {
+                        authorClass = 'owner';
+                        tagHtml = '<span class="tag owner-tag">站长</span>';
+                    } else if (authorRole === 'official') {
+                        authorClass = 'official';
+                        tagHtml = '<span class="tag official-tag">官方</span>';
+                    } else if (authorRole === 'teacher') {
+                        authorClass = 'teacher';
+                        tagHtml = '<span class="tag teacher-tag">老师</span>';
+                    } else if (authorRole === 'vip') {
+                        authorClass = 'vip';
+                        tagHtml = '<span class="tag vip-tag">VIP用户</span>';
+                    } else if (authorRole === 'admin') {
+                        authorClass = 'admin';
+                        tagHtml = '<span class="tag admin-tag">管理员</span>';
+                    }
+
+                    const canDeletePost = currentUser && (
+                        isOwner(currentUser) ||
+                        post.author === currentUser ||
+                        (isAdmin(currentUser) && post.author === currentUser) ||
+                        (isOfficial(currentUser) && post.author === currentUser) ||
+                        (isTeacher(currentUser) && post.author === currentUser)
+                    );
+
+                    const canReport = currentUser && !currentUserBanned;
+
+                    let repliesHtml = '';
+                    const replies = post.replies || [];
+                    if (replies.length > 0) {
+                        repliesHtml = `<div class="post-replies">`;
+                        replies.forEach(reply => {
+                            const replyAuthorRole = getRole(reply.author);
+                            const isReplyAuthorBanned = banCache[reply.author] || false;
+
+                            let replyTag = '';
+                            if (isReplyAuthorBanned) {
+                                replyTag = '<span class="tag banned-tag">封禁用户</span>';
+                            } else if (replyAuthorRole === 'owner') {
+                                replyTag = '<span class="tag owner-tag">站长</span>';
+                            } else if (replyAuthorRole === 'official') {
+                                replyTag = '<span class="tag official-tag">官方</span>';
+                            } else if (replyAuthorRole === 'teacher') {
+                                replyTag = '<span class="tag teacher-tag">老师</span>';
+                            } else if (replyAuthorRole === 'vip') {
+                                replyTag = '<span class="tag vip-tag">VIP用户</span>';
+                            } else if (replyAuthorRole === 'admin') {
+                                replyTag = '<span class="tag admin-tag">管理员</span>';
+                            }
+
+                            const canDeleteReply = currentUser && (
+                                isOwner(currentUser) ||
+                                reply.author === currentUser ||
+                                post.author === currentUser ||
+                                (isAdmin(currentUser) && reply.author === currentUser) ||
+                                (isOfficial(currentUser) && reply.author === currentUser) ||
+                                (isTeacher(currentUser) && reply.author === currentUser)
+                            );
+
+                            const reportReplyBtn = canReport ?
+                                `<button class="report-reply-btn" data-post-id="${post.id}" data-reply-id="${reply.id}"><i class="fas fa-flag"></i></button>` :
+                                '';
+
+                            repliesHtml += `
+                                <div class="reply-item" data-reply-id="${reply.id}">
+                                    <div class="reply-author">
+                                        ${reply.author} ${replyTag}
+                                        <span class="reply-time">${formatTime(reply.created_at)}</span>
+                                    </div>
+                                    <div class="reply-content">${escapeHtml(reply.content)}</div>
+                                    <div class="reply-actions">
+                                        ${canDeleteReply ? `<button class="delete-reply-btn" data-post-id="${post.id}" data-reply-id="${reply.id}">删除</button>` : ''}
+                                        ${reportReplyBtn}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        repliesHtml += `</div>`;
+                    }
+
+                    const replyFormHtml = currentUser && !currentUserBanned ? `
+                        <div class="reply-form" style="margin-top:8px;">
+                            <textarea placeholder="写回复..." class="reply-textarea" data-post-id="${post.id}" rows="2"></textarea>
+                            <div class="reply-actions">
+                                <button class="submit-reply-btn" data-post-id="${post.id}">回复</button>
+                                <button class="cancel-reply-btn" style="display:none;">取消</button>
+                            </div>
+                        </div>
+                    ` : '';
+
+                    const reportPostBtn = canReport ?
+                        `<button class="report-post-btn" data-post-id="${post.id}"><i class="fas fa-flag"></i> 举报</button>` :
+                        '';
+
+                    html += `
+                        <div class="forum-post ${isHidden ? 'forum-hidden' : ''}" data-id="${post.id}">
+                            <div class="post-header">
+                                <div class="post-author">
+                                    <span class="author-name ${authorClass}">${post.author}</span>
+                                    ${tagHtml}
+                                </div>
+                                <span class="post-time">${formatTime(post.created_at)}</span>
+                            </div>
+                            <div class="post-title">${escapeHtml(post.title)}</div>
+                            <div class="post-content">${escapeHtml(post.content)}</div>
+                            <div class="post-actions">
+                                ${currentUser && !currentUserBanned ? `<button class="reply-btn" data-post-id="${post.id}"><i class="fas fa-reply"></i> 回复</button>` : ''}
+                                ${canDeletePost ? `<button class="delete-post-btn" data-id="${post.id}"><i class="fas fa-trash"></i> 删除</button>` : ''}
+                                ${reportPostBtn}
+                            </div>
+                            ${repliesHtml}
+                            ${replyFormHtml}
+                        </div>
+                    `;
+                });
+
+                if (posts.length > MAX_VISIBLE_FORUM_POSTS) {
+                    const toggleText = forumExpanded ? '收起 ↑' :
+                        `展开查看更多 (${posts.length - MAX_VISIBLE_FORUM_POSTS} 条) ↓`;
+                    html += `<div class="forum-toggle"><button id="forumToggleBtn">${toggleText}</button></div>`;
+                }
+
+                container.innerHTML = html;
+
+                // 绑定事件
+                container.querySelectorAll('.delete-post-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (isNaN(id)) { showToast('❌ 无效的帖子ID', 'error'); return; }
+                        if (confirm('确定要删除此帖子吗？')) {
+                            try {
+                                await deleteForumPost(id, getCurrentUser());
+                                showToast('🗑️ 帖子已删除', 'success');
+                                await renderForum();
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.reply-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = parseInt(btn.dataset.postId);
+                        if (isNaN(postId)) { showToast('❌ 无效的帖子ID', 'error'); return; }
+                        const postEl = btn.closest('.forum-post');
+                        const replyForm = postEl.querySelector('.reply-form');
+                        if (replyForm) {
+                            replyForm.style.display = replyForm.style.display === 'none' ? 'block' :
+                            'none';
+                            if (replyForm.style.display !== 'none') {
+                                replyForm.querySelector('.reply-textarea').focus();
+                            }
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.submit-reply-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const postId = parseInt(btn.dataset.postId);
+                        if (isNaN(postId)) { showToast('❌ 无效的帖子ID', 'error'); return; }
+                        const postEl = btn.closest('.forum-post');
+                        const textarea = postEl.querySelector('.reply-textarea');
+                        const content = textarea.value.trim();
+                        if (!content) { showToast('⚠️ 请输入回复内容', 'error'); return; }
+
+                        try {
+                            await replyToPost(postId, content, getCurrentUser());
+                            showToast('✅ 回复成功', 'success');
+                            await renderForum();
+                        } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                    });
+                });
+
+                container.querySelectorAll('.delete-reply-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const postId = parseInt(btn.dataset.postId);
+                        const replyId = btn.dataset.replyId;
+                        if (isNaN(postId)) { showToast('❌ 无效的帖子ID', 'error'); return; }
+                        if (confirm('确定要删除此回复吗？')) {
+                            try {
+                                await deleteReply(postId, replyId, getCurrentUser());
+                                showToast('🗑️ 回复已删除', 'success');
+                                await renderForum();
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+                container.querySelectorAll('.report-post-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = parseInt(btn.dataset.postId);
+                        showReportContentModal('forum_post', postId);
+                    });
+                });
+
+                container.querySelectorAll('.report-reply-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const postId = parseInt(btn.dataset.postId);
+                        const replyId = btn.dataset.replyId;
+                        showReportContentModal('forum_reply', replyId);
+                    });
+                });
+
+                container.querySelectorAll('.reply-textarea').forEach(textarea => {
+                    textarea.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' && e.shiftKey) {
+                            e.preventDefault();
+                            const btn = textarea.closest('.reply-form').querySelector(
+                            '.submit-reply-btn');
+                            if (btn) btn.click();
+                        }
+                    });
+                });
+
+                const toggleBtn = document.getElementById('forumToggleBtn');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', () => {
+                        forumExpanded = !forumExpanded;
+                        renderForum();
+                    });
+                }
+
+            } catch (err) {
+                console.error('渲染讨论区失败:', err);
+                container.innerHTML =
+                    `<div class="empty-forum"><i class="fas fa-exclamation-triangle" style="color:#EF4444;"></i>加载失败: ${err.message}</div>`;
+            }
+        }
+
+        // ========================================================================
+        //  23. 管理员审核面板（含预览功能）
+        // ========================================================================
+        async function loadAdminPanel() {
+            const currentUser = getCurrentUser();
+            if (!currentUser || !isAdmin(currentUser)) return;
+
+            try {
+                const pendingFiles = await fetchFiles('pending');
+                if (pendingFiles.length === 0) return;
+
+                const announcementSection = document.querySelector('.announcement-section');
+                const existingPanel = document.getElementById('adminReviewPanel');
+                if (existingPanel) existingPanel.remove();
+
+                const panel = document.createElement('div');
+                panel.id = 'adminReviewPanel';
+                panel.style.cssText =
+                    `background: #FEF3C7; border-radius: 12px; padding: 12px 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border: 1px solid #FCD34D;`;
+                panel.innerHTML =
+                    `<span style="font-size:14px;font-weight:600;color:#92400E;"><i class="fas fa-clock" style="color:#D97706;"></i> 有 ${pendingFiles.length} 个文件待审核</span><button id="goToReviewBtn" style="padding:6px 20px;border:none;border-radius:8px;background:#D97706;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);"><i class="fas fa-eye"></i> 前往审核</button>`;
+                announcementSection.parentNode.insertBefore(panel, announcementSection);
+                document.getElementById('goToReviewBtn').addEventListener('click', () => { openReviewModal(); });
+            } catch (err) { console.error('加载审核面板失败:', err); }
+        }
+
+        function openReviewModal() {
+            const overlay = document.createElement('div');
+            overlay.id = 'reviewModal';
+            overlay.style.cssText =
+                `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
+            const modal = document.createElement('div');
+            modal.style.cssText =
+                `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 700px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); display: flex; flex-direction: column; animation: scaleIn 0.3s ease; position: relative;`;
+            modal.innerHTML =
+                `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:20px;font-weight:700;"><i class="fas fa-clipboard-check" style="color:var(--primary);"></i> 文件审核中心</h3><button id="closeReviewBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div id="reviewList" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;"><div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div></div>`;
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            document.getElementById('closeReviewBtn').addEventListener('click', () => { overlay.remove(); });
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+            loadPendingReviews();
+        }
+
+        async function loadPendingReviews() {
+            const list = document.getElementById('reviewList');
+            try {
+                const pendingFiles = await fetchFiles('pending');
+                if (pendingFiles.length === 0) {
+                    list.innerHTML =
+                        `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无待审核文件</div>`;
+                    return;
+                }
+                const currentUser = getCurrentUser();
+                list.innerHTML = pendingFiles.map(file => {
+                    const category = file.category || '其他';
+                    return `
+                    <div style="background:#f8fafc;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0;">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+                            <div>
+                                <div style="font-weight:600;font-size:15px;">${file.file_name}</div>
+                                <div style="font-size:13px;color:var(--text-light);">
+                                    ${formatSize(file.file_size)} · 上传者: ${file.uploaded_by}
+                                    <span style="margin-left:10px;">📂 ${category}</span>
+                                    <span style="margin-left:10px;">${formatTime(file.created_at)}</span>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                <button class="review-preview-btn" data-id="${file.id}" style="padding:4px 10px;border:none;border-radius:6px;background:rgba(91,106,240,0.08);color:var(--primary);font-weight:500;cursor:pointer;font-family:var(--font);font-size:11px;">
+                                    <i class="fas fa-eye"></i> 预览
+                                </button>
+                                <button class="review-approve-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#22C55E;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">✅ 通过</button>
+                                <button class="review-reject-btn" data-id="${file.id}" style="padding:4px 14px;border:none;border-radius:6px;background:#EF4444;color:#fff;font-weight:600;cursor:pointer;font-family:var(--font);font-size:12px;">❌ 拒绝</button>
+                            </div>
+                        </div>
+                    </div>
+                `}).join('');
+
+                // 预览按钮事件
+                list.querySelectorAll('.review-preview-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        const file = allFiles.find(f => f.id === id);
+                        if (!file) { showToast('文件不存在', 'error'); return; }
+
+                        const ext = (file.file_name || '').split('.').pop().toLowerCase();
+                        const url =
+                            `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${file.file_path}`;
+
+                        if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(ext)) {
+                            window.open(url, '_blank');
+                            return;
+                        }
+                        if (ext === 'pdf') {
+                            window.open(url, '_blank');
+                            return;
+                        }
+                        if (['txt', 'md', 'json', 'xml', 'html', 'css', 'js', 'csv', 'log'].includes(ext)) {
+                            try {
+                                const response = await fetch(url, {
+                                    headers: {
+                                        'apikey': SUPABASE_ANON_KEY,
+                                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                                    }
+                                });
+                                const text = await response.text();
+                                const previewWindow = window.open('', '_blank');
+                                previewWindow.document.write(`
+                                    <html><head><title>预览 ${file.file_name}</title>
+                                    <style>body{font-family:monospace;padding:20px;white-space:pre-wrap;word-break:break-word;background:#f8fafc;}</style>
+                                    </head><body>${text}</body></html>
+                                `);
+                                previewWindow.document.close();
+                            } catch (err) {
+                                showToast('❌ 预览失败', 'error');
+                            }
+                            return;
+                        }
+                        showToast('📥 该类型不支持预览，请下载查看', 'info', 2000);
+                        window.open(url, '_blank');
+                    });
+                });
+
+                list.querySelectorAll('.review-approve-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        if (confirm('确定要通过此文件吗？')) {
+                            try {
+                                await updateFileStatus(id, 'approved', getCurrentUser());
+                                showToast('✅ 已通过审核', 'success');
+                                loadPendingReviews();
+                                await refreshAll();
+                            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.review-reject-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = parseInt(btn.dataset.id);
+                        const reason = prompt('请输入拒绝原因（可选）：');
+                        if (reason === null) return;
+                        try {
+                            await updateFileStatus(id, 'rejected', getCurrentUser(), reason || '未说明原因');
+                            const file = allFiles.find(f => f.id === id);
+                            if (file && file.file_path) await deleteFileFromStorage(file.file_path);
+                            await deleteFileRecord(id);
+                            showToast('❌ 已拒绝并删除文件', 'success');
+                            loadPendingReviews();
+                            await refreshAll();
+                        } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+                    });
+                });
+
+            } catch (err) {
+                list.innerHTML =
+                    `<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-exclamation-triangle" style="font-size:32px;color:#EF4444;display:block;margin-bottom:8px;"></i>加载失败: ${err.message}</div>`;
+            }
+        }
+
+        // ========================================================================
+        //  24. 删除文件相关
+        // ========================================================================
+        let deleteFileTargetId = null;
+
+        function showDeleteFileModal(id, name, uploader) {
+            deleteFileTargetId = id;
+            const currentUser = getCurrentUser();
+            let msg = `确定要删除文件 "${name}" 吗？`;
+            if (isOwner(currentUser) && uploader !== currentUser) msg =
+                `👑 站长权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
+            else if (isAdmin(currentUser) && uploader !== currentUser && !isOwner(uploader)) msg =
+                `🔑 管理员权限：确定要删除 "${uploader}" 上传的文件 "${name}" 吗？`;
+            document.getElementById('deleteModalMsg').textContent = msg;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function hideDeleteFileModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            deleteFileTargetId = null;
+        }
+
+        async function confirmDeleteFile() {
+            if (deleteFileTargetId === null) return;
+            try {
+                const file = allFiles.find(f => f.id === deleteFileTargetId);
+                if (file && file.file_path) await deleteFileFromStorage(file.file_path);
+                await deleteFileRecord(deleteFileTargetId);
+                showToast('🗑️ 文件已删除', 'success', 1500);
+                await refreshAll();
+            } catch (err) { console.error(err);
+                showToast('删除失败', 'error'); }
+            hideDeleteFileModal();
+        }
+
+        // ========================================================================
+        //  25. 删除公告相关
+        // ========================================================================
+        let deleteAnnouncementTargetId = null;
+
+        function showDeleteAnnouncementModal(id, title, author) {
+            deleteAnnouncementTargetId = id;
+            document.getElementById('deleteAnnouncementMsg').textContent =
+                `确定要删除公告 "${title}" 吗？${isOwner(getCurrentUser()) && author !== getCurrentUser() ? `\n👑 站长权限：此公告由 "${author}" 发布` : ''}`;
+            document.getElementById('deleteAnnouncementModal').classList.add('active');
+        }
+
+        function hideDeleteAnnouncementModal() {
+            document.getElementById('deleteAnnouncementModal').classList.remove('active');
+            deleteAnnouncementTargetId = null;
+        }
+
+        async function confirmDeleteAnnouncement() {
+            if (deleteAnnouncementTargetId === null) return;
+            const currentUser = getCurrentUser();
+            try {
+                await deleteAnnouncement(deleteAnnouncementTargetId, currentUser);
+                showToast('🗑️ 公告已删除', 'success', 1500);
+                await loadAnnouncements();
+            } catch (err) { console.error(err);
+                showToast(`❌ ${err.message}`, 'error'); }
+            hideDeleteAnnouncementModal();
+        }
+
+        // ========================================================================
+        //  26. 加载公告
+        // ========================================================================
+        async function loadAnnouncements() {
+            try {
+                announcements = await fetchAnnouncements();
+                await renderAnnouncements();
+            } catch (err) { console.error('加载公告失败:', err);
+                showToast('加载公告失败', 'error'); }
+        }
+
+        // ========================================================================
+        //  27. 封禁用户
+        // ========================================================================
+        let banUserTarget = null;
+
+        function showBanUserModal(username, userId) {
+            banUserTarget = { username, userId };
+            document.getElementById('banUserTargetName').textContent = username;
+            document.getElementById('banUserReason').value = '';
+            document.getElementById('banUserModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideBanUserModal() {
+            document.getElementById('banUserModal').classList.remove('active');
+            document.body.style.overflow = '';
+            banUserTarget = null;
+        }
+
+        async function confirmBanUser() {
+            const reason = document.getElementById('banUserReason').value.trim();
+            if (!reason) { showToast('⚠️ 请填写封禁原因', 'error'); return; }
+
+            const currentUser = getCurrentUser();
+            if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
+
+            const btn = document.getElementById('banUserConfirmBtn');
+            btn.disabled = true;
+            btn.textContent = '封禁中...';
+
+            try {
+                await banUserById(banUserTarget.userId, currentUser);
+                await addBanRecord(banUserTarget.username, currentUser, reason);
+                showToast(`✅ 已封禁用户 ${banUserTarget.username}`, 'success', 3000);
+                hideBanUserModal();
+                fileUploaderBanCache = {};
+                announcementAuthorBanCache = {};
+                await refreshAll();
+            } catch (err) {
+                showToast(`❌ ${err.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '确认封禁';
+            }
+        }
+
+        // ========================================================================
+        //  28. 用户列表
+        // ========================================================================
+        async function getUserList() {
+            try {
+                const users = await supabaseRequest('/users?select=id,username');
+                if (users && users.success !== true) return Array.isArray(users) ? users : [];
+                return [];
+            } catch (err) { console.error('获取用户列表失败:', err); return []; }
+        }
+
+        // ========================================================================
+        //  29. 管理按钮事件
+        // ========================================================================
+        function setupAdminButtons() {
+            document.getElementById('adminReviewBtn').addEventListener('click', () => { openReviewModal(); });
+            document.getElementById('adminBanBtn').addEventListener('click', () => { showBanUserSelector(); });
+            document.getElementById('adminReportsBtn').addEventListener('click', () => { openReportsReview(); });
+            document.getElementById('adminNotifBtn').addEventListener('click', showSendNotificationModal);
+        }
+
+        // ========================================================================
+        //  30. 封禁用户选择器
+        // ========================================================================
+        async function showBanUserSelector() {
+            try {
+                const users = await getUserList();
+                const currentUser = getCurrentUser();
+
+                const bannedUsers = await supabaseRequest('/user_bans?is_banned=eq.true');
+                const bannedIds = new Set();
+                if (bannedUsers && bannedUsers.length > 0) bannedUsers.forEach(b => bannedIds.add(b.user_id));
+
+                const availableUsers = users.filter(u =>
+                    u.username !== currentUser && !isAdmin(u.username) && !bannedIds.has(u.id)
+                );
+
+                if (availableUsers.length === 0) { showToast('暂无普通用户可封禁', 'info'); return; }
+
+                const overlay = document.createElement('div');
+                overlay.style.cssText =
+                    `position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;`;
+                const modal = document.createElement('div');
+                modal.style.cssText =
+                    `background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 400px; width: 92%; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease;`;
+                modal.innerHTML =
+                    `<h3 style="font-size:18px;font-weight:700;margin-bottom:12px;"><i class="fas fa-user-slash" style="color:#EF4444;"></i> 选择要封禁的用户</h3><div style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;">${availableUsers.map(u => `<button class="ban-user-select-btn" data-id="${u.id}" data-username="${u.username}" style="padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;background:#f8fafc;font-size:14px;cursor:pointer;transition:var(--transition);font-family:var(--font);text-align:left;"><i class="fas fa-user"></i> ${u.username} (ID: ${u.id})</button>`).join('')}</div><div style="margin-top:12px;text-align:right;"><button id="banUserSelectorClose" style="padding:6px 20px;border:none;border-radius:8px;background:#F1F3F5;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);">取消</button></div>`;
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+
+                modal.querySelectorAll('.ban-user-select-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const userId = parseInt(btn.dataset.id);
+                        const username = btn.dataset.username;
+                        overlay.remove();
+                        showBanUserModal(username, userId);
+                    });
+                });
+                document.getElementById('banUserSelectorClose').addEventListener('click', () => { overlay.remove(); });
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+            } catch (err) { showToast(`❌ ${err.message}`, 'error'); }
+        }
+
+        // ========================================================================
+        //  31. 刷新所有数据
+        // ========================================================================
+        async function refreshAll() {
+            try {
+                const currentUser = getCurrentUser();
+                const userId = getCurrentUserId();
+                if (userId) currentUserBanned = await isUserBanned(userId);
+                else currentUserBanned = false;
+
+                const files = await fetchFiles();
+                allFiles = Array.isArray(files) ? files : [];
+                await renderFiles(allFiles);
+                await loadAnnouncements();
+                await renderForum();
+                await updateNotificationBanner();
+
+                const usage = await getStorageUsage();
+                updateStorageUI(usage);
+                updateUI();
+
+                if (currentUser && isAdmin(currentUser)) await loadAdminPanel();
+            } catch (err) {
+                console.error('刷新数据失败:', err);
+                showToast('刷新数据失败: ' + err.message, 'error');
+            }
+        }
+
+        // ========================================================================
+        //  32. 更新存储用量 UI
+        // ========================================================================
+        function updateStorageUI(usage) {
+            const fill = document.getElementById('storageFill');
+            const text = document.getElementById('storageText');
+            if (!fill || !text) return;
+
+            const usedMB = usage.used / (1024 * 1024);
+            const totalMB = usage.total / (1024 * 1024);
+            const percent = (usage.used / usage.total) * 100;
+
+            fill.style.width = Math.min(percent, 100) + '%';
+            if (percent > 80) fill.className = 'fill danger';
+            else if (percent > 60) fill.className = 'fill warning';
+            else fill.className = 'fill';
+            text.textContent = `${formatSizeSimple(usage.used)} / ${formatSizeSimple(usage.total)}`;
+        }
+
+        // ========================================================================
+        //  33. UI 更新
+        // ========================================================================
+        function updateUI() {
+            const loggedIn = isLoggedIn();
+            const username = getCurrentUser();
+            const userId = getCurrentUserId();
+
+            const guestButtons = document.getElementById('guestButtons');
+            const userInfo = document.getElementById('userInfo');
+            const currentUsername = document.getElementById('currentUsername');
+            const currentUserIdEl = document.getElementById('currentUserId');
+            const usernameDisplay = document.getElementById('usernameDisplay');
+            const loginStatusText = document.getElementById('loginStatusText');
+            const adminButtons = document.getElementById('adminButtons');
+
+            if (loggedIn && username) {
+                if (guestButtons) guestButtons.classList.add('hidden');
+                if (userInfo) userInfo.classList.remove('hidden');
+                if (currentUserIdEl) currentUserIdEl.textContent = `ID: ${userId || '--'}`;
+
+                const role = getRole(username);
+                const isBanned = currentUserBanned;
+
+                if (usernameDisplay) {
+                    if (isBanned) {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-ban" style="color:var(--banned-color);"></i><span class="banned-name">${username}</span><span class="banned-tag">封禁用户</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'owner') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-crown" style="color:var(--owner-color);"></i><span class="owner-name">${username}</span><span class="owner-tag">站长</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'official') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-badge-check" style="color:var(--official-color);"></i><span class="official-name">${username}</span><span class="official-tag">官方</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'teacher') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-chalkboard-teacher" style="color:var(--teacher-color);"></i><span class="teacher-name">${username}</span><span class="teacher-tag">老师</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'vip') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-star" style="color:var(--vip-color);"></i><span class="vip-name">${username}</span><span class="vip-tag">VIP用户</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else if (role === 'admin') {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-user-shield" style="color:var(--admin-color);"></i><span class="admin-name">${username}</span><span class="admin-tag">管理员</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    } else {
+                        usernameDisplay.innerHTML =
+                            `<i class="fas fa-user-circle"></i><span>${username}</span><span class="user-id">ID: ${userId || '--'}</span>`;
+                    }
+                }
+
+                if (adminButtons) {
+                    if (role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher') {
+                        adminButtons.style.display = 'flex';
+                        setupAdminButtons();
+                    } else {
+                        adminButtons.style.display = 'none';
+                    }
+                }
+
+                if (loginStatusText) loginStatusText.textContent = `✅ ${username}${isBanned ? ' (已封禁)' : ''}`;
+
+                const forumForm = document.getElementById('forumPostForm');
+                if (forumForm) {
+                    forumForm.style.display = isBanned ? 'none' : 'block';
+                }
+
+            } else {
+                if (guestButtons) guestButtons.classList.remove('hidden');
+                if (userInfo) userInfo.classList.add('hidden');
+                if (adminButtons) adminButtons.style.display = 'none';
+                if (loginStatusText) loginStatusText.textContent = '🔒 未登录';
+                const forumForm = document.getElementById('forumPostForm');
+                if (forumForm) forumForm.style.display = 'none';
+            }
+        }
+
+        // ========================================================================
+        //  34. 认证模态框控制
+        // ========================================================================
+        let currentAuthMode = 'login';
+
+        function openAuthModal(mode = 'login') {
+            currentAuthMode = mode;
+            const modal = document.getElementById('authModal');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            if (!modal) return;
+
+            if (mode === 'login') {
+                if (loginForm) loginForm.classList.remove('hidden');
+                if (registerForm) registerForm.classList.add('hidden');
+                document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            } else {
+                if (loginForm) loginForm.classList.add('hidden');
+                if (registerForm) registerForm.classList.remove('hidden');
+                document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            }
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            if (modal) modal.classList.remove('active');
+            document.body.style.overflow = '';
+            document.querySelectorAll('#authModal input').forEach(el => el.value = '');
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+        }
+
+        // ========================================================================
+        //  35. 文件上传（含分类）
+        // ========================================================================
+        let selectedCategory = '语文';
+
+        async function handleUploadFiles(fileList) {
+            if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
+            if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
+
+            const currentUser = getCurrentUser();
+            const container = document.getElementById('progressContainer');
+            if (!container) return;
+            container.classList.add('active');
+
+            // 获取选中的分类
+            const selectedCatEl = document.querySelector('.category-selector .cat-option.selected');
+            const category = selectedCatEl ? selectedCatEl.dataset.cat : '其他';
+
+            for (const file of Array.from(fileList)) {
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast(`❌ ${file.name} 超过 10MB 限制，请压缩后重试`, 'error');
+                    continue;
+                }
+
+                const item = document.createElement('div');
+                item.className = 'upload-progress-item';
+                const ext = file.name.split('.').pop() || '';
+                const emoji = getFileEmoji(ext);
+                item.innerHTML =
+                    `<span class="file-icon">${emoji}</span><div class="info"><div class="name text-ellipsis">${file.name}</div><div class="size">${formatSize(file.size)}</div></div><div class="progress-track"><div class="fill" style="width:0%;"></div></div><span class="status">0%</span>`;
+                container.appendChild(item);
+
+                try {
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 10 + 5;
+                        if (progress >= 90) { clearInterval(interval);
+                            progress = 90; }
+                        const fill = item.querySelector('.fill');
+                        const status = item.querySelector('.status');
+                        fill.style.width = Math.min(progress, 90) + '%';
+                        status.textContent = Math.min(progress, 90) + '%';
+                    }, 200);
+
+                    const fileName = file.name;
+                    const uploadResult = await uploadFileToStorage(file, fileName);
+                    clearInterval(interval);
+
+                    const fileData = {
+                        file_name: fileName,
+                        file_size: file.size,
+                        file_type: ext || 'unknown',
+                        file_path: uploadResult.filePath,
+                        uploaded_by: currentUser,
+                        status: 'pending',
+                        is_admin: isAdmin(currentUser),
+                        category: category
+                    };
+                    await createFileRecord(fileData);
+
+                    const fill = item.querySelector('.fill');
+                    const status = item.querySelector('.status');
+                    fill.style.width = '100%';
+                    status.textContent = '⏳ 待审核';
+                    status.style.color = '#D97706';
+                    showToast(`✅ ${fileName} 已上传 (${category})，等待审核`, 'success', 3000);
+
+                    if (isAdmin(currentUser)) {
+                        const files = await fetchFiles();
+                        const newFile = files.find(f => f.file_name === fileName && f.uploaded_by === currentUser);
+                        if (newFile) {
+                            await updateFileStatus(newFile.id, 'approved', currentUser);
+                            showToast(`✅ ${fileName} 已自动通过审核（管理员）`, 'success', 2000);
+                        }
+                    }
+                } catch (err) {
+                    console.error(err);
+                    const status = item.querySelector('.status');
+                    status.textContent = '❌ 失败';
+                    status.style.color = '#EF4444';
+                    showToast(`❌ ${file.name} 上传失败: ${err.message}`, 'error');
+                }
+            }
+
+            setTimeout(async () => {
+                await refreshAll();
+                setTimeout(() => { container.innerHTML = '';
+                    container.classList.remove('active'); }, 400);
+            }, 600);
+        }
+
+        // ========================================================================
+        //  36. 初始化
+        // ========================================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initStorage();
+
+            // 分类选择器事件
+            document.querySelectorAll('.category-selector .cat-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.category-selector .cat-option').forEach(b => b.classList
+                        .remove('selected'));
+                    btn.classList.add('selected');
+                    selectedCategory = btn.dataset.cat;
+                });
+            });
+
+            // 分类筛选事件
+            document.querySelectorAll('#categoryFilter .cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#categoryFilter .cat-btn').forEach(b => b.classList.remove(
+                        'active'));
+                    btn.classList.add('active');
+                    currentCategory = btn.dataset.category;
+                    renderFiles(allFiles);
+                });
+            });
+
+            try { await refreshAll(); } catch (err) {
+                console.error('初始化加载失败:', err);
+                showToast('加载失败: ' + err.message, 'error', 5000);
+            }
+
+            // ---- 顶栏按钮 ----
+            document.getElementById('showLoginBtn').addEventListener('click', () => openAuthModal('login'));
+            document.getElementById('showRegisterBtn').addEventListener('click', () => openAuthModal('register'));
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                clearSession();
+                currentUserBanned = false;
+                fileUploaderBanCache = {};
+                announcementAuthorBanCache = {};
+                userNotifications = [];
+                showToast('👋 已登出', 'info', 1500);
+                refreshAll();
+            });
+
+            // ---- 模态框切换 ----
+            document.getElementById('switchToRegister').addEventListener('click', (e) => { e.preventDefault();
+                openAuthModal('register'); });
+            document.getElementById('switchToLogin').addEventListener('click', (e) => { e.preventDefault();
+                openAuthModal('login'); });
+            document.getElementById('authModalClose').addEventListener('click', closeAuthModal);
+
+            document.getElementById('authModal').addEventListener('click', (e) => { if (e.target === e.currentTarget)
+                    closeAuthModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAuthModal(); });
+
+            // ---- 封禁记录 ----
+            document.getElementById('showBanRecordsBtn').addEventListener('click', showBanRecords);
+            document.getElementById('banRecordsModalClose').addEventListener('click', hideBanRecords);
+            document.getElementById('banRecordsModalCloseBtn').addEventListener('click', hideBanRecords);
+            document.getElementById('banRecordsModal').addEventListener('click', (e) => { if (e.target === e
+                    .currentTarget) hideBanRecords(); });
+
+            // ---- 登录 ----
+            document.getElementById('loginSubmitBtn').addEventListener('click', async () => {
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value;
+
+                const usernameError = document.getElementById('loginUsernameError');
+                const passwordError = document.getElementById('loginPasswordError');
+
+                if (usernameError) usernameError.classList.remove('show');
+                if (passwordError) passwordError.classList.remove('show');
+
+                if (!username) {
+                    if (usernameError) { usernameError.textContent = '请输入用户名';
+                        usernameError.classList.add('show'); }
+                    return;
+                }
+                if (!password) {
+                    if (passwordError) { passwordError.textContent = '请输入密码';
+                        passwordError.classList.add('show'); }
+                    return;
+                }
+
+                const btn = document.getElementById('loginSubmitBtn');
+                btn.disabled = true;
+                btn.textContent = '登录中...';
+
+                try {
+                    const result = await login(username, password);
+                    closeAuthModal();
+                    const role = getRole(username);
+                    const roleText = role === 'owner' ? '👑 站长' : role === 'official' ? '🏛️ 官方' : role === 'teacher' ?
+                        '👨‍🏫 老师' : role === 'vip' ? '⭐ VIP用户' : role === 'admin' ? '🔑 管理员' : '👤 用户';
+                    showToast(`✅ 欢迎回来，${username}！(${roleText})`, 'success', 2000);
+                    fileUploaderBanCache = {};
+                    announcementAuthorBanCache = {};
+                    await refreshAll();
+                } catch (err) {
+                    showToast(`❌ ${err.message}`, 'error', 3000);
+                    if (err.message.includes('被封禁')) {
+                        if (passwordError) { passwordError.textContent = err.message;
+                            passwordError.classList.add('show'); }
+                    } else if (err.message.includes('用户名或密码')) {
+                        if (passwordError) { passwordError.textContent = err.message;
+                            passwordError.classList.add('show'); }
+                    }
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = '登 录';
+                }
+            });
+
+            document.getElementById('loginPassword').addEventListener('keydown', (e) => { if (e.key === 'Enter' &&
+                    document.getElementById('loginSubmitBtn')) document.getElementById('loginSubmitBtn').click(); });
+            document.getElementById('loginUsername').addEventListener('keydown', (e) => { if (e.key === 'Enter' &&
+                    document.getElementById('loginSubmitBtn')) document.getElementById('loginSubmitBtn').click(); });
+
+            // ---- 注册 ----
+            document.getElementById('registerSubmitBtn').addEventListener('click', async () => {
+                const username = document.getElementById('registerUsername').value.trim();
+                const password = document.getElementById('registerPassword').value;
+                const confirm = document.getElementById('registerPasswordConfirm').value;
+
+                const usernameError = document.getElementById('registerUsernameError');
+                const passwordError = document.getElementById('registerPasswordError');
+                const confirmError = document.getElementById('registerPasswordConfirmError');
+
+                if (usernameError) usernameError.classList.remove('show');
+                if (passwordError) passwordError.classList.remove('show');
+                if (confirmError) confirmError.classList.remove('show');
+
+                if (!username || username.length < 3) {
+                    if (usernameError) { usernameError.textContent = '用户名至少 3 个字符';
+                        usernameError.classList.add('show'); }
+                    return;
+                }
+                if (!password || password.length < 6) {
+                    if (passwordError) { passwordError.textContent = '密码至少 6 位';
+                        passwordError.classList.add('show'); }
+                    return;
+                }
+                if (password !== confirm) {
+                    if (confirmError) { confirmError.textContent = '两次输入密码不一致';
+                        confirmError.classList.add('show'); }
+                    return;
+                }
+
+                const btn = document.getElementById('registerSubmitBtn');
+                btn.disabled = true;
+                btn.textContent = '注册中...';
+
+                try {
+                    await register(username, password, confirm);
+                    closeAuthModal();
+                    showToast(`🎉 注册成功！请登录`, 'success', 2000);
+                    openAuthModal('login');
+                    document.getElementById('loginUsername').value = username;
+                } catch (err) {
+                    showToast(`❌ ${err.message}`, 'error', 3000);
+                    if (err.message.includes('用户名')) {
+                        if (usernameError) { usernameError.textContent = err.message;
+                            usernameError.classList.add('show'); }
+                    }
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = '注 册';
+                }
+            });
+
+            document.getElementById('registerPasswordConfirm').addEventListener('keydown', (e) => { if (e.key ===
+                    'Enter' && document.getElementById('registerSubmitBtn')) document.getElementById(
+                    'registerSubmitBtn').click(); });
+
+            // ---- 公告发布 ----
+            document.getElementById('publishAnnouncementBtn').addEventListener('click', async () => {
+                const title = document.getElementById('announcementTitle').value.trim();
+                const content = document.getElementById('announcementContent').value.trim();
+                const currentUser = getCurrentUser();
+
+                if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
+                if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法发布公告', 'error'); return; }
+
+                const role = getRole(currentUser);
+                if (role !== 'admin' && role !== 'owner' && role !== 'official' && role !== 'teacher') {
+                    showToast('⚠️ 只有管理员、老师可以发布公告', 'error');
+                    return;
+                }
+
+                if (!title || !content) { showToast('⚠️ 标题和内容不能为空', 'error'); return; }
+
+                const btn = document.getElementById('publishAnnouncementBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+
+                try {
+                    await publishAnnouncement(title, content, currentUser);
+                    showToast('✅ 公告发布成功！', 'success', 2000);
+                    document.getElementById('announcementTitle').value = '';
+                    document.getElementById('announcementContent').value = '';
+                    await loadAnnouncements();
+                } catch (err) { showToast(`❌ ${err.message}`, 'error'); } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布公告';
+                }
+            });
+
+            document.getElementById('cancelAnnouncementBtn').addEventListener('click', () => {
+                document.getElementById('announcementTitle').value = '';
+                document.getElementById('announcementContent').value = '';
+            });
+
+            // ---- 刷新公告 ----
+            document.getElementById('refreshAnnouncementsBtn').addEventListener('click', async () => {
+                const btn = document.getElementById('refreshAnnouncementsBtn');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                btn.disabled = true;
+                await loadAnnouncements();
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
+                btn.disabled = false;
+                showToast('✅ 公告已刷新', 'success', 1000);
+            });
+
+            // ---- 讨论区发布帖子 ----
+            document.getElementById('publishForumPostBtn').addEventListener('click', async () => {
+                const title = document.getElementById('forumPostTitle').value.trim();
+                const content = document.getElementById('forumPostContent').value.trim();
+                const currentUser = getCurrentUser();
+
+                if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
+                if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法发布帖子', 'error'); return; }
+
+                if (!title || !content) { showToast('⚠️ 标题和内容不能为空', 'error'); return; }
+
+                const btn = document.getElementById('publishForumPostBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发布中...';
+
+                try {
+                    await publishForumPost(title, content, currentUser);
+                    showToast('✅ 帖子发布成功！', 'success', 2000);
+                    document.getElementById('forumPostTitle').value = '';
+                    document.getElementById('forumPostContent').value = '';
+                    await renderForum();
+                } catch (err) { showToast(`❌ ${err.message}`, 'error'); } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> 发布帖子';
+                }
+            });
+
+            // ---- 上传 ----
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('fileInput');
+
+            uploadZone.addEventListener('click', () => {
+                if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
+                if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
+                fileInput.click();
+            });
+
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                if (isLoggedIn() && !currentUserBanned) uploadZone.classList.add('dragover');
+            });
+            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
+                if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
+                if (e.dataTransfer.files.length > 0) handleUploadFiles(e.dataTransfer.files);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleUploadFiles(e.target.files);
+                    e.target.value = '';
+                }
+            });
+
+            // ---- 搜索 ----
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                renderFiles(allFiles);
+            });
+
+            // ---- 筛选 ----
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderFiles(allFiles);
+                });
+            });
+
+            // ---- Tab 切换 ----
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const tab = btn.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList
+                        .add('active');
+                    if (tab === 'forum') renderForum();
+                });
+            });
+
+            // ---- 刷新 ----
+            document.getElementById('refreshBtn').addEventListener('click', async () => {
+                const btn = document.getElementById('refreshBtn');
+                btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> 刷新中...';
+                btn.disabled = true;
+                fileUploaderBanCache = {};
+                announcementAuthorBanCache = {};
+                await refreshAll();
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
+                btn.disabled = false;
+                showToast('✅ 已刷新', 'success', 1000);
+            });
+
+            // ---- 删除模态框 ----
+            document.getElementById('modalCancelBtn').addEventListener('click', hideDeleteFileModal);
+            document.getElementById('modalConfirmBtn').addEventListener('click', confirmDeleteFile);
+            document.getElementById('deleteModal').addEventListener('click', (e) => { if (e.target === e.currentTarget)
+                    hideDeleteFileModal(); });
+
+            document.getElementById('deleteAnnouncementCancelBtn').addEventListener('click', hideDeleteAnnouncementModal);
+            document.getElementById('deleteAnnouncementConfirmBtn').addEventListener('click', confirmDeleteAnnouncement);
+            document.getElementById('deleteAnnouncementModal').addEventListener('click', (e) => { if (e.target === e
+                    .currentTarget) hideDeleteAnnouncementModal(); });
+
+            document.getElementById('banUserModalClose').addEventListener('click', hideBanUserModal);
+            document.getElementById('banUserCancelBtn').addEventListener('click', hideBanUserModal);
+            document.getElementById('banUserConfirmBtn').addEventListener('click', confirmBanUser);
+            document.getElementById('banUserModal').addEventListener('click', (e) => { if (e.target === e.currentTarget)
+                    hideBanUserModal(); });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    hideDeleteFileModal();
+                    hideDeleteAnnouncementModal();
+                    hideBanUserModal();
+                    hideBanRecords();
+                    closeAuthModal();
+                }
+            });
+
+            console.log('✅ 2510班资源站已启动！（VIP用户+通知横幅版）');
+            console.log(`👤 当前用户: ${getCurrentUser() || '未登录'}`);
+            console.log(`👑 站长: ${OWNER_USER}`);
+            console.log(`🏛️ 官方账号: ${OFFICIAL_USERS.join(', ')}`);
+            console.log(`👨‍🏫 老师: ${TEACHER_USERS.join(', ')}`);
+            console.log(`⭐ VIP用户: ${VIP_USERS.join(', ')}`);
+            console.log(`📂 分类: ${CATEGORIES.join(', ')}`);
+        });
     </script>
 
 </body>
