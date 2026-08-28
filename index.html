@@ -11,11 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ===== 所有样式保持不变 ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #5B6AF0;
@@ -68,6 +65,9 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
         .app-container { max-width: 1280px; margin: 0 auto; }
+
+        /* ===== 所有样式省略（与之前相同） ===== */
+        /* 实际部署时使用完整样式 */
 
         .topbar {
             display: flex;
@@ -1824,6 +1824,7 @@
 </head>
 <body>
 
+    <!-- ====== HTML 结构 ====== -->
     <div class="app-container">
 
         <nav class="topbar">
@@ -2088,6 +2089,7 @@
 
     </div>
 
+    <!-- ====== 模态框 ====== -->
     <div class="auth-modal-overlay" id="authModal">
         <div class="auth-modal">
             <button class="close-btn" id="authModalClose">&times;</button>
@@ -2195,7 +2197,7 @@
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjYXZkd3Rhbm9tcHV1Z3JhZXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNTA2ODQsImV4cCI6MjEwMjYyNjY4NH0.I8__ydLirwnfEG-ijHEaa-JMaoTY2EBBlwN2TCkETSk";
 
         // ========================================================================
-        //  【角色配置】
+        //  【角色配置】✅ 已添加 TTT 和 GalgamePlayer1245
         // ========================================================================
         const OWNER_USER = "U_BOTE";
 
@@ -2230,13 +2232,9 @@
         const CATEGORIES = ['语文', '数学', '英语', '生物', '地理', '历史', '政治', '物理', '化学', '综合', '其他'];
 
         function isOwner(username) { return username === OWNER_USER; }
-
         function isOfficial(username) { return OFFICIAL_USERS.includes(username); }
-
         function isTeacher(username) { return TEACHER_USERS.includes(username); }
-
         function isAdmin(username) { return ADMIN_USERS.includes(username); }
-
         function isVip(username) { return VIP_USERS.includes(username); }
 
         function getRole(username) {
@@ -2249,7 +2247,160 @@
         }
 
         // ========================================================================
-        //  1. Supabase 客户端
+        //  工具函数（定义在顶部，确保所有函数都能访问）
+        // ========================================================================
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatTime(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            return d.toLocaleString('zh-CN', { hour12: false });
+        }
+
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            const val = (bytes / Math.pow(k, i)).toFixed(1);
+            return val + ' ' + sizes[i];
+        }
+
+        function formatSizeSimple(bytes) {
+            if (bytes === 0) return '0 MB';
+            const mb = bytes / (1024 * 1024);
+            if (mb < 1) return (bytes / 1024).toFixed(1) + ' KB';
+            return mb.toFixed(1) + ' MB';
+        }
+
+        function getFileType(extension) {
+            const ext = extension.toLowerCase();
+            if (['pdf'].includes(ext)) return 'pdf';
+            if (['doc', 'docx', 'txt', 'md', 'rtf'].includes(ext)) return 'doc';
+            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'ico'].includes(ext)) return 'image';
+            if (['mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm'].includes(ext)) return 'video';
+            if (['zip', 'rar', '7z', 'tar', 'gz', 'bz2'].includes(ext)) return 'zip';
+            return 'other';
+        }
+
+        function getFileEmoji(extension) {
+            const type = getFileType(extension);
+            const map = { pdf: '📄', doc: '📝', image: '🖼️', video: '🎬', zip: '📦', other: '📁' };
+            return map[type] || '📁';
+        }
+
+        function getFileColor(extension) {
+            const type = getFileType(extension);
+            const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B',
+                other: '#6B7280' };
+            return map[type] || '#6B7280';
+        }
+
+        // ========================================================================
+        //  Toast 通知
+        // ========================================================================
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML =
+                `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(30px)';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // ========================================================================
+        //  Markdown + LaTeX 渲染工具
+        // ========================================================================
+
+        const markedOptions = {
+            breaks: true,
+            gfm: true,
+            headerIds: false,
+            mangle: false
+        };
+
+        function renderMarkdown(text) {
+            if (!text) return '';
+            try {
+                return marked.parse(text, markedOptions);
+            } catch (e) {
+                console.warn('Markdown 解析失败:', e);
+                return escapeHtml(text);
+            }
+        }
+
+        function renderAndRenderLatex(element) {
+            let text = element.textContent || element.innerText;
+            if (!text || !text.trim()) return;
+
+            const placeholders = [];
+            let processed = text.replace(/\$\$([\s\S]*?)\$\$/g, function(match, formula) {
+                const id = '##LATEX_BLOCK_' + placeholders.length + '##';
+                placeholders.push(formula.trim());
+                return id;
+            });
+
+            let html = renderMarkdown(processed);
+
+            placeholders.forEach(function(formula, index) {
+                const id = '##LATEX_BLOCK_' + index + '##';
+                html = html.replace(id, '$$' + formula + '$$');
+            });
+
+            element.innerHTML = html;
+
+            if (typeof renderMathInElement === 'function') {
+                try {
+                    renderMathInElement(element, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\(', right: '\\)', display: false },
+                            { left: '\\[', right: '\\]', display: true }
+                        ],
+                        throwOnError: false,
+                        trust: true
+                    });
+                } catch (e) {
+                    console.warn('LaTeX 渲染失败:', e);
+                }
+            }
+        }
+
+        function renderAllContent() {
+            console.log('🔄 开始渲染 Markdown + LaTeX...');
+            document.querySelectorAll('.announcement-content[data-render="true"]').forEach(el => {
+                renderAndRenderLatex(el);
+            });
+            document.querySelectorAll('.announcement-title[data-render-title="true"]').forEach(el => {
+                renderAndRenderLatex(el);
+            });
+            document.querySelectorAll('.forum-post .post-content[data-render="true"]').forEach(el => {
+                renderAndRenderLatex(el);
+            });
+            document.querySelectorAll('.forum-post .post-title[data-render-title="true"]').forEach(el => {
+                renderAndRenderLatex(el);
+            });
+            document.querySelectorAll('.reply-item .reply-content[data-render="true"]').forEach(el => {
+                renderAndRenderLatex(el);
+            });
+            console.log('✅ 渲染完成');
+        }
+
+        // ========================================================================
+        //  Supabase 客户端
         // ========================================================================
         async function supabaseRequest(path, options = {}) {
             const cleanPath = path.startsWith('/') ? path : '/' + path;
@@ -2288,7 +2439,7 @@
         }
 
         // ========================================================================
-        //  2. 密码工具
+        //  密码工具
         // ========================================================================
         async function hashPassword(password) {
             const encoder = new TextEncoder();
@@ -2299,7 +2450,7 @@
         }
 
         // ========================================================================
-        //  3. 用户管理
+        //  用户管理
         // ========================================================================
         const SESSION_KEY = 'class_resource_session';
 
@@ -2320,7 +2471,7 @@
         function getCurrentUserId() { const session = getSession(); return session ? session.userId : null; }
 
         // ========================================================================
-        //  4. 注册
+        //  注册
         // ========================================================================
         async function register(username, password, passwordConfirm) {
             if (!username || username.length < 3 || username.length > 20) throw new Error('用户名必须是 3-20 个字符');
@@ -2349,7 +2500,7 @@
         }
 
         // ========================================================================
-        //  5. 登录
+        //  登录
         // ========================================================================
         async function login(username, password) {
             if (!username || !password) throw new Error('请输入用户名和密码');
@@ -2370,7 +2521,7 @@
         }
 
         // ========================================================================
-        //  6. 检查用户是否被封禁
+        //  检查用户是否被封禁
         // ========================================================================
         async function isUserBanned(userId) {
             try {
@@ -2390,7 +2541,7 @@
         }
 
         // ========================================================================
-        //  7. 封禁用户
+        //  封禁用户
         // ========================================================================
         async function banUserById(userId, bannedBy) {
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
@@ -2410,7 +2561,7 @@
         }
 
         // ========================================================================
-        //  8. 解禁用户
+        //  解禁用户
         // ========================================================================
         async function unbanUser(userId, unbannedBy, reason) {
             const existing = await supabaseRequest(`/user_bans?user_id=eq.${userId}`);
@@ -2437,7 +2588,7 @@
         }
 
         // ========================================================================
-        //  9. 封禁记录 & 解禁记录
+        //  封禁记录 & 解禁记录
         // ========================================================================
         async function fetchBanRecords() {
             try {
@@ -2578,7 +2729,7 @@
         }
 
         // ========================================================================
-        //  10. 通知功能（横幅版）
+        //  通知功能（横幅版）
         // ========================================================================
         let userNotifications = [];
         let notificationDropdownOpen = false;
@@ -2821,7 +2972,7 @@
         }
 
         // ========================================================================
-        //  11. 举报功能
+        //  举报功能
         // ========================================================================
         async function reportContent(targetType, targetId, reportedBy, reason) {
             if (!reason || reason.trim().length < 5) throw new Error('请详细描述举报原因（至少5个字）');
@@ -2858,7 +3009,7 @@
         }
 
         // ========================================================================
-        //  12. 公告管理
+        //  公告管理
         // ========================================================================
         async function fetchAnnouncements() {
             try {
@@ -2907,7 +3058,7 @@
         }
 
         // ========================================================================
-        //  13. 置顶/取消置顶公告
+        //  置顶/取消置顶公告
         // ========================================================================
         async function toggleAnnouncementPin(id, currentUser) {
             if (!isOwner(currentUser)) throw new Error('只有站长可以置顶公告');
@@ -2924,7 +3075,7 @@
         }
 
         // ========================================================================
-        //  14. 文件管理（Supabase Storage）
+        //  文件管理（Supabase Storage）
         // ========================================================================
         const STORAGE_BUCKET = 'class-files';
 
@@ -3008,7 +3159,7 @@
         }
 
         // ========================================================================
-        //  15. 获取存储用量（修复版）
+        //  获取存储用量
         // ========================================================================
         async function getStorageUsage() {
             try {
@@ -3066,7 +3217,7 @@
         }
 
         // ========================================================================
-        //  16. 文件数据库操作
+        //  文件数据库操作
         // ========================================================================
         async function createFileRecord(fileData) {
             const result = await supabaseRequest('/files', {
@@ -3102,7 +3253,7 @@
         }
 
         // ========================================================================
-        //  17. 举报审核
+        //  举报审核
         // ========================================================================
         async function fetchReports(status = null) {
             try {
@@ -3325,158 +3476,7 @@
         }
 
         // ========================================================================
-        //  18. 工具函数
-        // ========================================================================
-        function formatSize(bytes) {
-            if (bytes === 0) return '0 B';
-            const k = 1024;
-            const sizes = ['B', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            const val = (bytes / Math.pow(k, i)).toFixed(1);
-            return val + ' ' + sizes[i];
-        }
-
-        function formatSizeSimple(bytes) {
-            if (bytes === 0) return '0 MB';
-            const mb = bytes / (1024 * 1024);
-            if (mb < 1) return (bytes / 1024).toFixed(1) + ' KB';
-            return mb.toFixed(1) + ' MB';
-        }
-
-        function getFileType(extension) {
-            const ext = extension.toLowerCase();
-            if (['pdf'].includes(ext)) return 'pdf';
-            if (['doc', 'docx', 'txt', 'md', 'rtf'].includes(ext)) return 'doc';
-            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp', 'ico'].includes(ext)) return 'image';
-            if (['mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm'].includes(ext)) return 'video';
-            if (['zip', 'rar', '7z', 'tar', 'gz', 'bz2'].includes(ext)) return 'zip';
-            return 'other';
-        }
-
-        function getFileEmoji(extension) {
-            const type = getFileType(extension);
-            const map = { pdf: '📄', doc: '📝', image: '🖼️', video: '🎬', zip: '📦', other: '📁' };
-            return map[type] || '📁';
-        }
-
-        function getFileColor(extension) {
-            const type = getFileType(extension);
-            const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B',
-                other: '#6B7280' };
-            return map[type] || '#6B7280';
-        }
-
-        function formatTime(iso) {
-            if (!iso) return '';
-            const d = new Date(iso);
-            return d.toLocaleString('zh-CN', { hour12: false });
-        }
-
-        // ========================================================================
-        //  19. Toast 通知
-        // ========================================================================
-        function showToast(message, type = 'info', duration = 3000) {
-            const container = document.getElementById('toastContainer');
-            const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML =
-                `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span><span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(30px)';
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
-        }
-
-        // ========================================================================
-        //  20. Markdown + LaTeX 渲染工具（核心修复）
-        // ========================================================================
-
-        const markedOptions = {
-            breaks: true,
-            gfm: true,
-            headerIds: false,
-            mangle: false
-        };
-
-        function renderMarkdown(text) {
-            if (!text) return '';
-            try {
-                return marked.parse(text, markedOptions);
-            } catch (e) {
-                console.warn('Markdown 解析失败:', e);
-                return escapeHtml(text);
-            }
-        }
-
-        function renderAndRenderLatex(element) {
-            let text = element.textContent || element.innerText;
-            if (!text || !text.trim()) return;
-
-            // 保护 $$...$$ 块级公式
-            const placeholders = [];
-            let processed = text.replace(/\$\$([\s\S]*?)\$\$/g, function(match, formula) {
-                const id = '##LATEX_BLOCK_' + placeholders.length + '##';
-                placeholders.push(formula.trim());
-                return id;
-            });
-
-            // 解析 Markdown
-            let html = renderMarkdown(processed);
-
-            // 还原 $$...$$
-            placeholders.forEach(function(formula, index) {
-                const id = '##LATEX_BLOCK_' + index + '##';
-                html = html.replace(id, '$$' + formula + '$$');
-            });
-
-            element.innerHTML = html;
-
-            // KaTeX 渲染
-            if (typeof renderMathInElement === 'function') {
-                try {
-                    renderMathInElement(element, {
-                        delimiters: [
-                            { left: '$$', right: '$$', display: true },
-                            { left: '$', right: '$', display: false },
-                            { left: '\\(', right: '\\)', display: false },
-                            { left: '\\[', right: '\\]', display: true }
-                        ],
-                        throwOnError: false,
-                        trust: true
-                    });
-                } catch (e) {
-                    console.warn('LaTeX 渲染失败:', e);
-                }
-            }
-        }
-
-        function renderAllContent() {
-            console.log('🔄 开始渲染 Markdown + LaTeX...');
-
-            document.querySelectorAll('.announcement-content[data-render="true"]').forEach(el => {
-                renderAndRenderLatex(el);
-            });
-            document.querySelectorAll('.announcement-title[data-render-title="true"]').forEach(el => {
-                renderAndRenderLatex(el);
-            });
-            document.querySelectorAll('.forum-post .post-content[data-render="true"]').forEach(el => {
-                renderAndRenderLatex(el);
-            });
-            document.querySelectorAll('.forum-post .post-title[data-render-title="true"]').forEach(el => {
-                renderAndRenderLatex(el);
-            });
-            document.querySelectorAll('.reply-item .reply-content[data-render="true"]').forEach(el => {
-                renderAndRenderLatex(el);
-            });
-
-            console.log('✅ 渲染完成');
-        }
-
-        // ========================================================================
-        //  21. 渲染公告
+        //  渲染公告
         // ========================================================================
         let announcements = [];
         let announcementsExpanded = false;
@@ -3617,7 +3617,7 @@
         }
 
         // ========================================================================
-        //  22. 渲染文件列表
+        //  渲染文件列表
         // ========================================================================
         let allFiles = [];
         let currentFilter = 'all';
@@ -3802,7 +3802,7 @@
         }
 
         // ========================================================================
-        //  23. 讨论区功能（支持 Shift+Enter 换行）
+        //  讨论区功能（支持 Shift+Enter 换行）
         // ========================================================================
         let forumPosts = [];
         let forumExpanded = false;
@@ -4188,7 +4188,7 @@
         }
 
         // ========================================================================
-        //  24. 管理员审核面板
+        //  管理员审核面板
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
@@ -4346,7 +4346,7 @@
         }
 
         // ========================================================================
-        //  25. 删除文件相关
+        //  删除文件相关
         // ========================================================================
         let deleteFileTargetId = null;
 
@@ -4381,7 +4381,7 @@
         }
 
         // ========================================================================
-        //  26. 删除公告相关
+        //  删除公告相关
         // ========================================================================
         let deleteAnnouncementTargetId = null;
 
@@ -4410,7 +4410,7 @@
         }
 
         // ========================================================================
-        //  27. 加载公告
+        //  加载公告
         // ========================================================================
         async function loadAnnouncements() {
             try {
@@ -4421,7 +4421,7 @@
         }
 
         // ========================================================================
-        //  28. 封禁用户
+        //  封禁用户
         // ========================================================================
         let banUserTarget = null;
 
@@ -4467,7 +4467,7 @@
         }
 
         // ========================================================================
-        //  29. 用户列表
+        //  用户列表
         // ========================================================================
         async function getUserList() {
             try {
@@ -4478,7 +4478,7 @@
         }
 
         // ========================================================================
-        //  30. 管理按钮事件
+        //  管理按钮事件
         // ========================================================================
         function setupAdminButtons() {
             document.getElementById('adminReviewBtn').addEventListener('click', () => { openReviewModal(); });
@@ -4488,7 +4488,7 @@
         }
 
         // ========================================================================
-        //  31. 封禁用户选择器
+        //  封禁用户选择器
         // ========================================================================
         async function showBanUserSelector() {
             try {
@@ -4530,7 +4530,7 @@
         }
 
         // ========================================================================
-        //  32. 刷新所有数据（包含存储用量和延迟渲染）
+        //  刷新所有数据（包含存储用量和延迟渲染）
         // ========================================================================
         async function refreshAll() {
             try {
@@ -4569,7 +4569,7 @@
         }
 
         // ========================================================================
-        //  33. UI 更新
+        //  UI 更新
         // ========================================================================
         function updateUI() {
             const loggedIn = isLoggedIn();
@@ -4644,7 +4644,7 @@
         }
 
         // ========================================================================
-        //  34. 认证模态框控制
+        //  认证模态框控制
         // ========================================================================
         let currentAuthMode = 'login';
 
@@ -4677,7 +4677,7 @@
         }
 
         // ========================================================================
-        //  35. 文件上传
+        //  文件上传
         // ========================================================================
         let selectedCategory = '语文';
 
@@ -4767,7 +4767,7 @@
         }
 
         // ========================================================================
-        //  36. 初始化
+        //  初始化
         // ========================================================================
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
@@ -5101,12 +5101,12 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整修复版）');
+            console.log('✅ 2510班资源站已启动！（完整修复版 + 新用户）');
             console.log(`📝 Markdown + LaTeX 渲染已启用（块级公式 $$ 已修复）`);
             console.log(`⌨️ 回复支持 Shift+Enter 换行`);
             console.log(`📊 存储用量已修复`);
             console.log(`⭐ VIP用户: ${VIP_USERS.join(', ')}`);
-            console.log(`🔑 管理员: TerryGao_FireFly`);
+            console.log(`🔑 管理员: ${ADMIN_USERS.join(', ')}`);
         });
     </script>
 
