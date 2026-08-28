@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <!-- Markdown + LaTeX 渲染 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <style>
-        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -54,7 +52,6 @@
         .cat-综合 { color: #6366F1; background: rgba(99,102,241,0.10); }
         .cat-其他 { color: #6B7280; background: rgba(107,114,128,0.10); }
 
-        /* ===== 角色颜色 ===== */
         .role-owner { color: var(--owner-color) !important; }
         .role-official { color: var(--official-color) !important; }
         .role-teacher { color: var(--teacher-color) !important; }
@@ -78,7 +75,6 @@
         ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* ===== 左侧导航栏 ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -159,7 +155,6 @@
             color: var(--text-light);
         }
 
-        /* ===== 导航菜单 ===== */
         .sidebar .sidebar-nav {
             flex: 1;
             overflow-y: auto;
@@ -222,7 +217,6 @@
             overflow: hidden;
         }
 
-        /* ===== 底部按钮（登录/登出）醒目 ===== */
         .sidebar .sidebar-footer {
             padding: 12px 16px;
             border-top: 1px solid rgba(0, 0, 0, 0.04);
@@ -248,7 +242,6 @@
             text-align: center;
             font-size: 16px;
         }
-        /* 登录按钮 - 醒目绿色 */
         .sidebar .sidebar-footer .nav-item#navLogin {
             background: rgba(34, 197, 94, 0.12);
             color: #16A34A;
@@ -258,7 +251,6 @@
             background: rgba(34, 197, 94, 0.20);
             border-color: #22C55E;
         }
-        /* 登出按钮 - 醒目红色 */
         .sidebar .sidebar-footer .nav-item#navLogout {
             background: rgba(239, 68, 68, 0.10);
             color: #DC2626;
@@ -269,7 +261,6 @@
             border-color: #EF4444;
         }
 
-        /* ===== 侧边栏折叠按钮 ===== */
         .sidebar-toggle {
             position: fixed;
             bottom: 20px;
@@ -296,7 +287,6 @@
             box-shadow: 0 6px 24px rgba(91, 106, 240, 0.20);
         }
 
-        /* ===== 主内容区 ===== */
         .main-content {
             margin-left: var(--sidebar-width);
             flex: 1;
@@ -362,21 +352,17 @@
             background: rgba(239, 68, 68, 0.16);
         }
 
-        /* ===== 页面容器 ===== */
         .page-container {
             display: none;
             animation: fadeIn 0.3s ease;
         }
-        .page-container.active {
-            display: block;
-        }
+        .page-container.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== 统计卡片 ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -414,7 +400,6 @@
             opacity: 0.5;
         }
 
-        /* ===== 公告列表 ===== */
         .announcement-list-modern {
             display: flex;
             flex-direction: column;
@@ -522,7 +507,6 @@
             background: rgba(34, 197, 94, 0.16);
         }
 
-        /* ===== 公告发布模态框 ===== */
         .announcement-modal-overlay {
             position: fixed;
             inset: 0;
@@ -637,7 +621,6 @@
             box-shadow: 0 4px 16px rgba(91, 106, 240, 0.30);
         }
 
-        /* ===== 讨论区 ===== */
         .forum-post-modern {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -770,7 +753,6 @@
             background: rgba(239, 68, 68, 0.12);
         }
 
-        /* ===== 文件区 ===== */
         .file-grid-modern {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -872,7 +854,6 @@
             margin-top: 4px;
         }
 
-        /* ===== 上传区域 ===== */
         .upload-zone-modern {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -941,7 +922,6 @@
             display: none;
         }
 
-        /* ===== Toast ===== */
         .toast-container {
             position: fixed;
             bottom: 24px;
@@ -980,7 +960,6 @@
         .toast.error .toast-icon { color: #EF4444; }
         .toast.info .toast-icon { color: var(--primary); }
 
-        /* ===== 模态框 ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1031,7 +1010,6 @@
         .modal-box .modal-actions .confirm-btn { background: #EF4444; color: #fff; }
         .modal-box .modal-actions .confirm-btn:hover { background: #DC2626; transform: scale(1.02); }
 
-        /* ===== 认证模态框 ===== */
         .auth-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1149,7 +1127,6 @@
             transform: none;
         }
 
-        /* ===== 封禁记录弹窗 ===== */
         .ban-records-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1295,7 +1272,6 @@
             background: #E5E7EB;
         }
 
-        /* ===== 删除公告确认弹窗 ===== */
         .delete-announcement-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1338,7 +1314,6 @@
         .delete-announcement-modal .modal-actions .confirm-btn { background: #EF4444; color: #fff; }
         .delete-announcement-modal .modal-actions .confirm-btn:hover { background: #DC2626; transform: scale(1.02); }
 
-        /* ===== 审核面板 ===== */
         .review-panel {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -1416,7 +1391,45 @@
             color: var(--text-light);
         }
 
-        /* ===== 响应式 ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 0 8px;
+            font-size: 13px;
+            color: var(--text-light);
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            margin-top: 24px;
+        }
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .footer .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .footer .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .footer .dev-credit {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        .footer .dev-credit a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer .dev-credit a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -1473,7 +1486,6 @@
             text-overflow: ellipsis;
         }
 
-        /* ===== 角色颜色辅助类 ===== */
         .text-owner { color: var(--owner-color) !important; }
         .text-official { color: var(--official-color) !important; }
         .text-teacher { color: var(--teacher-color) !important; }
@@ -1492,13 +1504,11 @@
 
     <!-- ===== 左侧导航栏 ===== -->
     <aside class="sidebar" id="sidebar">
-        <!-- Logo -->
         <div class="sidebar-brand">
             <i class="fas fa-graduation-cap"></i>
             <span class="brand-text">2510资源站</span>
         </div>
 
-        <!-- 用户信息 -->
         <div class="sidebar-user" id="sidebarUser">
             <div class="user-avatar" id="userAvatar"><i class="fas fa-user"></i></div>
             <div class="user-info">
@@ -1507,7 +1517,6 @@
             </div>
         </div>
 
-        <!-- 导航菜单 -->
         <nav class="sidebar-nav">
             <div class="nav-label">导航</div>
             <div class="nav-item active" data-page="home" id="navHome">
@@ -1533,7 +1542,6 @@
             </div>
         </nav>
 
-        <!-- 底部（登录/登出） -->
         <div class="sidebar-footer">
             <div class="nav-item" id="navLogin">
                 <i class="fas fa-sign-in-alt"></i>
@@ -1559,7 +1567,6 @@
                 </div>
             </div>
 
-            <!-- 统计卡片 -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-icon"><i class="fas fa-file"></i></span>
@@ -1583,7 +1590,6 @@
                 </div>
             </div>
 
-            <!-- 公告列表 -->
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
                 <h3 style="font-size:16px;font-weight:700;"><i class="fas fa-bullhorn" style="color:var(--primary);"></i> 最新公告</h3>
                 <button class="btn btn-outline" id="refreshAnnouncementsBtn" style="padding:4px 12px;font-size:12px;"><i class="fas fa-sync-alt"></i> 刷新</button>
@@ -1601,7 +1607,6 @@
                 </div>
             </div>
 
-            <!-- 发帖表单 -->
             <div id="forumPostForm" style="display:none;background:var(--card-bg);backdrop-filter:blur(12px);border-radius:var(--border-radius);padding:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,0.5);">
                 <div class="form-group" style="margin-bottom:12px;">
                     <label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label>
@@ -1629,7 +1634,6 @@
                 </div>
             </div>
 
-            <!-- 上传区域 -->
             <div class="upload-zone-modern" id="uploadZone">
                 <div class="icon-wrapper"><i class="fas fa-cloud-upload-alt"></i></div>
                 <h3>拖拽文件到此处，或点击上传</h3>
@@ -1651,7 +1655,6 @@
                 <input type="file" id="fileInput" multiple />
             </div>
 
-            <!-- 分类筛选 -->
             <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
                 <span style="font-size:13px;font-weight:600;color:var(--text-secondary);display:flex;align-items:center;gap:6px;margin-right:8px;"><i class="fas fa-tags"></i> 分类：</span>
                 <button class="filter-cat-btn active" data-category="all" style="padding:4px 14px;border:none;border-radius:14px;font-size:12px;font-weight:500;cursor:pointer;transition:var(--transition);font-family:var(--font);background:var(--primary);color:#fff;">全部</button>
@@ -1668,7 +1671,6 @@
                 <button class="filter-cat-btn" data-category="其他" style="padding:4px 14px;border:none;border-radius:14px;font-size:12px;font-weight:500;cursor:pointer;transition:var(--transition);font-family:var(--font);background:#f1f3f5;color:var(--text-secondary);">其他</button>
             </div>
 
-            <!-- 搜索 -->
             <div style="margin-bottom:16px;">
                 <div style="display:flex;align-items:center;background:var(--card-bg);border-radius:12px;padding:0 16px;border:1px solid rgba(255,255,255,0.6);">
                     <i class="fas fa-search" style="color:var(--text-light);"></i>
@@ -1685,7 +1687,6 @@
                 <div class="page-title">🛡️ 管理面板 <span>管理员工具</span></div>
             </div>
 
-            <!-- 审核面板 -->
             <div id="reviewPanelContainer"></div>
 
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
@@ -1717,6 +1718,21 @@
             </div>
         </div>
 
+        <!-- ===== 底部 ===== -->
+        <div class="footer">
+            <div class="footer-links">
+                <a id="showBanRecordsBtn"><i class="fas fa-ban"></i> 封禁记录</a>
+                <span style="color:var(--text-light);">·</span>
+                <span id="loginStatusText">🔒 未登录</span>
+            </div>
+            <div class="dev-credit">
+                Developed by the <a href="https://github.com/TerryGao_FireFly/-2510-/" target="_blank">2510 Dev Team</a>
+            </div>
+            <div style="font-size:11px;color:var(--text-light);opacity:0.6;margin-top:2px;">
+                © 2026 2510班资源站
+            </div>
+        </div>
+
     </main>
 
     <!-- ===== 模态框 ===== -->
@@ -1741,7 +1757,6 @@
         </div>
     </div>
 
-    <!-- 公告发布模态框 -->
     <div class="announcement-modal-overlay" id="announcementModal">
         <div class="announcement-modal">
             <button class="close-btn" id="announcementModalClose">&times;</button>
@@ -1840,21 +1855,53 @@
             return 'role-user';
         }
 
+        // ===== 获取角色图标 =====
+        function getRoleIcon(username, extraClass) {
+            if (!username) return '<i class="fas fa-user" style="font-size:11px;color:var(--text-light);"></i>';
+
+            let icon = 'fa-user';
+            let color = 'var(--text-light)';
+
+            if (isOwner(username)) {
+                icon = 'fa-crown';
+                color = 'var(--owner-color)';
+            } else if (isOfficial(username)) {
+                icon = 'fa-badge-check';
+                color = 'var(--official-color)';
+            } else if (isTeacher(username)) {
+                icon = 'fa-chalkboard-teacher';
+                color = 'var(--teacher-color)';
+            } else if (isVip(username)) {
+                icon = 'fa-star';
+                color = 'var(--vip-color)';
+            } else if (isAdmin(username)) {
+                icon = 'fa-user-shield';
+                color = 'var(--admin-color)';
+            } else if (currentUserBanned) {
+                icon = 'fa-ban';
+                color = 'var(--banned-color)';
+            }
+
+            return '<i class="fas ' + icon + '" style="font-size:11px;color:' + color + ';"></i>';
+        }
+
         // ===== 获取角色标签 =====
         function getRoleTag(username) {
             if (!username) return '';
-            if (isOwner(username)) return '<span class="tag owner-tag">站长</span>';
-            if (isOfficial(username)) return '<span class="tag official-tag">官方</span>';
-            if (isTeacher(username)) return '<span class="tag teacher-tag">老师</span>';
-            if (isVip(username)) return '<span class="tag vip-tag">VIP用户</span>';
-            if (isAdmin(username)) return '<span class="tag admin-tag">管理员</span>';
-            if (currentUserBanned) return '<span class="tag banned-tag">封禁用户</span>';
+            if (isOwner(username)) return '<span class="tag owner-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--owner-color);color:#fff;">站长</span>';
+            if (isOfficial(username)) return '<span class="tag official-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--official-color);color:#fff;">官方</span>';
+            if (isTeacher(username)) return '<span class="tag teacher-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--teacher-color);color:#fff;">老师</span>';
+            if (isVip(username)) return '<span class="tag vip-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--vip-color);color:#fff;">VIP用户</span>';
+            if (isAdmin(username)) return '<span class="tag admin-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--admin-color);color:#fff;">管理员</span>';
+            if (currentUserBanned) return '<span class="tag banned-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--banned-color);color:#fff;">封禁用户</span>';
             return '';
         }
 
         // ========================================================================
         //  工具函数
         // ========================================================================
+        let currentUserBanned = false;
+
         function escapeHtml(text) {
             if (!text) return '';
             const div = document.createElement('div');
@@ -2066,8 +2113,6 @@
         // ========================================================================
         //  检查用户是否被封禁
         // ========================================================================
-        let currentUserBanned = false;
-
         async function isUserBanned(userId) {
             try {
                 const bans = await supabaseRequest('/user_bans?user_id=eq.' + userId);
@@ -2360,11 +2405,10 @@
         }
 
         // ========================================================================
-        //  获取存储用量（修复版 - 直接从数据库文件统计）
+        //  获取存储用量（从 files 表统计）
         // ========================================================================
         async function getStorageUsage() {
             try {
-                // 直接从 files 表统计总大小
                 const files = await fetchFiles();
                 let totalSize = 0;
                 if (Array.isArray(files)) {
@@ -2529,13 +2573,11 @@
                 html += '</div>';
                 container.innerHTML = html;
 
-                // 预览按钮
                 container.querySelectorAll('.preview-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const url = this.dataset.url;
                         const ext = this.dataset.ext;
                         const name = this.dataset.name;
-
                         if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(ext)) {
                             window.open(url, '_blank');
                             return;
@@ -2563,7 +2605,6 @@
                     });
                 });
 
-                // 通过按钮
                 container.querySelectorAll('.approve-btn').forEach(btn => {
                     btn.addEventListener('click', async function() {
                         const id = parseInt(this.dataset.id);
@@ -2578,7 +2619,6 @@
                     });
                 });
 
-                // 拒绝按钮
                 container.querySelectorAll('.reject-btn').forEach(btn => {
                     btn.addEventListener('click', async function() {
                         const id = parseInt(this.dataset.id);
@@ -2615,7 +2655,6 @@
         async function renderAnnouncements() {
             const container = document.getElementById('announcementList');
             const currentUser = getCurrentUser();
-            const role = currentUser ? getRole(currentUser) : 'user';
             if (!container) return;
 
             if (announcements.length === 0) {
@@ -2640,35 +2679,14 @@
             sorted.forEach((item, index) => {
                 const isHidden = index >= visibleCount;
                 const isPinned = item.is_pinned || false;
-                const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && item.author ===
-                    currentUser) || (isOfficial(currentUser) && item.author === currentUser) || (isTeacher(
-                    currentUser) && item.author === currentUser)));
+                const author = item.author;
+                const canDelete = (currentUser && (isOwner(currentUser) || (isAdmin(currentUser) && author ===
+                    currentUser) || (isOfficial(currentUser) && author === currentUser) || (isTeacher(
+                    currentUser) && author === currentUser)));
                 const canPin = currentUser && isOwner(currentUser);
 
-                // 获取作者的角色颜色
-                const author = item.author;
-                let authorColorClass = 'role-user';
-                if (isOwner(author)) authorColorClass = 'role-owner';
-                else if (isOfficial(author)) authorColorClass = 'role-official';
-                else if (isTeacher(author)) authorColorClass = 'role-teacher';
-                else if (isVip(author)) authorColorClass = 'role-vip';
-                else if (isAdmin(author)) authorColorClass = 'role-admin';
-                else if (announcementAuthorBanCache[author]) authorColorClass = 'role-banned';
-
-                // 获取角色标签
-                let tagHtml = '';
-                if (announcementAuthorBanCache[author]) tagHtml =
-                    '<span class="tag banned-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--banned-color);color:#fff;">封禁用户</span>';
-                else if (isOwner(author)) tagHtml =
-                    '<span class="tag owner-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--owner-color);color:#fff;">站长</span>';
-                else if (isOfficial(author)) tagHtml =
-                    '<span class="tag official-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--official-color);color:#fff;">官方</span>';
-                else if (isTeacher(author)) tagHtml =
-                    '<span class="tag teacher-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--teacher-color);color:#fff;">老师</span>';
-                else if (isVip(author)) tagHtml =
-                    '<span class="tag vip-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--vip-color);color:#fff;">VIP用户</span>';
-                else if (isAdmin(author)) tagHtml =
-                    '<span class="tag admin-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--admin-color);color:#fff;">管理员</span>';
+                const authorColorClass = getRoleColorClass(author);
+                const tagHtml = getRoleTag(author);
 
                 let actionsHtml = '';
                 if (canDelete) actionsHtml +=
@@ -2780,30 +2798,9 @@
                 const catColor = 'cat-' + category;
 
                 const uploaderName = file.uploaded_by || '未知用户';
-
-                // 上传者角色颜色
-                let uploaderColorClass = 'role-user';
-                if (isOwner(uploaderName)) uploaderColorClass = 'role-owner';
-                else if (isOfficial(uploaderName)) uploaderColorClass = 'role-official';
-                else if (isTeacher(uploaderName)) uploaderColorClass = 'role-teacher';
-                else if (isVip(uploaderName)) uploaderColorClass = 'role-vip';
-                else if (isAdmin(uploaderName)) uploaderColorClass = 'role-admin';
-                else if (fileUploaderBanCache[uploaderName]) uploaderColorClass = 'role-banned';
-
-                // 上传者标签
-                let uploaderTag = '';
-                if (fileUploaderBanCache[uploaderName]) uploaderTag =
-                    '<span class="banned-tag" style="font-size:9px;font-weight:700;background:var(--banned-color);color:#fff;padding:1px 8px;border-radius:10px;margin-left:4px;">封禁用户</span>';
-                else if (isOwner(uploaderName)) uploaderTag =
-                    '<span class="owner-tag" style="font-size:9px;font-weight:700;background:var(--owner-color);color:#fff;padding:1px 8px;border-radius:10px;margin-left:4px;">站长</span>';
-                else if (isOfficial(uploaderName)) uploaderTag =
-                    '<span class="official-tag" style="font-size:9px;font-weight:700;background:var(--official-color);color:#fff;padding:1px 8px;border-radius:10px;margin-left:4px;">官方</span>';
-                else if (isTeacher(uploaderName)) uploaderTag =
-                    '<span class="teacher-tag" style="font-size:9px;font-weight:700;background:var(--teacher-color);color:#fff;padding:1px 8px;border-radius:10px;margin-left:4px;">老师</span>';
-                else if (isVip(uploaderName)) uploaderTag =
-                    '<span class="vip-tag" style="font-size:9px;font-weight:700;background:var(--vip-color);color:#fff;padding:1px 8px;border-radius:10px;margin-left:4px;">VIP用户</span>';
-                else if (isAdmin(uploaderName)) uploaderTag =
-                    '<span class="admin-tag" style="font-size:9px;font-weight:700;background:var(--admin-color);color:#fff;padding:1px 8px;border-radius:10px;margin-left:4px;">管理员</span>';
+                const uploaderColorClass = getRoleColorClass(uploaderName);
+                const uploaderTag = getRoleTag(uploaderName);
+                const uploaderIcon = getRoleIcon(uploaderName);
 
                 let canDelete = false;
                 if (loggedIn && currentUser) {
@@ -2819,8 +2816,9 @@
                     '</div><div class="file-name text-ellipsis" title="' + file.file_name + '">' + file.file_name +
                     '</div><span class="file-category-tag ' + catColor + '">📂 ' + category +
                     '</span><div class="file-meta"><span>' + formatSize(file.file_size) + '</span><span>' +
-                    formatTime(file.created_at) + '</span></div><div class="file-uploader"><i class="fas fa-user" style="font-size:11px;"></i> <span class="uploader-name ' +
-                    uploaderColorClass + '">' + escapeHtml(uploaderName) + '</span>' + uploaderTag +
+                    formatTime(file.created_at) + '</span></div><div class="file-uploader">' + uploaderIcon +
+                    ' <span class="uploader-name ' + uploaderColorClass + '">' + escapeHtml(uploaderName) +
+                    '</span>' + uploaderTag +
                     '</div><div class="file-actions">' +
                     (loggedIn ? '<button class="download-btn" data-id="' + file.id +
                         '"><i class="fas fa-download"></i> 下载</button>' : '') +
@@ -2831,7 +2829,6 @@
                         '') + '</div></div>';
             }).join('');
 
-            // 事件绑定
             grid.querySelectorAll('.download-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2962,30 +2959,8 @@
                 posts.forEach((post, index) => {
                     const isHidden = index >= visibleCount;
                     const author = post.author;
-
-                    // 作者颜色
-                    let authorColorClass = 'role-user';
-                    if (isOwner(author)) authorColorClass = 'role-owner';
-                    else if (isOfficial(author)) authorColorClass = 'role-official';
-                    else if (isTeacher(author)) authorColorClass = 'role-teacher';
-                    else if (isVip(author)) authorColorClass = 'role-vip';
-                    else if (isAdmin(author)) authorColorClass = 'role-admin';
-                    else if (banCache[author]) authorColorClass = 'role-banned';
-
-                    // 作者标签
-                    let tagHtml = '';
-                    if (banCache[author]) tagHtml =
-                        '<span class="tag banned-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--banned-color);color:#fff;">封禁用户</span>';
-                    else if (isOwner(author)) tagHtml =
-                        '<span class="tag owner-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--owner-color);color:#fff;">站长</span>';
-                    else if (isOfficial(author)) tagHtml =
-                        '<span class="tag official-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--official-color);color:#fff;">官方</span>';
-                    else if (isTeacher(author)) tagHtml =
-                        '<span class="tag teacher-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--teacher-color);color:#fff;">老师</span>';
-                    else if (isVip(author)) tagHtml =
-                        '<span class="tag vip-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--vip-color);color:#fff;">VIP用户</span>';
-                    else if (isAdmin(author)) tagHtml =
-                        '<span class="tag admin-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--admin-color);color:#fff;">管理员</span>';
+                    const authorColorClass = getRoleColorClass(author);
+                    const authorTag = getRoleTag(author);
 
                     const canDeletePost = currentUser && (isOwner(currentUser) || post.author === currentUser || (
                         isAdmin(currentUser) && post.author === currentUser) || (isOfficial(currentUser) &&
@@ -2998,28 +2973,8 @@
                         repliesHtml = '<div class="post-replies">';
                         replies.forEach(reply => {
                             const replyAuthor = reply.author;
-                            let replyColorClass = 'role-user';
-                            if (isOwner(replyAuthor)) replyColorClass = 'role-owner';
-                            else if (isOfficial(replyAuthor)) replyColorClass = 'role-official';
-                            else if (isTeacher(replyAuthor)) replyColorClass = 'role-teacher';
-                            else if (isVip(replyAuthor)) replyColorClass = 'role-vip';
-                            else if (isAdmin(replyAuthor)) replyColorClass = 'role-admin';
-                            else if (banCache[replyAuthor]) replyColorClass = 'role-banned';
-
-                            let replyTag = '';
-                            if (banCache[replyAuthor]) replyTag =
-                                '<span class="tag" style="font-size:8px;font-weight:700;padding:0 6px;border-radius:8px;background:var(--banned-color);color:#fff;">封禁用户</span>';
-                            else if (isOwner(replyAuthor)) replyTag =
-                                '<span class="tag" style="font-size:8px;font-weight:700;padding:0 6px;border-radius:8px;background:var(--owner-color);color:#fff;">站长</span>';
-                            else if (isOfficial(replyAuthor)) replyTag =
-                                '<span class="tag" style="font-size:8px;font-weight:700;padding:0 6px;border-radius:8px;background:var(--official-color);color:#fff;">官方</span>';
-                            else if (isTeacher(replyAuthor)) replyTag =
-                                '<span class="tag" style="font-size:8px;font-weight:700;padding:0 6px;border-radius:8px;background:var(--teacher-color);color:#fff;">老师</span>';
-                            else if (isVip(replyAuthor)) replyTag =
-                                '<span class="tag" style="font-size:8px;font-weight:700;padding:0 6px;border-radius:8px;background:var(--vip-color);color:#fff;">VIP用户</span>';
-                            else if (isAdmin(replyAuthor)) replyTag =
-                                '<span class="tag" style="font-size:8px;font-weight:700;padding:0 6px;border-radius:8px;background:var(--admin-color);color:#fff;">管理员</span>';
-
+                            const replyColorClass = getRoleColorClass(replyAuthor);
+                            const replyTag = getRoleTag(replyAuthor);
                             const canDeleteReply = currentUser && (isOwner(currentUser) || reply.author ===
                                 currentUser || post.author === currentUser || (isAdmin(currentUser) &&
                                 reply.author === currentUser) || (isOfficial(currentUser) && reply
@@ -3048,7 +3003,7 @@
 
                     html += '<div class="forum-post-modern ' + (isHidden ? 'forum-hidden' : '') + '" data-id="' +
                         post.id + '"><div class="post-header"><div class="post-author"><span class="' +
-                        authorColorClass + '">' + escapeHtml(post.author) + '</span> ' + tagHtml +
+                        authorColorClass + '">' + escapeHtml(post.author) + '</span> ' + authorTag +
                         '</div><span class="post-time">' + formatTime(post.created_at) +
                         '</span></div><div class="post-title">' + escapeHtml(post.title) +
                         '</div><div class="post-content markdown-body" data-render="true">' + escapeHtml(post
@@ -3071,7 +3026,6 @@
 
                 container.innerHTML = html;
 
-                // 事件绑定
                 container.querySelectorAll('.delete-post-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -3327,7 +3281,6 @@
                 await loadAnnouncements();
                 await renderForum();
 
-                // 修复存储用量 - 直接从文件统计
                 const usage = await getStorageUsage();
                 document.getElementById('statStorage').textContent = formatSizeSimple(usage.used);
 
@@ -3370,15 +3323,7 @@
             const forumPostForm = document.getElementById('forumPostForm');
 
             if (loggedIn && username) {
-                // 用户名颜色
-                let colorClass = 'role-user';
-                if (isOwner(username)) colorClass = 'role-owner';
-                else if (isOfficial(username)) colorClass = 'role-official';
-                else if (isTeacher(username)) colorClass = 'role-teacher';
-                else if (isVip(username)) colorClass = 'role-vip';
-                else if (isAdmin(username)) colorClass = 'role-admin';
-                else if (currentUserBanned) colorClass = 'role-banned';
-
+                const colorClass = getRoleColorClass(username);
                 sidebarUsername.innerHTML = '<span class="' + colorClass + '">' + username + '</span>';
 
                 const role = getRole(username);
@@ -3394,6 +3339,10 @@
                 navLogout.style.display = 'flex';
                 navLoginText.textContent = '登录';
                 if (forumPostForm) forumPostForm.style.display = currentUserBanned ? 'none' : 'block';
+
+                document.getElementById('loginStatusText').textContent = '✅ ' + username + (currentUserBanned ?
+                    ' (已封禁)' : '');
+
             } else {
                 sidebarUsername.textContent = '未登录';
                 sidebarUserRole.textContent = '🔒 请登录';
@@ -3402,6 +3351,7 @@
                 navLogout.style.display = 'none';
                 navLoginText.textContent = '登录';
                 if (forumPostForm) forumPostForm.style.display = 'none';
+                document.getElementById('loginStatusText').textContent = '🔒 未登录';
             }
         }
 
@@ -3436,21 +3386,17 @@
         // ========================================================================
         //  公告发布模态框
         // ========================================================================
-        let announcementModalOpen = false;
-
         function openAnnouncementModal() {
             document.getElementById('announcementModal').classList.add('active');
             document.body.style.overflow = 'hidden';
             document.getElementById('announcementModalTitle').value = '';
             document.getElementById('announcementModalContent').value = '';
             document.getElementById('announcementModalTitle').focus();
-            announcementModalOpen = true;
         }
 
         function closeAnnouncementModal() {
             document.getElementById('announcementModal').classList.remove('active');
             document.body.style.overflow = '';
-            announcementModalOpen = false;
         }
 
         // ========================================================================
@@ -3532,7 +3478,6 @@
         document.addEventListener('DOMContentLoaded', async () => {
             await initStorage();
 
-            // ---- 侧边栏切换 ----
             const sidebarToggle = document.getElementById('sidebarToggle');
             const sidebar = document.getElementById('sidebar');
 
@@ -3549,7 +3494,6 @@
                 }
             });
 
-            // ---- 导航菜单 ----
             document.querySelectorAll('.nav-item[data-page]').forEach(item => {
                 item.addEventListener('click', () => {
                     const page = item.dataset.page;
@@ -3560,7 +3504,6 @@
                 });
             });
 
-            // ---- 登录/登出 ----
             document.getElementById('navLogin').addEventListener('click', () => {
                 if (isLoggedIn()) {} else { openAuthModal('login'); }
             });
@@ -3577,7 +3520,7 @@
                 }
             });
 
-            // ---- 发布公告（模态框） ----
+            // ---- 发布公告 ----
             document.getElementById('publishAnnouncementBtn').addEventListener('click', () => {
                 if (!isLoggedIn()) { showToast('⚠️ 请先登录', 'error'); return; }
                 if (currentUserBanned) { showToast('⚠️ 您已被封禁', 'error'); return; }
@@ -3607,25 +3550,20 @@
                     showToast('✅ 公告发布成功！', 'success', 2000);
                     closeAnnouncementModal();
                     await loadAnnouncements();
-                } catch (err) { showToast('❌ ' + err.message, 'error'); }
-                finally { btn.disabled = false;
+                } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
                     btn.textContent = '发布'; }
             });
 
             document.getElementById('announcementModalTitle').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    document.getElementById('announcementModalContent').focus();
-                }
+                if (e.key === 'Enter') { e.preventDefault();
+                    document.getElementById('announcementModalContent').focus(); }
             });
             document.getElementById('announcementModalContent').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' && e.ctrlKey) {
-                    e.preventDefault();
-                    document.getElementById('announcementModalSubmit').click();
-                }
+                if (e.key === 'Enter' && e.ctrlKey) { e.preventDefault();
+                    document.getElementById('announcementModalSubmit').click(); }
             });
 
-            // ---- 讨论区发帖 ----
+            // ---- 讨论区 ----
             document.getElementById('showForumPostBtn').addEventListener('click', () => {
                 if (!isLoggedIn()) { showToast('⚠️ 请先登录', 'error'); return; }
                 if (currentUserBanned) { showToast('⚠️ 您已被封禁', 'error'); return; }
@@ -3713,7 +3651,6 @@
                 });
             });
 
-            // ---- 搜索 ----
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 searchQuery = e.target.value;
                 renderFiles(allFiles);
@@ -3747,7 +3684,6 @@
                     e.target.value = ''; }
             });
 
-            // ---- 分类选择 ----
             document.querySelectorAll('#uploadCategorySelector .cat-option').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('#uploadCategorySelector .cat-option').forEach(b => b
@@ -3764,7 +3700,10 @@
             document.getElementById('adminNotifBtn').addEventListener('click', showSendNotificationModal);
             document.getElementById('adminBanRecordsBtn').addEventListener('click', showBanRecords);
 
-            // ---- 认证模态框 ----
+            // ---- 封禁记录（底部公开） ----
+            document.getElementById('showBanRecordsBtn').addEventListener('click', showBanRecords);
+
+            // ---- 认证 ----
             document.getElementById('switchToRegister').addEventListener('click', (e) => { e.preventDefault();
                 openAuthModal('register'); });
             document.getElementById('switchToLogin').addEventListener('click', (e) => { e.preventDefault();
@@ -3859,7 +3798,7 @@
                     'Enter' && document.getElementById('registerSubmitBtn')) document.getElementById(
                     'registerSubmitBtn').click(); });
 
-            // ---- 删除模态框 ----
+            // ---- 删除 ----
             document.getElementById('modalCancelBtn').addEventListener('click', hideDeleteFileModal);
             document.getElementById('modalConfirmBtn').addEventListener('click', confirmDeleteFile);
             document.getElementById('deleteModal').addEventListener('click', (e) => { if (e.target === e
@@ -3887,22 +3826,21 @@
                 }
             });
 
-            // ---- 加载数据 ----
             try { await refreshAll(); } catch (err) {
                 console.error('初始化加载失败:', err);
                 showToast('加载失败: ' + err.message, 'error', 5000);
             }
 
-            // ---- 默认显示主页 ----
             switchPage('home');
 
-            console.log('✅ 2510班资源站已启动！（完整修复版）');
+            console.log('✅ 2510班资源站已启动！（完整版）');
             console.log('⭐ VIP用户: ' + VIP_USERS.join(', '));
             console.log('🔑 管理员: ' + ADMIN_USERS.join(', '));
             console.log('📊 存储用量已修复');
             console.log('🔓 封禁记录公开可见');
-            console.log('🎨 角色颜色已修复');
+            console.log('🎨 角色颜色和图标已修复');
             console.log('📝 公告发布已改为模态框');
+            console.log('© 2026 2510班资源站');
         });
     </script>
 
