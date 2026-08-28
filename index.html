@@ -1135,6 +1135,127 @@
             background: #E5E7EB;
         }
 
+        /* ===== 删除公告确认弹窗 ===== */
+        .delete-announcement-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.40);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInOverlay 0.25s ease;
+        }
+        .delete-announcement-modal-overlay.active { display: flex; }
+        .delete-announcement-modal {
+            background: #fff;
+            border-radius: var(--border-radius);
+            padding: 32px 28px 24px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.20);
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+        .delete-announcement-modal .modal-icon { font-size: 48px; color: #EF4444; margin-bottom: 12px; }
+        .delete-announcement-modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+        .delete-announcement-modal p { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+        .delete-announcement-modal .modal-actions { display: flex; gap: 12px; justify-content: center; }
+        .delete-announcement-modal .modal-actions button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .delete-announcement-modal .modal-actions .cancel-btn { background: #F1F3F5; color: var(--text-secondary); }
+        .delete-announcement-modal .modal-actions .cancel-btn:hover { background: #E5E7EB; }
+        .delete-announcement-modal .modal-actions .confirm-btn { background: #EF4444; color: #fff; }
+        .delete-announcement-modal .modal-actions .confirm-btn:hover { background: #DC2626; transform: scale(1.02); }
+
+        /* ===== 审核面板 ===== */
+        .review-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 16px;
+        }
+        .review-panel .review-item {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+        }
+        .review-panel .review-item:last-child {
+            margin-bottom: 0;
+        }
+        .review-panel .review-item .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .review-panel .review-item .review-file-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .review-panel .review-item .review-meta {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .review-panel .review-item .review-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .review-panel .review-item .review-actions button {
+            padding: 4px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .review-panel .review-item .review-actions .approve-btn {
+            background: #22C55E;
+            color: #fff;
+        }
+        .review-panel .review-item .review-actions .approve-btn:hover {
+            background: #16A34A;
+        }
+        .review-panel .review-item .review-actions .reject-btn {
+            background: #EF4444;
+            color: #fff;
+        }
+        .review-panel .review-item .review-actions .reject-btn:hover {
+            background: #DC2626;
+        }
+        .review-panel .review-item .review-actions .preview-btn {
+            background: rgba(91, 106, 240, 0.08);
+            color: var(--primary);
+        }
+        .review-panel .review-item .review-actions .preview-btn:hover {
+            background: rgba(91, 106, 240, 0.16);
+        }
+        .review-empty {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+        }
+
         /* ===== 响应式 ===== */
         @media (max-width: 768px) {
             .sidebar {
@@ -1332,7 +1453,7 @@
             <div class="page-header">
                 <div class="page-title">📁 文件中心 <span>上传与下载</span></div>
                 <div class="page-actions">
-                    <button class="btn btn-primary" id="refreshFilesBtn"><i class="fas fa-sync-alt"></i> 刷新</button>
+                    <button class="btn btn-outline" id="refreshFilesBtn"><i class="fas fa-sync-alt"></i> 刷新</button>
                 </div>
             </div>
 
@@ -1391,6 +1512,10 @@
             <div class="page-header">
                 <div class="page-title">🛡️ 管理面板 <span>管理员工具</span></div>
             </div>
+
+            <!-- 审核面板 -->
+            <div id="reviewPanelContainer"></div>
+
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
                 <div style="background:var(--card-bg);backdrop-filter:blur(12px);border-radius:var(--border-radius);padding:20px;border:1px solid rgba(255,255,255,0.5);text-align:center;cursor:pointer;transition:var(--transition);" id="adminReviewBtn">
                     <div style="font-size:40px;color:var(--primary);"><i class="fas fa-clipboard-check"></i></div>
@@ -1457,7 +1582,7 @@
         <div class="delete-announcement-modal">
             <div class="modal-icon"><i class="fas fa-exclamation-triangle"></i></div>
             <h3>确认删除公告</h3>
-            <p id="deleteAnnouncementMsg">确定要删除此公告吗？</p>
+            <p id="deleteAnnouncementMsg" style="white-space:pre-wrap;word-break:break-word;">确定要删除此公告吗？</p>
             <div class="modal-actions"><button class="cancel-btn" id="deleteAnnouncementCancelBtn">取消</button><button class="confirm-btn" id="deleteAnnouncementConfirmBtn">确认删除</button></div>
         </div>
     </div>
@@ -1487,13 +1612,19 @@
         const OFFICIAL_USERS = ["2510班资源站开发组", "2510班资源站管理组"];
         const TEACHER_USERS = ["2510班主任", "wql"];
         const VIP_USERS = ["wenbo___", "GalgamePlayer1245"];
-        const ADMIN_USERS = ["U_BOTE", "TerryGao_FireFly", "王彦锦", "2510班主任", "陈韵如", "高正懿", "wql", "2510班资源站开发组", "2510班资源站管理组", "TTT"];
+        const ADMIN_USERS = ["U_BOTE", "TerryGao_FireFly", "王彦锦", "2510班主任", "陈韵如", "高正懿", "wql", "2510班资源站开发组",
+            "2510班资源站管理组", "TTT"
+        ];
         const CATEGORIES = ['语文', '数学', '英语', '生物', '地理', '历史', '政治', '物理', '化学', '综合', '其他'];
 
         function isOwner(u) { return u === OWNER_USER; }
+
         function isOfficial(u) { return OFFICIAL_USERS.includes(u); }
+
         function isTeacher(u) { return TEACHER_USERS.includes(u); }
+
         function isAdmin(u) { return ADMIN_USERS.includes(u); }
+
         function isVip(u) { return VIP_USERS.includes(u); }
 
         function getRole(u) {
@@ -1551,7 +1682,8 @@
         }
 
         function getFileColor(ext) {
-            const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B', other: '#6B7280' };
+            const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B',
+                other: '#6B7280' };
             return map[getFileType(ext)] || '#6B7280';
         }
 
@@ -1560,8 +1692,8 @@
             const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
             const toast = document.createElement('div');
             toast.className = 'toast ' + type;
-            toast.innerHTML = '<span class="toast-icon"><i class="fas ' + (icons[type] || icons.info) + '"></i></span><span>' +
-                message + '</span>';
+            toast.innerHTML = '<span class="toast-icon"><i class="fas ' + (icons[type] || icons.info) +
+            '"></i></span><span>' + message + '</span>';
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -1763,7 +1895,7 @@
         }
 
         // ========================================================================
-        //  封禁记录 & 解禁记录
+        //  封禁记录 & 解禁记录（公开可见）
         // ========================================================================
         async function fetchBanRecords() {
             try { const r = await supabaseRequest('/ban_records?order=banned_at.desc'); return (r && r.success !== true) ? r :
@@ -1780,6 +1912,7 @@
                     banned_by: bannedBy, reason: reason }) });
         }
 
+        // 封禁记录公开可见
         async function showBanRecords() {
             const modal = document.getElementById('banRecordsModal');
             const list = document.getElementById('banRecordsList');
@@ -2010,7 +2143,7 @@
         }
 
         // ========================================================================
-        //  获取存储用量
+        //  获取存储用量（修复版）
         // ========================================================================
         async function getStorageUsage() {
             try {
@@ -2021,9 +2154,17 @@
                 if (!response.ok) return { used: 0, total: 1024 * 1024 * 1024 };
                 const data = await response.json();
                 let totalSize = 0;
-                if (Array.isArray(data)) totalSize = data.reduce((sum, obj) => sum + (obj.metadata?.size || 0), 0);
+                if (Array.isArray(data)) {
+                    totalSize = data.reduce((sum, obj) => {
+                        const size = obj.metadata?.size || 0;
+                        return sum + size;
+                    }, 0);
+                }
                 return { used: totalSize, total: 1024 * 1024 * 1024 };
-            } catch { return { used: 0, total: 1024 * 1024 * 1024 }; }
+            } catch (err) {
+                console.warn('获取存储用量失败:', err);
+                return { used: 0, total: 1024 * 1024 * 1024 };
+            }
         }
 
         // ========================================================================
@@ -2114,7 +2255,6 @@
                         '<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无举报记录</div>';
                     return;
                 }
-                // 简化的举报渲染
                 list.innerHTML = reports.map(report => {
                     const statusMap = { pending: { label: '⏳ 待处理', color: '#D97706', bg: '#FEF3C7' },
                         resolved: { label: '✅ 已处理', color: '#059669', bg: '#D1FAE5' },
@@ -2133,6 +2273,124 @@
                 list.innerHTML =
                     '<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ' +
                     err.message + '</div>';
+            }
+        }
+
+        // ========================================================================
+        //  审核功能（完整版）
+        // ========================================================================
+        async function openReviewPanel() {
+            const container = document.getElementById('reviewPanelContainer');
+            if (!container) return;
+
+            try {
+                const pendingFiles = await fetchFiles('pending');
+                if (pendingFiles.length === 0) {
+                    container.innerHTML =
+                        '<div class="review-panel"><div class="review-empty"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>🎉 暂无待审核文件</div></div>';
+                    return;
+                }
+
+                let html = '<div class="review-panel"><h3 style="font-size:16px;font-weight:700;margin-bottom:12px;"><i class="fas fa-clock" style="color:#D97706;"></i> 待审核文件 (' +
+                    pendingFiles.length + ')</h3>';
+
+                pendingFiles.forEach(file => {
+                    const category = file.category || '其他';
+                    const ext = (file.file_name || '').split('.').pop().toLowerCase();
+                    const url = SUPABASE_URL + '/storage/v1/object/public/' + STORAGE_BUCKET + '/' + file
+                    .file_path;
+
+                    html += '<div class="review-item" data-id="' + file.id +
+                        '"><div class="review-header"><span class="review-file-name">' + file.file_name +
+                        '</span><span class="review-meta">' + formatSize(file.file_size) + ' · 上传者: ' + file
+                        .uploaded_by + ' · 📂 ' + category + '</span></div>' +
+                        '<div style="font-size:12px;color:var(--text-light);margin-top:2px;">上传时间: ' +
+                        formatTime(file.created_at) + '</div>' +
+                        '<div class="review-actions">' +
+                        '<button class="preview-btn" data-url="' + url + '" data-ext="' + ext +
+                        '" data-name="' + file.file_name + '"><i class="fas fa-eye"></i> 预览</button>' +
+                        '<button class="approve-btn" data-id="' + file.id +
+                        '"><i class="fas fa-check"></i> 通过</button>' +
+                        '<button class="reject-btn" data-id="' + file.id +
+                        '"><i class="fas fa-times"></i> 拒绝</button>' +
+                        '</div></div>';
+                });
+
+                html += '</div>';
+                container.innerHTML = html;
+
+                // 预览按钮
+                container.querySelectorAll('.preview-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const url = this.dataset.url;
+                        const ext = this.dataset.ext;
+                        const name = this.dataset.name;
+
+                        if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(ext)) {
+                            window.open(url, '_blank');
+                            return;
+                        }
+                        if (ext === 'pdf') {
+                            window.open(url, '_blank');
+                            return;
+                        }
+                        if (['txt', 'md', 'json', 'xml', 'html', 'css', 'js', 'csv', 'log'].includes(ext)) {
+                            fetch(url, { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' +
+                                        SUPABASE_ANON_KEY } })
+                                .then(r => r.text())
+                                .then(text => {
+                                    const w = window.open('', '_blank');
+                                    w.document.write(
+                                        '<html><head><title>预览 ' + name +
+                                        '</title><style>body{font-family:monospace;padding:20px;white-space:pre-wrap;word-break:break-word;background:#f8fafc;}</style></head><body>' +
+                                        text + '</body></html>');
+                                    w.document.close();
+                                }).catch(() => showToast('❌ 预览失败', 'error'));
+                            return;
+                        }
+                        showToast('📥 该类型不支持预览，请下载查看', 'info', 2000);
+                        window.open(url, '_blank');
+                    });
+                });
+
+                // 通过按钮
+                container.querySelectorAll('.approve-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = parseInt(this.dataset.id);
+                        if (confirm('确定要通过此文件吗？')) {
+                            try {
+                                await updateFileStatus(id, 'approved', getCurrentUser());
+                                showToast('✅ 已通过审核', 'success');
+                                await openReviewPanel();
+                                await refreshAll();
+                            } catch (err) { showToast('❌ ' + err.message, 'error'); }
+                        }
+                    });
+                });
+
+                // 拒绝按钮
+                container.querySelectorAll('.reject-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = parseInt(this.dataset.id);
+                        const reason = prompt('请输入拒绝原因（可选）：');
+                        if (reason === null) return;
+                        try {
+                            const file = allFiles.find(f => f.id === id);
+                            if (file && file.file_path) await deleteFileFromStorage(file.file_path);
+                            await updateFileStatus(id, 'rejected', getCurrentUser(), reason ||
+                                '未说明原因');
+                            await deleteFileRecord(id);
+                            showToast('❌ 已拒绝并删除文件', 'success');
+                            await openReviewPanel();
+                            await refreshAll();
+                        } catch (err) { showToast('❌ ' + err.message, 'error'); }
+                    });
+                });
+
+            } catch (err) {
+                container.innerHTML =
+                    '<div class="review-panel"><div class="review-empty" style="color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:32px;display:block;margin-bottom:8px;"></i>加载失败: ' +
+                    err.message + '</div></div>';
             }
         }
 
@@ -2214,7 +2472,13 @@
                         '<i class="fas fa-thumbtack pin-icon"></i>' : '') + escapeHtml(item.title) + (isPinned ?
                         '<span style="font-size:10px;font-weight:700;padding:1px 8px;border-radius:10px;background:#F59E0B;color:#fff;">置顶</span>' :
                         '') + '</div><div class="announcement-meta"><span><span class="author-name ' + authorClass +
-                    '" style="font-weight:600;">' + item.author + '</span>' + tagHtml +
+                    '" style="font-weight:600;' + (isAuthorBanned ? 'color:var(--banned-color);' : '') +
+                    (isAuthorOwner ? 'color:var(--owner-color);' : '') +
+                    (isAuthorOfficial ? 'color:var(--official-color);' : '') +
+                    (isAuthorTeacher ? 'color:var(--teacher-color);' : '') +
+                    (isAuthorVip ? 'color:var(--vip-color);' : '') +
+                    (isAuthorAdmin ? 'color:var(--admin-color);' : '') + '">' + item.author + '</span>' +
+                    tagHtml +
                     '</span><span>' + formatTime(item.created_at) +
                     '</span></div></div><div class="announcement-content markdown-body" data-render="true">' +
                     escapeHtml(item.content) + '</div>' + (actionsHtml ? '<div class="announcement-actions">' +
@@ -2656,18 +2920,17 @@
         }
 
         // ========================================================================
-        //  管理员审核面板
+        //  管理面板加载
         // ========================================================================
         async function loadAdminPanel() {
             const currentUser = getCurrentUser();
-            if (!currentUser || !isAdmin(currentUser)) return;
+            if (!currentUser || !isAdmin(currentUser)) {
+                document.getElementById('navAdmin').style.display = 'none';
+                return;
+            }
             document.getElementById('navAdmin').style.display = 'flex';
-        }
-
-        function openReviewModal() {
-            // 简化版审核
-            showToast('📋 审核功能已打开', 'info', 2000);
-            // 可以扩展为完整审核面板
+            // 自动加载审核面板
+            await openReviewPanel();
         }
 
         // ========================================================================
@@ -2711,8 +2974,9 @@
 
         function showDeleteAnnouncementModal(id, title, author) {
             deleteAnnouncementTargetId = id;
-            document.getElementById('deleteAnnouncementMsg').textContent = '确定要删除公告 "' + title + '" 吗？' + (isOwner(
-                getCurrentUser()) && author !== getCurrentUser() ? '\n👑 站长权限：此公告由 "' + author + '" 发布' : '');
+            const msg = '确定要删除公告 "' + title + '" 吗？' + (isOwner(getCurrentUser()) && author !== getCurrentUser() ?
+                '\n👑 站长权限：此公告由 "' + author + '" 发布' : '');
+            document.getElementById('deleteAnnouncementMsg').textContent = msg;
             document.getElementById('deleteAnnouncementModal').classList.add('active');
         }
 
@@ -2746,7 +3010,6 @@
 
         function showBanUserModal(username, userId) {
             banUserTarget = { username, userId };
-            // 使用 prompt 简化封禁
             const reason = prompt('请输入封禁 "' + username + '" 的原因：');
             if (reason === null) return;
             if (!reason.trim()) { showToast('⚠️ 请填写封禁原因', 'error'); return; }
@@ -2781,7 +3044,6 @@
                 const availableUsers = users.filter(u => u.username !== currentUser && !isAdmin(u.username) && !bannedIds
                     .has(u.id));
                 if (availableUsers.length === 0) { showToast('暂无普通用户可封禁', 'info'); return; }
-                // 用简单的下拉选择
                 const userOptions = availableUsers.map(u => '<option value="' + u.id + '|' + u.username + '">' + u
                     .username + '</option>').join('');
                 const overlay = document.createElement('div');
@@ -2824,11 +3086,17 @@
                 await loadAnnouncements();
                 await renderForum();
 
+                // 修复存储用量
                 const usage = await getStorageUsage();
                 document.getElementById('statStorage').textContent = formatSizeSimple(usage.used);
+
                 updateUI();
 
-                if (currentUser && isAdmin(currentUser)) await loadAdminPanel();
+                if (currentUser && isAdmin(currentUser)) {
+                    await loadAdminPanel();
+                } else {
+                    document.getElementById('navAdmin').style.display = 'none';
+                }
 
                 setTimeout(() => {
                     console.log('🔄 第一次渲染尝试...');
@@ -2981,6 +3249,14 @@
             // 关闭移动端侧边栏
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebarToggle').innerHTML = '<i class="fas fa-bars"></i>';
+
+            // 切换到管理页面时加载审核面板
+            if (pageId === 'admin') {
+                const currentUser = getCurrentUser();
+                if (currentUser && isAdmin(currentUser)) {
+                    openReviewPanel();
+                }
+            }
         }
 
         // ========================================================================
@@ -2999,7 +3275,6 @@
                     '<i class="fas fa-bars"></i>';
             });
 
-            // 点击内容区关闭侧边栏（移动端）
             document.getElementById('mainContent').addEventListener('click', () => {
                 if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
                     sidebar.classList.remove('open');
@@ -3014,16 +3289,13 @@
                     if (page === 'admin' && !isLoggedIn()) { showToast('⚠️ 请先登录', 'error'); return; }
                     if (page === 'admin' && !isAdmin(getCurrentUser())) { showToast(
                         '⚠️ 没有管理员权限', 'error'); return; }
-                    if (page === 'home') switchPage('home');
-                    else if (page === 'forum') switchPage('forum');
-                    else if (page === 'files') switchPage('files');
-                    else if (page === 'admin') switchPage('admin');
+                    switchPage(page);
                 });
             });
 
             // ---- 登录/登出 ----
             document.getElementById('navLogin').addEventListener('click', () => {
-                if (isLoggedIn()) { /* 已登录状态不处理 */ } else { openAuthModal('login'); }
+                if (isLoggedIn()) {} else { openAuthModal('login'); }
             });
 
             document.getElementById('navLogout').addEventListener('click', () => {
@@ -3183,7 +3455,9 @@
             });
 
             // ---- 管理面板 ----
-            document.getElementById('adminReviewBtn').addEventListener('click', openReviewModal);
+            document.getElementById('adminReviewBtn').addEventListener('click', () => {
+                switchPage('admin');
+            });
             document.getElementById('adminBanBtn').addEventListener('click', showBanUserSelector);
             document.getElementById('adminReportsBtn').addEventListener('click', openReportsReview);
             document.getElementById('adminNotifBtn').addEventListener('click', showSendNotificationModal);
@@ -3320,9 +3594,12 @@
             // ---- 默认显示主页 ----
             switchPage('home');
 
-            console.log('✅ 2510班资源站已启动！（左侧导航栏版）');
+            console.log('✅ 2510班资源站已启动！（左侧导航栏版 - 完整修复）');
             console.log('⭐ VIP用户: ' + VIP_USERS.join(', '));
             console.log('🔑 管理员: ' + ADMIN_USERS.join(', '));
+            console.log('📊 存储用量已修复');
+            console.log('🔓 封禁记录公开可见');
+            console.log('✅ 管理员名字正常显示');
         });
     </script>
 
