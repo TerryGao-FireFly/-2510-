@@ -1635,6 +1635,18 @@
         .text-vip { color: var(--vip-color) !important; }
         .text-banned { color: var(--banned-color) !important; }
         .text-user { color: var(--text-primary) !important; }
+
+        /* ===== 加载状态 ===== */
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+        .loading-spinner i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1782,9 +1794,10 @@
                 </div>
             </div>
 
-            <div id="messageList" style="display:flex;flex-direction:column;gap:10px;">
-                <div style="text-align:center;padding:40px;color:var(--text-light);">
-                    <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...
+            <div id="messageList">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    加载中...
                 </div>
             </div>
         </div>
@@ -2035,40 +2048,30 @@
 
         let currentUserBanned = false;
 
-        function getRoleColorClass(username) {
-            if (!username) return 'role-user';
-            if (isOwner(username)) return 'role-owner';
-            if (isOfficial(username)) return 'role-official';
-            if (isTeacher(username)) return 'role-teacher';
-            if (isVip(username)) return 'role-vip';
-            if (isAdmin(username)) return 'role-admin';
-            if (currentUserBanned) return 'role-banned';
-            return 'role-user';
+        // ========================================================================
+        //  【缓存系统】
+        // ========================================================================
+        const CACHE = {
+            files: null,
+            announcements: null,
+            forumPosts: null,
+            messages: null,
+            users: null,
+            timestamp: 0
+        };
+        const CACHE_DURATION = 30000; // 30秒缓存
+
+        function isCacheValid() {
+            return (Date.now() - CACHE.timestamp) < CACHE_DURATION;
         }
 
-        function getRoleIcon(username) {
-            if (!username) return '<i class="fas fa-user" style="font-size:11px;color:var(--text-light);"></i>';
-            let icon = 'fa-user';
-            let color = 'var(--text-light)';
-            if (isOwner(username)) { icon = 'fa-crown';
-                color = 'var(--owner-color)'; } else if (isOfficial(username)) { icon = 'fa-badge-check';
-                color = 'var(--official-color)'; } else if (isTeacher(username)) { icon = 'fa-chalkboard-teacher';
-                color = 'var(--teacher-color)'; } else if (isVip(username)) { icon = 'fa-star';
-                color = 'var(--vip-color)'; } else if (isAdmin(username)) { icon = 'fa-user-shield';
-                color = 'var(--admin-color)'; } else if (currentUserBanned) { icon = 'fa-ban';
-                color = 'var(--banned-color)'; }
-            return '<i class="fas ' + icon + '" style="font-size:11px;color:' + color + ';"></i>';
-        }
-
-        function getRoleTag(username) {
-            if (!username) return '';
-            if (isOwner(username)) return '<span class="tag owner-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--owner-color);color:#fff;">站长</span>';
-            if (isOfficial(username)) return '<span class="tag official-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--official-color);color:#fff;">官方</span>';
-            if (isTeacher(username)) return '<span class="tag teacher-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--teacher-color);color:#fff;">老师</span>';
-            if (isVip(username)) return '<span class="tag vip-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--vip-color);color:#fff;">VIP用户</span>';
-            if (isAdmin(username)) return '<span class="tag admin-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--admin-color);color:#fff;">管理员</span>';
-            if (currentUserBanned) return '<span class="tag banned-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--banned-color);color:#fff;">封禁用户</span>';
-            return '';
+        function clearCache() {
+            CACHE.files = null;
+            CACHE.announcements = null;
+            CACHE.forumPosts = null;
+            CACHE.messages = null;
+            CACHE.users = null;
+            CACHE.timestamp = 0;
         }
 
         // ========================================================================
@@ -2120,6 +2123,42 @@
             const map = { pdf: '#EF4444', doc: '#3B82F6', image: '#8B5CF6', video: '#EC4899', zip: '#F59E0B',
                 other: '#6B7280' };
             return map[getFileType(ext)] || '#6B7280';
+        }
+
+        function getRoleColorClass(username) {
+            if (!username) return 'role-user';
+            if (isOwner(username)) return 'role-owner';
+            if (isOfficial(username)) return 'role-official';
+            if (isTeacher(username)) return 'role-teacher';
+            if (isVip(username)) return 'role-vip';
+            if (isAdmin(username)) return 'role-admin';
+            if (currentUserBanned) return 'role-banned';
+            return 'role-user';
+        }
+
+        function getRoleIcon(username) {
+            if (!username) return '<i class="fas fa-user" style="font-size:11px;color:var(--text-light);"></i>';
+            let icon = 'fa-user';
+            let color = 'var(--text-light)';
+            if (isOwner(username)) { icon = 'fa-crown';
+                color = 'var(--owner-color)'; } else if (isOfficial(username)) { icon = 'fa-badge-check';
+                color = 'var(--official-color)'; } else if (isTeacher(username)) { icon = 'fa-chalkboard-teacher';
+                color = 'var(--teacher-color)'; } else if (isVip(username)) { icon = 'fa-star';
+                color = 'var(--vip-color)'; } else if (isAdmin(username)) { icon = 'fa-user-shield';
+                color = 'var(--admin-color)'; } else if (currentUserBanned) { icon = 'fa-ban';
+                color = 'var(--banned-color)'; }
+            return '<i class="fas ' + icon + '" style="font-size:11px;color:' + color + ';"></i>';
+        }
+
+        function getRoleTag(username) {
+            if (!username) return '';
+            if (isOwner(username)) return '<span class="tag owner-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--owner-color);color:#fff;">站长</span>';
+            if (isOfficial(username)) return '<span class="tag official-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--official-color);color:#fff;">官方</span>';
+            if (isTeacher(username)) return '<span class="tag teacher-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--teacher-color);color:#fff;">老师</span>';
+            if (isVip(username)) return '<span class="tag vip-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--vip-color);color:#fff;">VIP用户</span>';
+            if (isAdmin(username)) return '<span class="tag admin-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--admin-color);color:#fff;">管理员</span>';
+            if (currentUserBanned) return '<span class="tag banned-tag" style="font-size:9px;font-weight:700;padding:1px 8px;border-radius:10px;background:var(--banned-color);color:#fff;">封禁用户</span>';
+            return '';
         }
 
         function showToast(message, type = 'info', duration = 3000) {
@@ -2279,6 +2318,7 @@
             const bans = await supabaseRequest('/user_bans?user_id=eq.' + user.id);
             if (bans && bans.length > 0 && bans[0].is_banned === true) throw new Error('您已被封禁，无法登录');
             setSession(username, user.id);
+            clearCache();
             return { success: true, username, userId: user.id };
         }
 
@@ -2419,8 +2459,11 @@
         }
 
         // ========================================================================
-        //  通知/私信功能
+        //  私信功能（带缓存）
         // ========================================================================
+        let messagesCache = null;
+        let messagesCacheTime = 0;
+
         async function sendPrivateMessage(targetUser, sentBy, title, content) {
             if (!targetUser || !title || !content) throw new Error('请填写完整信息');
             if (targetUser === sentBy) throw new Error('不能给自己发私信');
@@ -2434,6 +2477,8 @@
                     is_read: false
                 })
             });
+            // 清除缓存
+            messagesCache = null;
             return { success: true };
         }
 
@@ -2450,6 +2495,7 @@
                 method: 'PATCH',
                 body: JSON.stringify({ is_read: true })
             });
+            messagesCache = null;
             return { success: true };
         }
 
@@ -2457,6 +2503,7 @@
             const msgs = await fetchUserMessages(username);
             const unread = msgs.filter(m => !m.is_read);
             for (const m of unread) { await markMessageAsRead(m.id); }
+            messagesCache = null;
             return { success: true };
         }
 
@@ -2466,7 +2513,97 @@
             const msg = msgs[0];
             if (msg.target_user !== currentUser) throw new Error('没有权限删除');
             await supabaseRequest('/notifications?id=eq.' + messageId, { method: 'DELETE' });
+            messagesCache = null;
             return { success: true };
+        }
+
+        function renderMessagesContent(container, msgs) {
+            const currentUser = getCurrentUser();
+
+            if (msgs.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center;padding:60px 20px;color:var(--text-light);"><i class="fas fa-inbox" style="font-size:48px;display:block;margin-bottom:12px;opacity:0.3;"></i><p>收件箱空空如也</p><button class="btn btn-primary" id="emptyNewMsgBtn" style="margin-top:12px;"><i class="fas fa-plus"></i> 发送第一条私信</button></div>';
+                document.getElementById('emptyNewMsgBtn')?.addEventListener('click', openChatModal);
+                return;
+            }
+
+            const unread = msgs.filter(m => !m.is_read);
+            const badge = document.getElementById('msgBadge');
+            if (unread.length > 0) {
+                badge.style.display = 'inline';
+                badge.textContent = unread.length > 99 ? '99+' : unread.length;
+            } else {
+                badge.style.display = 'none';
+            }
+
+            container.innerHTML = msgs.map(msg => {
+                const isRead = msg.is_read || false;
+                const canDelete = msg.target_user === currentUser;
+                return '<div class="message-item ' + (isRead ? 'read' : 'unread') +
+                    '"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;"><div style="flex:1;min-width:150px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-weight:600;font-size:15px;' +
+                    (isRead ? '' : 'color:var(--primary);') + '">' + (isRead ? '📖' : '🔔') + ' ' + escapeHtml(
+                    msg.title) +
+                    '</span>' + (!isRead ?
+                        '<span style="font-size:10px;font-weight:600;background:var(--primary);color:#fff;padding:1px 10px;border-radius:10px;">未读</span>' :
+                        '') +
+                    '</div><div style="font-size:14px;color:var(--text-secondary);margin-top:4px;line-height:1.5;">' +
+                    escapeHtml(msg.content) +
+                    '</div><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;font-size:12px;color:var(--text-light);"><span>📩 来自: <strong>' +
+                    escapeHtml(msg.sent_by) +
+                    '</strong></span><span>🕐 ' + formatTime(msg.created_at) +
+                    '</span></div></div><div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;">' +
+                    (!isRead ?
+                        '<button class="msg-read-btn" data-id="' + msg.id +
+                        '" style="padding:4px 14px;border:none;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;background:rgba(91,106,240,0.08);color:var(--primary);font-family:var(--font);">标记已读</button>'
+                        : '') +
+                    (canDelete ?
+                        '<button class="msg-delete-btn" data-id="' + msg.id +
+                        '" style="padding:4px 14px;border:none;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;background:rgba(239,68,68,0.08);color:#EF4444;font-family:var(--font);">删除</button>'
+                        : '') +
+                    '</div></div></div>';
+            }).join('');
+
+            container.querySelectorAll('.msg-read-btn').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const id = parseInt(this.dataset.id);
+                    try {
+                        await markMessageAsRead(id);
+                        showToast('✅ 已标记为已读', 'success', 1500);
+                        await renderMessages();
+                    } catch (err) { showToast('❌ ' + err.message, 'error'); }
+                });
+            });
+
+            container.querySelectorAll('.msg-delete-btn').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const id = parseInt(this.dataset.id);
+                    if (!confirm('确定要删除这条私信吗？')) return;
+                    try {
+                        await deleteMessage(id, getCurrentUser());
+                        showToast('🗑️ 已删除', 'success', 1500);
+                        await renderMessages();
+                    } catch (err) { showToast('❌ ' + err.message, 'error'); }
+                });
+            });
+
+            // 全部已读按钮
+            const headerActions = document.querySelector('#pageMessages .page-actions');
+            const oldBtn = document.getElementById('markAllReadBtn');
+            if (oldBtn) oldBtn.remove();
+            if (unread.length > 0) {
+                const allReadBtn = document.createElement('button');
+                allReadBtn.className = 'btn btn-outline';
+                allReadBtn.id = 'markAllReadBtn';
+                allReadBtn.innerHTML = '<i class="fas fa-check-double"></i> 全部已读';
+                allReadBtn.addEventListener('click', async function() {
+                    try {
+                        await markAllMessagesAsRead(getCurrentUser());
+                        showToast('✅ 全部已标记为已读', 'success', 1500);
+                        await renderMessages();
+                    } catch (err) { showToast('❌ ' + err.message, 'error'); }
+                });
+                headerActions.appendChild(allReadBtn);
+            }
         }
 
         async function renderMessages() {
@@ -2479,91 +2616,21 @@
                 return;
             }
 
-            try {
-                const msgs = await fetchUserMessages(currentUser);
-                const unread = msgs.filter(m => !m.is_read);
-                const badge = document.getElementById('msgBadge');
-                if (unread.length > 0) {
-                    badge.style.display = 'inline';
-                    badge.textContent = unread.length > 99 ? '99+' : unread.length;
-                } else {
-                    badge.style.display = 'none';
-                }
+            // 显示加载状态
+            container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i>加载中...</div>';
 
-                if (msgs.length === 0) {
-                    container.innerHTML =
-                        '<div style="text-align:center;padding:60px 20px;color:var(--text-light);"><i class="fas fa-inbox" style="font-size:48px;display:block;margin-bottom:12px;opacity:0.3;"></i><p>收件箱空空如也</p><button class="btn btn-primary" id="emptyNewMsgBtn" style="margin-top:12px;"><i class="fas fa-plus"></i> 发送第一条私信</button></div>';
-                    document.getElementById('emptyNewMsgBtn')?.addEventListener('click', openChatModal);
+            try {
+                // 使用缓存（30秒内不重复加载）
+                const now = Date.now();
+                if (messagesCache && (now - messagesCacheTime) < 30000) {
+                    renderMessagesContent(container, messagesCache);
                     return;
                 }
 
-                container.innerHTML = msgs.map(msg => {
-                    const isRead = msg.is_read || false;
-                    const canDelete = msg.target_user === currentUser;
-                    return '<div class="message-item ' + (isRead ? 'read' : 'unread') +
-                        '"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;"><div style="flex:1;min-width:150px;"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-weight:600;font-size:15px;' +
-                        (isRead ? '' : 'color:var(--primary);') + '">' + (isRead ? '📖' : '🔔') + ' ' + escapeHtml(
-                        msg.title) +
-                        '</span>' + (!isRead ?
-                            '<span style="font-size:10px;font-weight:600;background:var(--primary);color:#fff;padding:1px 10px;border-radius:10px;">未读</span>' :
-                            '') +
-                        '</div><div style="font-size:14px;color:var(--text-secondary);margin-top:4px;line-height:1.5;">' +
-                        escapeHtml(msg.content) +
-                        '</div><div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;font-size:12px;color:var(--text-light);"><span>📩 来自: <strong>' +
-                        escapeHtml(msg.sent_by) +
-                        '</strong></span><span>🕐 ' + formatTime(msg.created_at) +
-                        '</span></div></div><div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;">' +
-                        (!isRead ?
-                            '<button class="msg-read-btn" data-id="' + msg.id +
-                            '" style="padding:4px 14px;border:none;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;background:rgba(91,106,240,0.08);color:var(--primary);font-family:var(--font);">标记已读</button>'
-                            : '') +
-                        (canDelete ?
-                            '<button class="msg-delete-btn" data-id="' + msg.id +
-                            '" style="padding:4px 14px;border:none;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;background:rgba(239,68,68,0.08);color:#EF4444;font-family:var(--font);">删除</button>'
-                            : '') +
-                        '</div></div></div>';
-                }).join('');
-
-                container.querySelectorAll('.msg-read-btn').forEach(btn => {
-                    btn.addEventListener('click', async function() {
-                        const id = parseInt(this.dataset.id);
-                        try {
-                            await markMessageAsRead(id);
-                            showToast('✅ 已标记为已读', 'success', 1500);
-                            await renderMessages();
-                        } catch (err) { showToast('❌ ' + err.message, 'error'); }
-                    });
-                });
-
-                container.querySelectorAll('.msg-delete-btn').forEach(btn => {
-                    btn.addEventListener('click', async function() {
-                        const id = parseInt(this.dataset.id);
-                        if (!confirm('确定要删除这条私信吗？')) return;
-                        try {
-                            await deleteMessage(id, getCurrentUser());
-                            showToast('🗑️ 已删除', 'success', 1500);
-                            await renderMessages();
-                        } catch (err) { showToast('❌ ' + err.message, 'error'); }
-                    });
-                });
-
-                const headerActions = document.querySelector('#pageMessages .page-actions');
-                const oldBtn = document.getElementById('markAllReadBtn');
-                if (oldBtn) oldBtn.remove();
-                if (unread.length > 0) {
-                    const allReadBtn = document.createElement('button');
-                    allReadBtn.className = 'btn btn-outline';
-                    allReadBtn.id = 'markAllReadBtn';
-                    allReadBtn.innerHTML = '<i class="fas fa-check-double"></i> 全部已读';
-                    allReadBtn.addEventListener('click', async function() {
-                        try {
-                            await markAllMessagesAsRead(getCurrentUser());
-                            showToast('✅ 全部已标记为已读', 'success', 1500);
-                            await renderMessages();
-                        } catch (err) { showToast('❌ ' + err.message, 'error'); }
-                    });
-                    headerActions.appendChild(allReadBtn);
-                }
+                const msgs = await fetchUserMessages(currentUser);
+                messagesCache = msgs;
+                messagesCacheTime = now;
+                renderMessagesContent(container, msgs);
 
             } catch (err) {
                 console.error('加载私信失败:', err);
@@ -2574,8 +2641,17 @@
         }
 
         async function getUserList() {
-            try { const r = await supabaseRequest('/users?select=id,username'); return (r && r.success !== true) ? r : []; } catch {
-                return []; }
+            // 使用缓存
+            if (CACHE.users && isCacheValid()) {
+                return CACHE.users;
+            }
+            try {
+                const r = await supabaseRequest('/users?select=id,username');
+                const users = (r && r.success !== true) ? r : [];
+                CACHE.users = users;
+                CACHE.timestamp = Date.now();
+                return users;
+            } catch { return []; }
         }
 
         async function openChatModal() {
@@ -2607,19 +2683,30 @@
             if (navItem) navItem.classList.add('active');
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebarToggle').innerHTML = '<i class="fas fa-bars"></i>';
+
             if (pageId === 'admin') {
                 const currentUser = getCurrentUser();
                 if (currentUser && isAdmin(currentUser)) { openReviewPanel(); }
             }
-            if (pageId === 'messages') { renderMessages(); }
+            if (pageId === 'messages') {
+                renderMessages();
+            }
         }
 
         // ========================================================================
         //  公告管理
         // ========================================================================
         async function fetchAnnouncements() {
-            try { const r = await supabaseRequest('/announcements?order=is_pinned.desc,created_at.desc'); return (r && r
-                    .success !== true) ? r : []; } catch { return []; }
+            if (CACHE.announcements && isCacheValid()) {
+                return CACHE.announcements;
+            }
+            try {
+                const r = await supabaseRequest('/announcements?order=is_pinned.desc,created_at.desc');
+                const data = (r && r.success !== true) ? r : [];
+                CACHE.announcements = data;
+                CACHE.timestamp = Date.now();
+                return data;
+            } catch { return []; }
         }
 
         async function publishAnnouncement(title, content, author) {
@@ -2629,6 +2716,7 @@
             const isAdminUser = role === 'admin' || role === 'owner' || role === 'official' || role === 'teacher';
             await supabaseRequest('/announcements', { method: 'POST', body: JSON.stringify({ title: title.trim(),
                     content: content.trim(), author: author, is_admin: isAdminUser, is_pinned: false }) });
+            CACHE.announcements = null;
             return { success: true };
         }
 
@@ -2641,6 +2729,7 @@
                 if (announcement.author !== currentUser) throw new Error('你只能删除自己发布的公告');
             } else throw new Error('没有权限删除公告');
             await supabaseRequest('/announcements?id=eq.' + id, { method: 'DELETE' });
+            CACHE.announcements = null;
             return { success: true };
         }
 
@@ -2651,6 +2740,7 @@
             const currentPin = announcements[0].is_pinned || false;
             await supabaseRequest('/announcements?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({ is_pinned: !
                         currentPin }) });
+            CACHE.announcements = null;
             return { success: true, is_pinned: !currentPin };
         }
 
@@ -2721,11 +2811,17 @@
         }
 
         async function fetchFiles(status = null) {
+            if (CACHE.files && isCacheValid()) {
+                return CACHE.files;
+            }
             try {
                 let url = '/files?order=created_at.desc';
                 if (status) url += '&status=eq.' + status;
                 const r = await supabaseRequest(url);
-                return (r && r.success !== true) ? r : [];
+                const data = (r && r.success !== true) ? r : [];
+                CACHE.files = data;
+                CACHE.timestamp = Date.now();
+                return data;
             } catch { return []; }
         }
 
@@ -2733,11 +2829,13 @@
             const data = { status, reviewed_by: reviewedBy, reviewed_at: new Date().toISOString() };
             if (rejectReason) data.reject_reason = rejectReason;
             await supabaseRequest('/files?id=eq.' + fileId, { method: 'PATCH', body: JSON.stringify(data) });
+            CACHE.files = null;
             return { success: true };
         }
 
         async function deleteFileRecord(fileId) {
             await supabaseRequest('/files?id=eq.' + fileId, { method: 'DELETE' });
+            CACHE.files = null;
             return { success: true };
         }
 
@@ -2936,15 +3034,19 @@
             const container = document.getElementById('announcementList');
             const currentUser = getCurrentUser();
             if (!container) return;
+
+            // 使用缓存的数据
             if (announcements.length === 0) {
                 container.innerHTML =
                     '<div style="text-align:center;padding:20px;color:var(--text-light);font-size:14px;"><i class="fas fa-inbox" style="font-size:24px;display:block;margin-bottom:8px;opacity:0.3;"></i>暂无公告</div>';
                 return;
             }
+
             const uniqueAuthors = [...new Set(announcements.map(a => a.author))];
             for (const author of uniqueAuthors) {
                 announcementAuthorBanCache[author] = await isUsernameBanned(author);
             }
+
             const sorted = [...announcements].sort((a, b) => {
                 if (a.is_pinned && !b.is_pinned) return -1;
                 if (!a.is_pinned && b.is_pinned) return 1;
@@ -2990,6 +3092,7 @@
                     toggleText + '</button></div>';
             }
             container.innerHTML = html;
+
             container.querySelectorAll('.delete-announce-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = parseInt(btn.dataset.id);
@@ -3009,6 +3112,7 @@
             const toggleBtn = document.getElementById('announcementToggleBtn');
             if (toggleBtn) toggleBtn.addEventListener('click', () => { announcementsExpanded = !announcementsExpanded;
                 renderAnnouncements(); });
+
             document.getElementById('statAnnouncements').textContent = announcements.length;
             document.getElementById('homeBadge').textContent = announcements.length;
             setTimeout(renderAllContent, 100);
@@ -3023,39 +3127,58 @@
         }
 
         // ========================================================================
-        //  渲染文件列表
+        //  渲染文件列表（带缓存优化）
         // ========================================================================
         let allFiles = [];
         let currentCategory = 'all';
         let searchQuery = '';
         let fileUploaderBanCache = {};
+        let lastRenderKey = '';
 
         async function renderFiles(fileList) {
             const grid = document.getElementById('fileGrid');
             if (!grid) return;
+
+            // 生成渲染键，避免重复渲染
+            const renderKey = fileList.length + '_' + currentCategory + '_' + searchQuery;
+            if (renderKey === lastRenderKey && fileList.length > 0) {
+                // 数据没变化，跳过重绘（但更新统计数字）
+                document.getElementById('statFiles').textContent = fileList.length;
+                const filtered = getFilteredFiles(fileList);
+                document.getElementById('fileBadge').textContent = filtered.length;
+                return;
+            }
+            lastRenderKey = renderKey;
+
             if (currentUserBanned) {
                 grid.innerHTML =
                     '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--banned-color);"><i class="fas fa-ban" style="font-size:48px;display:block;margin-bottom:12px;opacity:0.5;"></i><h3>⚠️ 您已被封禁</h3><p>您无法查看和上传任何文件。</p></div>';
                 return;
             }
-            let filtered = [...fileList].filter(f => f.status === 'approved');
+
+            let filtered = fileList.filter(f => f.status === 'approved');
             if (currentCategory !== 'all') filtered = filtered.filter(f => (f.category || '其他') === currentCategory);
             if (searchQuery.trim()) filtered = filtered.filter(f => f.file_name.toLowerCase().includes(searchQuery.trim()
                 .toLowerCase()));
+
             document.getElementById('statFiles').textContent = fileList.length;
             document.getElementById('fileBadge').textContent = filtered.length;
+
             if (filtered.length === 0) {
                 grid.innerHTML =
                     '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-light);"><i class="fas fa-inbox" style="font-size:40px;display:block;margin-bottom:8px;opacity:0.3;"></i><p>' +
                     (fileList.length === 0 ? '还没有任何资源' : '没有匹配的文件') + '</p></div>';
                 return;
             }
+
             const uniqueUploaders = [...new Set(filtered.map(f => f.uploaded_by).filter(Boolean))];
             for (const uploader of uniqueUploaders) {
                 fileUploaderBanCache[uploader] = await isUsernameBanned(uploader);
             }
+
             const loggedIn = isLoggedIn();
             const currentUser = getCurrentUser();
+
             grid.innerHTML = filtered.map(file => {
                 const fileType = file.file_type || 'other';
                 const color = getFileColor(fileType);
@@ -3092,6 +3215,7 @@
                         '" style="flex:1;padding:6px 0;border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;transition:var(--transition);font-family:var(--font);background:rgba(239,68,68,0.04);color:#EF4444;"><i class="fas fa-flag"></i></button>' :
                         '') + '</div></div>';
             }).join('');
+
             grid.querySelectorAll('.download-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -3118,6 +3242,14 @@
             });
         }
 
+        function getFilteredFiles(fileList) {
+            let filtered = fileList.filter(f => f.status === 'approved');
+            if (currentCategory !== 'all') filtered = filtered.filter(f => (f.category || '其他') === currentCategory);
+            if (searchQuery.trim()) filtered = filtered.filter(f => f.file_name.toLowerCase().includes(searchQuery.trim()
+                .toLowerCase()));
+            return filtered;
+        }
+
         // ========================================================================
         //  讨论区
         // ========================================================================
@@ -3126,8 +3258,16 @@
         const MAX_VISIBLE_FORUM_POSTS = 5;
 
         async function fetchForumPosts() {
-            try { const r = await supabaseRequest('/forum_posts?order=created_at.desc'); return (r && r.success !== true) ? r :
-                    []; } catch { return []; }
+            if (CACHE.forumPosts && isCacheValid()) {
+                return CACHE.forumPosts;
+            }
+            try {
+                const r = await supabaseRequest('/forum_posts?order=created_at.desc');
+                const data = (r && r.success !== true) ? r : [];
+                CACHE.forumPosts = data;
+                CACHE.timestamp = Date.now();
+                return data;
+            } catch { return []; }
         }
 
         async function publishForumPost(title, content, author) {
@@ -3140,6 +3280,7 @@
             }
             await supabaseRequest('/forum_posts', { method: 'POST', body: JSON.stringify({ title: title.trim(),
                     content: content.trim(), author: author, replies: [] }) });
+            CACHE.forumPosts = null;
             return { success: true };
         }
 
@@ -3156,6 +3297,7 @@
                 if (post.author !== currentUser) throw new Error('没有权限删除此帖子');
             }
             await supabaseRequest('/forum_posts?id=eq.' + id, { method: 'DELETE' });
+            CACHE.forumPosts = null;
             return { success: true };
         }
 
@@ -3170,6 +3312,7 @@
             replies.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), author: author,
                 content: content.trim(), created_at: new Date().toISOString() });
             await supabaseRequest('/forum_posts?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({ replies: replies }) });
+            CACHE.forumPosts = null;
             return { success: true };
         }
 
@@ -3191,6 +3334,7 @@
             }
             replies.splice(replyIndex, 1);
             await supabaseRequest('/forum_posts?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({ replies: replies }) });
+            CACHE.forumPosts = null;
             return { success: true };
         }
 
@@ -3198,8 +3342,7 @@
             const container = document.getElementById('forumPostList');
             const currentUser = getCurrentUser();
             try {
-                const posts = await fetchForumPosts();
-                forumPosts = posts;
+                const posts = forumPosts;
                 document.getElementById('statPosts').textContent = posts.length;
                 document.getElementById('forumBadge').textContent = posts.length;
                 if (posts.length === 0) {
@@ -3274,6 +3417,7 @@
                         toggleText + '</button></div>';
                 }
                 container.innerHTML = html;
+                // 事件绑定
                 container.querySelectorAll('.delete-post-btn').forEach(btn => {
                     btn.addEventListener('click', async () => {
                         const id = parseInt(btn.dataset.id);
@@ -3398,6 +3542,7 @@
                 if (file && file.file_path) await deleteFileFromStorage(file.file_path);
                 await deleteFileRecord(deleteFileTargetId);
                 showToast('🗑️ 文件已删除', 'success', 1500);
+                clearCache();
                 await refreshAll();
             } catch (err) { showToast('删除失败', 'error'); }
             hideDeleteFileModal();
@@ -3425,6 +3570,7 @@
             try {
                 await deleteAnnouncement(deleteAnnouncementTargetId, getCurrentUser());
                 showToast('🗑️ 公告已删除', 'success', 1500);
+                clearCache();
                 await loadAnnouncements();
             } catch (err) { showToast('❌ ' + err.message, 'error'); }
             hideDeleteAnnouncementModal();
@@ -3452,6 +3598,7 @@
                 showToast('✅ 已封禁用户 ' + banUserTarget.username, 'success', 3000);
                 fileUploaderBanCache = {};
                 announcementAuthorBanCache = {};
+                clearCache();
                 await refreshAll();
             } catch (err) { showToast('❌ ' + err.message, 'error'); }
         }
@@ -3514,20 +3661,41 @@
         }
 
         // ========================================================================
-        //  刷新所有数据
+        //  🔥 核心优化：并行刷新所有数据
         // ========================================================================
         async function refreshAll() {
             try {
+                const startTime = performance.now();
+                console.log('🔄 开始加载数据...');
+
                 const currentUser = getCurrentUser();
                 const userId = getCurrentUserId();
+
+                // 检查封禁状态
                 if (userId) currentUserBanned = await isUserBanned(userId);
                 else currentUserBanned = false;
 
-                allFiles = await fetchFiles();
-                await renderFiles(allFiles);
-                await loadAnnouncements();
-                await renderForum();
+                // 🔥 并行加载核心数据
+                const [files, announcementsData, forumData] = await Promise.all([
+                    fetchFiles(),
+                    fetchAnnouncements(),
+                    fetchForumPosts()
+                ]);
 
+                allFiles = Array.isArray(files) ? files : [];
+                announcements = Array.isArray(announcementsData) ? announcementsData : [];
+                forumPosts = Array.isArray(forumData) ? forumData : [];
+
+                console.log(`✅ 数据加载完成 (${(performance.now() - startTime).toFixed(0)}ms)`);
+
+                // 🔥 并行渲染
+                await Promise.all([
+                    renderFiles(allFiles),
+                    renderAnnouncements(),
+                    renderForum()
+                ]);
+
+                // 存储用量（轻量请求）
                 const usage = await getStorageUsage();
                 document.getElementById('statStorage').textContent = formatSizeSimple(usage.used);
 
@@ -3539,27 +3707,35 @@
                     document.getElementById('navAdmin').style.display = 'none';
                 }
 
-                // 更新私信徽章
+                // 私信徽章（轻量，仅登录用户）
                 if (currentUser) {
-                    const msgs = await fetchUserMessages(currentUser);
-                    const unread = msgs.filter(m => !m.is_read);
-                    const badge = document.getElementById('msgBadge');
-                    if (unread.length > 0) {
-                        badge.style.display = 'inline';
-                        badge.textContent = unread.length > 99 ? '99+' : unread.length;
-                    } else {
-                        badge.style.display = 'none';
-                    }
+                    try {
+                        // 优先使用缓存
+                        let msgs;
+                        if (messagesCache && (Date.now() - messagesCacheTime) < 30000) {
+                            msgs = messagesCache;
+                        } else {
+                            msgs = await fetchUserMessages(currentUser);
+                            messagesCache = msgs;
+                            messagesCacheTime = Date.now();
+                        }
+                        const unread = msgs.filter(m => !m.is_read);
+                        const badge = document.getElementById('msgBadge');
+                        if (unread.length > 0) {
+                            badge.style.display = 'inline';
+                            badge.textContent = unread.length > 99 ? '99+' : unread.length;
+                        } else {
+                            badge.style.display = 'none';
+                        }
+                    } catch (e) { /* 静默失败 */ }
                 }
 
+                // 延迟渲染 Markdown
                 setTimeout(() => {
-                    console.log('🔄 第一次渲染尝试...');
                     renderAllContent();
-                    setTimeout(() => {
-                        console.log('🔄 第二次渲染尝试...');
-                        renderAllContent();
-                    }, 500);
-                }, 300);
+                }, 200);
+
+                console.log(`✅ 全部加载完成 (${(performance.now() - startTime).toFixed(0)}ms)`);
 
             } catch (err) {
                 console.error('刷新数据失败:', err);
@@ -3694,6 +3870,7 @@
                             showToast('✅ ' + file.name + ' 已自动通过审核（管理员）', 'success', 2000);
                         }
                     }
+                    clearCache();
                     await refreshAll();
                 } catch (err) {
                     showToast('❌ ' + file.name + ' 上传失败: ' + err.message, 'error');
@@ -3745,6 +3922,8 @@
                     currentUserBanned = false;
                     fileUploaderBanCache = {};
                     announcementAuthorBanCache = {};
+                    clearCache();
+                    messagesCache = null;
                     showToast('👋 已登出', 'info', 1500);
                     switchPage('home');
                     refreshAll();
@@ -3780,6 +3959,7 @@
                     await publishAnnouncement(title, content, getCurrentUser());
                     showToast('✅ 公告发布成功！', 'success', 2000);
                     closeAnnouncementModal();
+                    clearCache();
                     await loadAnnouncements();
                 } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
                     btn.textContent = '发布'; }
@@ -3816,6 +3996,7 @@
                     await sendPrivateMessage(targetUser, currentUser, title, content);
                     showToast('✅ 私信已发送给 ' + targetUser, 'success', 2000);
                     closeChatModal();
+                    messagesCache = null;
                     await renderMessages();
                 } catch (err) {
                     showToast('❌ ' + err.message, 'error');
@@ -3828,6 +4009,7 @@
             document.getElementById('refreshMessagesBtn').addEventListener('click', async function() {
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 this.disabled = true;
+                messagesCache = null;
                 await renderMessages();
                 this.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                 this.disabled = false;
@@ -3863,6 +4045,7 @@
                     document.getElementById('forumPostTitle').value = '';
                     document.getElementById('forumPostContent').value = '';
                     document.getElementById('forumPostForm').style.display = 'none';
+                    clearCache();
                     await renderForum();
                 } catch (err) { showToast('❌ ' + err.message, 'error'); }
             });
@@ -3872,6 +4055,7 @@
                 const btn = document.getElementById('refreshHomeBtn');
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 btn.disabled = true;
+                clearCache();
                 await loadAnnouncements();
                 btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                 btn.disabled = false;
@@ -3882,6 +4066,7 @@
                 const btn = document.getElementById('refreshForumBtn');
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 btn.disabled = true;
+                clearCache();
                 await renderForum();
                 btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                 btn.disabled = false;
@@ -3892,6 +4077,7 @@
                 const btn = document.getElementById('refreshFilesBtn');
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 btn.disabled = true;
+                clearCache();
                 await refreshAll();
                 btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                 btn.disabled = false;
@@ -3902,6 +4088,7 @@
                 const btn = document.getElementById('refreshAnnouncementsBtn');
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                 btn.disabled = true;
+                clearCache();
                 await loadAnnouncements();
                 btn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新';
                 btn.disabled = false;
@@ -4007,6 +4194,8 @@
                     showToast('✅ 欢迎回来，' + username + '！(' + roleText + ')', 'success', 2000);
                     fileUploaderBanCache = {};
                     announcementAuthorBanCache = {};
+                    clearCache();
+                    messagesCache = null;
                     await refreshAll();
                 } catch (err) {
                     showToast('❌ ' + err.message, 'error', 3000);
@@ -4103,14 +4292,65 @@
 
             switchPage('home');
 
-            console.log('✅ 2510班资源站已启动！（完整版含私信）');
+            console.log('✅ 2510班资源站已启动！（优化版）');
+            console.log('⚡ 并行加载 + 30秒缓存');
             console.log('⭐ VIP用户: ' + VIP_USERS.join(', '));
             console.log('🔑 管理员: ' + ADMIN_USERS.join(', '));
-            console.log('📊 存储用量已修复');
-            console.log('🔓 封禁记录公开可见');
             console.log('💬 私信功能已上线');
             console.log('© 2026 2510班资源站');
         });
+
+        // ========================================================================
+        //  通知功能（保留但简化）
+        // ========================================================================
+        async function sendNotification(targetUser, sentBy, title, content) {
+            if (!targetUser || !title || !content) throw new Error('请填写完整信息');
+            await supabaseRequest('/notifications', { method: 'POST', body: JSON.stringify({ target_user: targetUser,
+                    sent_by: sentBy, title: title.trim(), content: content.trim(), is_read: false }) });
+            messagesCache = null;
+            return { success: true };
+        }
+
+        function showSendNotificationModal() {
+            getUserList().then(users => {
+                const currentUser = getCurrentUser();
+                const availableUsers = users.filter(u => u.username !== currentUser);
+                if (availableUsers.length === 0) { showToast('没有其他用户可发送通知', 'info'); return; }
+                const overlay = document.createElement('div');
+                overlay.style.cssText =
+                    'position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;';
+                const modal = document.createElement('div');
+                modal.style.cssText =
+                    'background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;';
+                const userOptions = availableUsers.map(u => '<option value="' + u.username + '">' + u.username +
+                '</option>').join('');
+                modal.innerHTML =
+                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3><button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div style="flex:1;overflow-y:auto;"><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label><select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">' +
+                    userOptions +
+                    '</select></div><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label><input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;"></div><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label><textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea></div></div><div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;"><button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button><button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button></div>';
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
+                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
+                    const targetUser = document.getElementById('notifTargetUser').value;
+                    const title = document.getElementById('notifTitle').value.trim();
+                    const content = document.getElementById('notifContent').value.trim();
+                    const currentUser = getCurrentUser();
+                    if (!title || !content) { showToast('⚠️ 请填写标题和内容', 'error'); return; }
+                    const btn = document.getElementById('sendNotifBtn');
+                    btn.disabled = true;
+                    btn.textContent = '发送中...';
+                    try {
+                        await sendNotification(targetUser, currentUser, title, content);
+                        showToast('✅ 通知已发送给 ' + targetUser, 'success');
+                        overlay.remove();
+                    } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
+                        btn.textContent = '发送'; }
+                });
+            }).catch(err => { showToast('❌ ' + err.message, 'error'); });
+        }
     </script>
 
 </body>
