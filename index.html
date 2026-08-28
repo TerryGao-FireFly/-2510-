@@ -66,9 +66,6 @@
 
         .app-container { max-width: 1280px; margin: 0 auto; }
 
-        /* ===== 所有样式省略（与之前相同） ===== */
-        /* 实际部署时使用完整样式 */
-
         .topbar {
             display: flex;
             flex-wrap: wrap;
@@ -1381,12 +1378,16 @@
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 14px 20px; border-radius: 12px;
+            padding: 14px 20px;
+            border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.12);
             border: 1px solid rgba(255,255,255,0.5);
-            display: flex; align-items: center; gap: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             animation: slideIn 0.35s ease;
-            font-size: 14px; font-weight: 500;
+            font-size: 14px;
+            font-weight: 500;
         }
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(40px); }
@@ -1824,7 +1825,6 @@
 </head>
 <body>
 
-    <!-- ====== HTML 结构 ====== -->
     <div class="app-container">
 
         <nav class="topbar">
@@ -2089,7 +2089,6 @@
 
     </div>
 
-    <!-- ====== 模态框 ====== -->
     <div class="auth-modal-overlay" id="authModal">
         <div class="auth-modal">
             <button class="close-btn" id="authModalClose">&times;</button>
@@ -2247,7 +2246,7 @@
         }
 
         // ========================================================================
-        //  工具函数（定义在顶部，确保所有函数都能访问）
+        //  工具函数
         // ========================================================================
 
         function escapeHtml(text) {
@@ -2303,7 +2302,7 @@
         }
 
         // ========================================================================
-        //  Toast 通知
+        //  Toast 通知（修复：去掉 emoji，只保留 UI 图标）
         // ========================================================================
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
@@ -3476,7 +3475,7 @@
         }
 
         // ========================================================================
-        //  渲染公告
+        //  渲染公告（修复：标题去掉 escapeHtml）
         // ========================================================================
         let announcements = [];
         let announcementsExpanded = false;
@@ -3567,7 +3566,7 @@
                         <div class="announcement-header">
                             <div class="announcement-title markdown-inline" data-render-title="true">
                                 ${isPinned ? '<i class="fas fa-thumbtack pin-icon"></i>' : ''}
-                                ${escapeHtml(item.title)}
+                                ${item.title}
                                 ${isPinned ? '<span class="tag pinned-tag">置顶</span>' : ''}
                             </div>
                             <div class="announcement-meta">
@@ -3802,7 +3801,7 @@
         }
 
         // ========================================================================
-        //  讨论区功能（支持 Shift+Enter 换行）
+        //  讨论区功能（修复：标题去掉 escapeHtml，回复支持 Shift+Enter）
         // ========================================================================
         let forumPosts = [];
         let forumExpanded = false;
@@ -4057,7 +4056,7 @@
                                 </div>
                                 <span class="post-time">${formatTime(post.created_at)}</span>
                             </div>
-                            <div class="post-title markdown-inline" data-render-title="true">${escapeHtml(post.title)}</div>
+                            <div class="post-title markdown-inline" data-render-title="true">${post.title}</div>
                             <div class="post-content markdown-body" data-render="true">${escapeHtml(post.content)}</div>
                             <div class="post-actions">
                                 ${currentUser && !currentUserBanned ? `<button class="reply-btn" data-post-id="${post.id}"><i class="fas fa-reply"></i> 回复</button>` : ''}
@@ -5101,12 +5100,13 @@
                 }
             });
 
-            console.log('✅ 2510班资源站已启动！（完整修复版 + 新用户）');
+            console.log('✅ 2510班资源站已启动！（完整修复版）');
             console.log(`📝 Markdown + LaTeX 渲染已启用（块级公式 $$ 已修复）`);
             console.log(`⌨️ 回复支持 Shift+Enter 换行`);
             console.log(`📊 存储用量已修复`);
             console.log(`⭐ VIP用户: ${VIP_USERS.join(', ')}`);
             console.log(`🔑 管理员: ${ADMIN_USERS.join(', ')}`);
+            console.log(`✅ Toast 通知已修复（无重复图标）`);
         });
     </script>
 
