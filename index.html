@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2510班资源站</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <!-- Markdown + LaTeX 渲染 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -76,7 +75,6 @@
         ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
-        /* ===== 侧边栏 ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -219,7 +217,6 @@
             overflow: hidden;
         }
 
-        /* 未读私信红点 */
         .sidebar .sidebar-nav .nav-item .unread-dot {
             display: none;
             width: 20px;
@@ -1332,7 +1329,6 @@
             box-shadow: 0 4px 16px rgba(91, 106, 240, 0.30);
         }
 
-        /* ===== 陶片放逐 - 处罚记录 ===== */
         .ostracism-item {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -1718,7 +1714,6 @@
             border-left: 4px solid var(--text-light);
         }
 
-        /* 未读私信红点样式 */
         .unread-dot {
             display: none;
             width: 20px;
@@ -2410,7 +2405,7 @@
             const toast = document.createElement('div');
             toast.className = 'toast ' + type;
             toast.innerHTML = '<span class="toast-icon"><i class="fas ' + (icons[type] || icons.info) +
-            '"></i></span><span>' + message + '</span>';
+                '"></i></span><span>' + message + '</span>';
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -2595,23 +2590,42 @@
             all: '全部权限'
         };
 
+        // ========================================================================
+        //  权限检查（基于最新记录）
+        // ========================================================================
+        async function checkUserHasPermission(targetUser, permissionType) {
+            if (!targetUser) return true;
+            if (isOwner(targetUser)) return true;
+
+            const records = await fetchOstracismRecords();
+            const userRecords = records.filter(r =>
+                r.target_user === targetUser &&
+                (r.permission_type === permissionType || r.permission_type === 'all')
+            );
+
+            if (userRecords.length === 0) return true;
+
+            const sorted = userRecords.sort((a, b) =>
+                new Date(b.created_at) - new Date(a.created_at)
+            );
+            const latest = sorted[0];
+
+            return latest.action === 'grant';
+        }
+
         async function setUserPermission(targetUser, adminUser, action, permissionType, reason = '') {
             if (!targetUser || !adminUser) throw new Error('请选择用户');
             if (!['grant', 'revoke'].includes(action)) throw new Error('无效的操作类型');
             if (!['chat', 'forum', 'upload', 'download', 'all'].includes(permissionType)) throw new Error('无效的权限类型');
 
-            // 不能操作管理员
             if (isAdmin(targetUser) && !isOwner(adminUser)) {
                 throw new Error('只有站长可以管理管理员权限');
             }
 
-            // 不能操作自己
             if (targetUser === adminUser) throw new Error('不能操作自己的权限');
 
             const permissionLabel = PERMISSION_TYPES[permissionType] || permissionType;
-            const actionLabel = action === 'grant' ? '授予' : '撤销';
 
-            // 记录到陶片放逐表
             await supabaseRequest('/ostracism_records', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -2625,7 +2639,6 @@
                 })
             });
 
-            // 清除缓存
             CACHE.ostracism = null;
             return { success: true };
         }
@@ -2642,7 +2655,6 @@
                 return data;
             } catch (err) {
                 console.warn('获取处罚记录失败（表可能不存在）:', err.message);
-                // 表不存在时返回空数组，不影响登录
                 return [];
             }
         }
@@ -2698,13 +2710,7 @@
             if (!targetUser || !title || !content) throw new Error('请填写完整信息');
             if (targetUser === sentBy) throw new Error('不能给自己发私信');
 
-            // 检查目标用户是否被禁私信
-            const ostracismRecords = await fetchOstracismRecords();
-            const hasChatBan = ostracismRecords.some(r =>
-                r.target_user === targetUser &&
-                r.action === 'revoke' &&
-                (r.permission_type === 'chat' || r.permission_type === 'all')
-            );
+            const hasChatBan = !(await checkUserHasPermission(targetUser, 'chat'));
             if (hasChatBan) throw new Error('该用户已被禁止使用私信');
 
             await supabaseRequest('/notifications', {
@@ -2897,13 +2903,7 @@
             const currentUser = getCurrentUser();
             if (!currentUser) { showToast('⚠️ 请先登录', 'error'); return; }
 
-            // 检查是否被禁私信
-            const ostracismRecords = await fetchOstracismRecords();
-            const hasChatBan = ostracismRecords.some(r =>
-                r.target_user === currentUser &&
-                r.action === 'revoke' &&
-                (r.permission_type === 'chat' || r.permission_type === 'all')
-            );
+            const hasChatBan = !(await checkUserHasPermission(currentUser, 'chat'));
             if (hasChatBan) { showToast('⚠️ 您已被禁止使用私信功能', 'error'); return; }
 
             const users = await getUserList();
@@ -3087,15 +3087,15 @@
         }
 
         async function updateReportStatus(reportId, status) {
-    if (!['pending', 'resolved', 'dismissed'].includes(status)) {
-        throw new Error('无效的状态值');
-    }
-    await supabaseRequest('/reports?id=eq.' + reportId, { 
-        method: 'PATCH', 
-        body: JSON.stringify({ status: status }) 
-    });
-    return { success: true };
-}
+            if (!['pending', 'resolved', 'dismissed'].includes(status)) {
+                throw new Error('无效的状态值');
+            }
+            await supabaseRequest('/reports?id=eq.' + reportId, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: status })
+            });
+            return { success: true };
+        }
 
         async function openReportsReview() {
             const overlay = document.createElement('div');
@@ -3127,86 +3127,84 @@
         }
 
         async function loadReports(filter) {
-    const list = document.getElementById('reportsList');
-    const countEl = document.getElementById('reportsCount');
-    try {
-        const reports = await fetchReports(filter === 'all' ? null : filter);
-        countEl.textContent = '(' + reports.length + ' 条)';
-        if (reports.length === 0) {
-            list.innerHTML =
-                '<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无举报记录</div>';
-            return;
+            const list = document.getElementById('reportsList');
+            const countEl = document.getElementById('reportsCount');
+            try {
+                const reports = await fetchReports(filter === 'all' ? null : filter);
+                countEl.textContent = '(' + reports.length + ' 条)';
+                if (reports.length === 0) {
+                    list.innerHTML =
+                        '<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-check-circle" style="font-size:32px;color:#22C55E;display:block;margin-bottom:8px;"></i>暂无举报记录</div>';
+                    return;
+                }
+                const currentUser = getCurrentUser();
+                const isAdminUser = currentUser && isAdmin(currentUser);
+
+                list.innerHTML = reports.map(report => {
+                    const statusMap = {
+                        pending: { label: '⏳ 待处理', color: '#D97706', bg: '#FEF3C7' },
+                        resolved: { label: '✅ 已处理', color: '#059669', bg: '#D1FAE5' },
+                        dismissed: { label: '❌ 已驳回', color: '#DC2626', bg: '#FEE2E2' }
+                    };
+                    const statusInfo = statusMap[report.status] || statusMap.pending;
+                    const canAction = report.status === 'pending' && isAdminUser;
+
+                    let typeLabel = '📌 未知';
+                    if (report.target_type === 'file') typeLabel = '📄 文件';
+                    else if (report.target_type === 'forum_post') typeLabel = '💬 帖子';
+                    else if (report.target_type === 'forum_reply') typeLabel = '💬 回复';
+
+                    return '<div style="background:#f8fafc;border-radius:10px;padding:12px 16px;border:1px solid #e2e8f0;margin-bottom:8px;">' +
+                        '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">' +
+                        '<div style="flex:1;min-width:150px;">' +
+                        '<div style="font-weight:600;font-size:14px;">' + typeLabel + ' (ID: ' + report.target_id + ')</div>' +
+                        '<div style="font-size:13px;color:var(--text-secondary);">📝 ' + escapeHtml(report.reason || '未说明') + '</div>' +
+                        '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">🚨 举报人: <strong>' + escapeHtml(report.reported_by) + '</strong> · ' + formatTime(report.created_at) + '</div>' +
+                        '</div>' +
+                        '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">' +
+                        '<span style="font-size:12px;font-weight:600;padding:2px 12px;border-radius:10px;background:' + statusInfo.bg + ';color:' + statusInfo.color + ';">' + statusInfo.label + '</span>' +
+                        (canAction ?
+                            '<div style="display:flex;gap:4px;margin-top:4px;">' +
+                            '<button class="resolve-report-btn" data-id="' + report.id + '" style="padding:3px 12px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);background:#22C55E;color:#fff;">✅ 处理</button>' +
+                            '<button class="dismiss-report-btn" data-id="' + report.id + '" style="padding:3px 12px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);background:#EF4444;color:#fff;">❌ 驳回</button>' +
+                            '</div>' : '') +
+                        '</div></div></div>';
+                }).join('');
+
+                list.querySelectorAll('.resolve-report-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = parseInt(this.dataset.id);
+                        if (!confirm('确定要将此举报标记为「已处理」吗？')) return;
+                        try {
+                            await updateReportStatus(id, 'resolved');
+                            showToast('✅ 举报已标记为已处理', 'success', 1500);
+                            await loadReports(filter);
+                        } catch (err) {
+                            showToast('❌ 操作失败: ' + err.message, 'error');
+                        }
+                    });
+                });
+
+                list.querySelectorAll('.dismiss-report-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = parseInt(this.dataset.id);
+                        if (!confirm('确定要驳回此举报吗？')) return;
+                        try {
+                            await updateReportStatus(id, 'dismissed');
+                            showToast('❌ 举报已驳回', 'success', 1500);
+                            await loadReports(filter);
+                        } catch (err) {
+                            showToast('❌ 操作失败: ' + err.message, 'error');
+                        }
+                    });
+                });
+
+            } catch (err) {
+                list.innerHTML =
+                    '<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ' +
+                    err.message + '</div>';
+            }
         }
-        const currentUser = getCurrentUser();
-        const isAdminUser = currentUser && isAdmin(currentUser);
-        
-        list.innerHTML = reports.map(report => {
-            const statusMap = { 
-                pending: { label: '⏳ 待处理', color: '#D97706', bg: '#FEF3C7' },
-                resolved: { label: '✅ 已处理', color: '#059669', bg: '#D1FAE5' },
-                dismissed: { label: '❌ 已驳回', color: '#DC2626', bg: '#FEE2E2' } 
-            };
-            const statusInfo = statusMap[report.status] || statusMap.pending;
-            const canAction = report.status === 'pending' && isAdminUser;
-            
-            let typeLabel = '📌 未知';
-            if (report.target_type === 'file') typeLabel = '📄 文件';
-            else if (report.target_type === 'forum_post') typeLabel = '💬 帖子';
-            else if (report.target_type === 'forum_reply') typeLabel = '💬 回复';
-            
-            return '<div style="background:#f8fafc;border-radius:10px;padding:12px 16px;border:1px solid #e2e8f0;margin-bottom:8px;">' +
-                '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">' +
-                '<div style="flex:1;min-width:150px;">' +
-                '<div style="font-weight:600;font-size:14px;">' + typeLabel + ' (ID: ' + report.target_id + ')</div>' +
-                '<div style="font-size:13px;color:var(--text-secondary);">📝 ' + escapeHtml(report.reason || '未说明') + '</div>' +
-                '<div style="font-size:12px;color:var(--text-light);margin-top:4px;">🚨 举报人: <strong>' + escapeHtml(report.reported_by) + '</strong> · ' + formatTime(report.created_at) + '</div>' +
-                '</div>' +
-                '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">' +
-                '<span style="font-size:12px;font-weight:600;padding:2px 12px;border-radius:10px;background:' + statusInfo.bg + ';color:' + statusInfo.color + ';">' + statusInfo.label + '</span>' +
-                (canAction ? 
-                    '<div style="display:flex;gap:4px;margin-top:4px;">' +
-                    '<button class="resolve-report-btn" data-id="' + report.id + '" style="padding:3px 12px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);background:#22C55E;color:#fff;">✅ 处理</button>' +
-                    '<button class="dismiss-report-btn" data-id="' + report.id + '" style="padding:3px 12px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);background:#EF4444;color:#fff;">❌ 驳回</button>' +
-                    '</div>' : '') +
-                '</div></div></div>';
-        }).join('');
-
-        // 处理举报 - 标记为已处理
-        list.querySelectorAll('.resolve-report-btn').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const id = parseInt(this.dataset.id);
-                if (!confirm('确定要将此举报标记为「已处理」吗？')) return;
-                try {
-                    await updateReportStatus(id, 'resolved');
-                    showToast('✅ 举报已标记为已处理', 'success', 1500);
-                    await loadReports(filter);
-                } catch (err) {
-                    showToast('❌ 操作失败: ' + err.message, 'error');
-                }
-            });
-        });
-
-        // 驳回举报
-        list.querySelectorAll('.dismiss-report-btn').forEach(btn => {
-            btn.addEventListener('click', async function() {
-                const id = parseInt(this.dataset.id);
-                if (!confirm('确定要驳回此举报吗？')) return;
-                try {
-                    await updateReportStatus(id, 'dismissed');
-                    showToast('❌ 举报已驳回', 'success', 1500);
-                    await loadReports(filter);
-                } catch (err) {
-                    showToast('❌ 操作失败: ' + err.message, 'error');
-                }
-            });
-        });
-
-    } catch (err) {
-        list.innerHTML =
-            '<div style="text-align:center;padding:30px 0;color:#EF4444;"><i class="fas fa-exclamation-triangle" style="font-size:24px;display:block;margin-bottom:8px;"></i>加载失败: ' +
-            err.message + '</div>';
-    }
-}
 
         // ========================================================================
         //  审核功能
@@ -3234,7 +3232,7 @@
                     const category = file.category || '其他';
                     const ext = (file.file_name || '').split('.').pop().toLowerCase();
                     const url = SUPABASE_URL + '/storage/v1/object/public/' + STORAGE_BUCKET + '/' + file
-                    .file_path;
+                        .file_path;
 
                     html += '<div class="review-item" data-id="' + file.id +
                         '"><div class="review-header"><span class="review-file-name">' + file.file_name +
@@ -3373,7 +3371,6 @@
                 showToast('✅ 已' + actionLabel + ' ' + targetUser + ' 的 ' + permissionLabel + ' 权限', 'success', 3000);
                 closePermissionModal();
                 await renderOstracism();
-                // 更新徽章
                 const records = await fetchOstracismRecords();
                 document.getElementById('ostracismBadge').textContent = records.length;
             } catch (err) {
@@ -3515,13 +3512,8 @@
                 return;
             }
 
-            // 检查是否被禁下载
-            const ostracismRecords = await fetchOstracismRecords();
-            const hasDownloadBan = ostracismRecords.some(r =>
-                r.target_user === getCurrentUser() &&
-                r.action === 'revoke' &&
-                (r.permission_type === 'download' || r.permission_type === 'all')
-            );
+            const currentUser = getCurrentUser();
+            const hasDownloadBan = !(await checkUserHasPermission(currentUser, 'download'));
 
             let filtered = fileList.filter(f => f.status === 'approved');
             if (currentCategory !== 'all') filtered = filtered.filter(f => (f.category || '其他') === currentCategory);
@@ -3544,7 +3536,6 @@
             }
 
             const loggedIn = isLoggedIn();
-            const currentUser = getCurrentUser();
 
             grid.innerHTML = filtered.map(file => {
                 const fileType = file.file_type || 'other';
@@ -3635,13 +3626,7 @@
             if (!title || !content) throw new Error('标题和内容不能为空');
             if (title.length > 100) throw new Error('标题不能超过100个字符');
 
-            // 检查是否被禁言
-            const ostracismRecords = await fetchOstracismRecords();
-            const hasForumBan = ostracismRecords.some(r =>
-                r.target_user === author &&
-                r.action === 'revoke' &&
-                (r.permission_type === 'forum' || r.permission_type === 'all')
-            );
+            const hasForumBan = !(await checkUserHasPermission(author, 'forum'));
             if (hasForumBan) throw new Error('您已被禁止在讨论区发言');
 
             const currentPosts = await fetchForumPosts();
@@ -3675,13 +3660,7 @@
         async function replyToPost(postId, content, author) {
             if (!content || content.trim().length < 1) throw new Error('回复内容不能为空');
 
-            // 检查是否被禁言
-            const ostracismRecords = await fetchOstracismRecords();
-            const hasForumBan = ostracismRecords.some(r =>
-                r.target_user === author &&
-                r.action === 'revoke' &&
-                (r.permission_type === 'forum' || r.permission_type === 'all')
-            );
+            const hasForumBan = !(await checkUserHasPermission(author, 'forum'));
             if (hasForumBan) throw new Error('您已被禁止在讨论区发言');
 
             const id = parseInt(postId);
@@ -3990,7 +3969,6 @@
             try {
                 await banUserById(banUserTarget.userId, currentUser);
                 await addBanRecord(banUserTarget.username, currentUser, reason);
-                // 同时记录到陶片放逐
                 await setUserPermission(banUserTarget.username, currentUser, 'revoke', 'all', reason);
                 showToast('✅ 已封禁用户 ' + banUserTarget.username, 'success', 3000);
                 fileUploaderBanCache = {};
@@ -4111,7 +4089,6 @@
                 announcements = Array.isArray(announcementsData) ? announcementsData : [];
                 forumPosts = Array.isArray(forumData) ? forumData : [];
 
-                // 异步获取陶片放逐记录（不阻塞主流程）
                 fetchOstracismRecords().then(records => {
                     document.getElementById('ostracismBadge').textContent = records.length;
                 }).catch(() => {});
@@ -4127,7 +4104,6 @@
                 const usage = await getStorageUsage();
                 document.getElementById('statStorage').textContent = formatSizeSimple(usage.used);
 
-                // 更新私信红点
                 if (currentUser) {
                     try {
                         let msgs;
@@ -4356,14 +4332,8 @@
             if (!isLoggedIn()) { showToast('⚠️ 请先登录再上传文件', 'error', 3000); return; }
             if (currentUserBanned) { showToast('⚠️ 您已被封禁，无法上传文件', 'error', 3000); return; }
 
-            // 检查是否被禁上传
             const currentUser = getCurrentUser();
-            const ostracismRecords = await fetchOstracismRecords();
-            const hasUploadBan = ostracismRecords.some(r =>
-                r.target_user === currentUser &&
-                r.action === 'revoke' &&
-                (r.permission_type === 'upload' || r.permission_type === 'all')
-            );
+            const hasUploadBan = !(await checkUserHasPermission(currentUser, 'upload'));
             if (hasUploadBan) { showToast('⚠️ 您已被禁止上传文件', 'error', 3000); return; }
 
             const selectedCatEl = document.querySelector('#uploadCategorySelector .cat-option.selected');
@@ -4402,6 +4372,58 @@
                     showToast('❌ ' + file.name + ' 上传失败: ' + err.message, 'error');
                 }
             }
+        }
+
+        // ========================================================================
+        //  通知功能
+        // ========================================================================
+        async function sendNotification(targetUser, sentBy, title, content) {
+            if (!targetUser || !title || !content) throw new Error('请填写完整信息');
+            await supabaseRequest('/notifications', { method: 'POST', body: JSON.stringify({ target_user: targetUser,
+                    sent_by: sentBy, title: title.trim(), content: content.trim(), is_read: false }) });
+            messagesCache = null;
+            return { success: true };
+        }
+
+        function showSendNotificationModal() {
+            getUserList().then(users => {
+                const currentUser = getCurrentUser();
+                const availableUsers = users.filter(u => u.username !== currentUser);
+                if (availableUsers.length === 0) { showToast('没有其他用户可发送通知', 'info'); return; }
+                const overlay = document.createElement('div');
+                overlay.style.cssText =
+                    'position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;';
+                const modal = document.createElement('div');
+                modal.style.cssText =
+                    'background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;';
+                const userOptions = availableUsers.map(u => '<option value="' + u.username + '">' + u.username +
+                    '</option>').join('');
+                modal.innerHTML =
+                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3><button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div style="flex:1;overflow-y:auto;"><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label><select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">' +
+                    userOptions +
+                    '</select></div><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label><input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;"></div><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label><textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea></div></div><div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;"><button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button><button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button></div>';
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
+                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
+                    const targetUser = document.getElementById('notifTargetUser').value;
+                    const title = document.getElementById('notifTitle').value.trim();
+                    const content = document.getElementById('notifContent').value.trim();
+                    const currentUser = getCurrentUser();
+                    if (!title || !content) { showToast('⚠️ 请填写标题和内容', 'error'); return; }
+                    const btn = document.getElementById('sendNotifBtn');
+                    btn.disabled = true;
+                    btn.textContent = '发送中...';
+                    try {
+                        await sendNotification(targetUser, currentUser, title, content);
+                        showToast('✅ 通知已发送给 ' + targetUser, 'success');
+                        overlay.remove();
+                    } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
+                        btn.textContent = '发送'; }
+                });
+            }).catch(err => { showToast('❌ ' + err.message, 'error'); });
         }
 
         // ========================================================================
@@ -4808,9 +4830,9 @@
                     .currentTarget) hideDeleteFileModal(); });
 
             document.getElementById('deleteAnnouncementCancelBtn').addEventListener('click',
-            hideDeleteAnnouncementModal);
+                hideDeleteAnnouncementModal);
             document.getElementById('deleteAnnouncementConfirmBtn').addEventListener('click',
-            confirmDeleteAnnouncement);
+                confirmDeleteAnnouncement);
             document.getElementById('deleteAnnouncementModal').addEventListener('click', (e) => { if (e.target === e
                     .currentTarget) hideDeleteAnnouncementModal(); });
 
@@ -4845,58 +4867,6 @@
             console.log('💬 私信红点已添加');
             console.log('© 2026 2510班资源站');
         });
-
-        // ========================================================================
-        //  通知功能
-        // ========================================================================
-        async function sendNotification(targetUser, sentBy, title, content) {
-            if (!targetUser || !title || !content) throw new Error('请填写完整信息');
-            await supabaseRequest('/notifications', { method: 'POST', body: JSON.stringify({ target_user: targetUser,
-                    sent_by: sentBy, title: title.trim(), content: content.trim(), is_read: false }) });
-            messagesCache = null;
-            return { success: true };
-        }
-
-        function showSendNotificationModal() {
-            getUserList().then(users => {
-                const currentUser = getCurrentUser();
-                const availableUsers = users.filter(u => u.username !== currentUser);
-                if (availableUsers.length === 0) { showToast('没有其他用户可发送通知', 'info'); return; }
-                const overlay = document.createElement('div');
-                overlay.style.cssText =
-                    'position: fixed; inset: 0; background: rgba(0,0,0,0.40); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; animation: fadeInOverlay 0.25s ease;';
-                const modal = document.createElement('div');
-                modal.style.cssText =
-                    'background: #fff; border-radius: 16px; padding: 28px 24px 24px; max-width: 500px; width: 92%; max-height: 85vh; box-shadow: 0 24px 64px rgba(0,0,0,0.20); animation: scaleIn 0.3s ease; display: flex; flex-direction: column;';
-                const userOptions = availableUsers.map(u => '<option value="' + u.username + '">' + u.username +
-                '</option>').join('');
-                modal.innerHTML =
-                    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="font-size:18px;font-weight:700;"><i class="fas fa-bell" style="color:var(--primary);"></i> 发送通知</h3><button id="closeNotifModalBtn" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);">&times;</button></div><div style="flex:1;overflow-y:auto;"><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">发送给</label><select id="notifTargetUser" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;">' +
-                    userOptions +
-                    '</select></div><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">标题</label><input type="text" id="notifTitle" placeholder="通知标题..." maxlength="100" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;"></div><div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:4px;">内容</label><textarea id="notifContent" placeholder="通知内容..." rows="4" style="width:100%;padding:10px 14px;border:1px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:var(--font);outline:none;background:#f8fafc;resize:vertical;"></textarea></div></div><div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;"><button id="cancelNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:#F1F3F5;color:var(--text-secondary);">取消</button><button id="sendNotifBtn" style="padding:8px 24px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);background:var(--gradient);color:#fff;">发送</button></div>';
-                overlay.appendChild(modal);
-                document.body.appendChild(overlay);
-                document.getElementById('closeNotifModalBtn').addEventListener('click', () => overlay.remove());
-                document.getElementById('cancelNotifBtn').addEventListener('click', () => overlay.remove());
-                overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-                document.getElementById('sendNotifBtn').addEventListener('click', async () => {
-                    const targetUser = document.getElementById('notifTargetUser').value;
-                    const title = document.getElementById('notifTitle').value.trim();
-                    const content = document.getElementById('notifContent').value.trim();
-                    const currentUser = getCurrentUser();
-                    if (!title || !content) { showToast('⚠️ 请填写标题和内容', 'error'); return; }
-                    const btn = document.getElementById('sendNotifBtn');
-                    btn.disabled = true;
-                    btn.textContent = '发送中...';
-                    try {
-                        await sendNotification(targetUser, currentUser, title, content);
-                        showToast('✅ 通知已发送给 ' + targetUser, 'success');
-                        overlay.remove();
-                    } catch (err) { showToast('❌ ' + err.message, 'error'); } finally { btn.disabled = false;
-                        btn.textContent = '发送'; }
-                });
-            }).catch(err => { showToast('❌ ' + err.message, 'error'); });
-        }
     </script>
 </body>
 </html>
