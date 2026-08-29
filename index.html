@@ -2641,7 +2641,8 @@
                 CACHE.timestamp = Date.now();
                 return data;
             } catch (err) {
-                console.error('获取处罚记录失败:', err);
+                console.warn('获取处罚记录失败（表可能不存在）:', err.message);
+                // 表不存在时返回空数组，不影响登录
                 return [];
             }
         }
@@ -4002,7 +4003,7 @@
         }
 
         // ========================================================================
-        //  封禁记录（保留）
+        //  封禁记录
         // ========================================================================
         async function fetchBanRecords() {
             try { const r = await supabaseRequest('/ban_records?order=banned_at.desc'); return (r && r.success !== true) ? r :
@@ -4044,17 +4045,20 @@
                 if (userId) currentUserBanned = await isUserBanned(userId);
                 else currentUserBanned = false;
 
-                const [files, announcementsData, forumData, ostracismData] = await Promise.all([
+                const [files, announcementsData, forumData] = await Promise.all([
                     fetchFiles(),
                     fetchAnnouncements(),
-                    fetchForumPosts(),
-                    fetchOstracismRecords()
+                    fetchForumPosts()
                 ]);
 
                 allFiles = Array.isArray(files) ? files : [];
                 announcements = Array.isArray(announcementsData) ? announcementsData : [];
                 forumPosts = Array.isArray(forumData) ? forumData : [];
-                CACHE.ostracism = ostracismData;
+
+                // 异步获取陶片放逐记录（不阻塞主流程）
+                fetchOstracismRecords().then(records => {
+                    document.getElementById('ostracismBadge').textContent = records.length;
+                }).catch(() => {});
 
                 console.log(`✅ 数据加载完成 (${(performance.now() - startTime).toFixed(0)}ms)`);
 
@@ -4066,10 +4070,6 @@
 
                 const usage = await getStorageUsage();
                 document.getElementById('statStorage').textContent = formatSizeSimple(usage.used);
-
-                // 更新陶片放逐徽章
-                const ostracismRecords = await fetchOstracismRecords();
-                document.getElementById('ostracismBadge').textContent = ostracismRecords.length;
 
                 // 更新私信红点
                 if (currentUser) {
@@ -4114,6 +4114,63 @@
             } catch (err) {
                 console.error('刷新数据失败:', err);
                 showToast('刷新数据失败: ' + err.message, 'error');
+            }
+        }
+
+        // ========================================================================
+        //  封禁记录显示
+        // ========================================================================
+        async function showBanRecords() {
+            const modal = document.getElementById('banRecordsModal');
+            const list = document.getElementById('banRecordsList');
+            const count = document.getElementById('banRecordsCount');
+
+            if (!modal || !list) return;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            list.innerHTML = '<div style="text-align:center;padding:30px 0;color:var(--text-light);"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i> 加载中...</div>';
+
+            try {
+                const [banRecords, unbanRecords] = await Promise.all([
+                    fetchBanRecords(),
+                    fetchUnbanRecords()
+                ]);
+
+                const allRecords = [...banRecords, ...unbanRecords].sort((a, b) => {
+                    const timeA = a.banned_at || a.unbanned_at || '';
+                    const timeB = b.banned_at || b.unbanned_at || '';
+                    return new Date(timeB) - new Date(timeA);
+                });
+
+                count.textContent = '(共 ' + allRecords.length + ' 条记录)';
+
+                if (allRecords.length === 0) {
+                    list.innerHTML = '<div class="empty-records"><i class="fas fa-ban"></i>暂无封禁记录</div>';
+                    return;
+                }
+
+                list.innerHTML = allRecords.map(record => {
+                    const isBan = record.banned_user !== undefined;
+                    const user = isBan ? record.banned_user : record.unbanned_user;
+                    const admin = isBan ? record.banned_by : record.unbanned_by;
+                    const time = isBan ? record.banned_at : record.unbanned_at;
+                    const reason = record.reason || '未说明';
+
+                    return '<div class="ban-record-item"><div class="record-header"><span class="record-user">👤 ' + escapeHtml(user) + '</span><span class="record-admin">执行者: <span>' + escapeHtml(admin) + '</span></span></div><div class="record-reason">📝 ' + escapeHtml(reason) + '</div><div class="record-time">🕐 ' + formatTime(time) + '</div></div>';
+                }).join('');
+
+            } catch (err) {
+                list.innerHTML = '<div class="empty-records" style="color:#EF4444;"><i class="fas fa-exclamation-triangle"></i>加载失败: ' + err.message + '</div>';
+            }
+        }
+
+        function hideBanRecords() {
+            const modal = document.getElementById('banRecordsModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
             }
         }
 
@@ -4734,7 +4791,7 @@
         });
 
         // ========================================================================
-        //  通知功能（保留）
+        //  通知功能
         // ========================================================================
         async function sendNotification(targetUser, sentBy, title, content) {
             if (!targetUser || !title || !content) throw new Error('请填写完整信息');
@@ -4785,6 +4842,5 @@
             }).catch(err => { showToast('❌ ' + err.message, 'error'); });
         }
     </script>
-
 </body>
 </html>
